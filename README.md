@@ -1,6 +1,6 @@
 # OmgItsKuei.com, home to Kuei-Feng Tung
 
-    Kuei-Feng Tung is a software engineer based in Taipei, Taiwan, with a passion for building and making things of all kinds. 
+Kuei-Feng Tung is a software engineer based in Taipei, Taiwan, with a passion for building and making things of all kinds. 
 
 Known for his coolheaded results-oriented leadership among teammates, perseverance under stressful situations, and dauntless attitude when facing big problems, Kuei-Feng is enthusiastic, dependable, and always striving to self-improve. 
 
