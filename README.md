@@ -383,7 +383,7 @@ This journal serves to:
 
 A favicon is the tiny picture seen in a browser's tab of a particular website.  
 In this website's case, it's a small white square with "OMG" written in black.  
-<img src="readme_imgs/dev_journal_nextjs_img1.png?raw=false" />
+<img src="readme_imgs/dev_journal_nextjs_img2.png?raw=false" />
 
 The official nextjs docs [here](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons#favicon) state very clearly that the file should be called "favicon.ico" and placed in the ```/app``` directory.
 
