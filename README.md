@@ -39,6 +39,9 @@ This repository is his homepage showcasing his portfolio. He primarily uses Spri
     - [Packages installation](#packages-installation)
     - [Running the project](#running-the-project)
     - [Pushing code to Production](#pushing-code-to-production)
+  - [Project development journal](#project-development-journal)
+    - [Nextjs](#nextjs)
+    - [CSS](#css)
 
 
 ## Tools setup
@@ -292,6 +295,9 @@ Download the project repository [here](https://github.com/omgitskuei/omgitskuei.
 
 ## Project development cycle
 
+
+This [part](#pushing-code-to-production) lists the steps to push the repo live, to the hosting platform.  This project uses Cloudflare Pages for website hosting.
+
 <details>
 <summary>
 
@@ -361,3 +367,228 @@ npm run dev
 *To be further expanded on later...*
 
 </details>
+
+## Project development journal
+
+This development journal is a record of technical problems I found myself researching, various solutions offered online, and solutions analysis of which is best for solving the technical problems.  
+This journal serves to: 
+- quickly sum up the things I've learned during development organized under tech
+- showcase my problem-solving and analytics skills
+- exhibit the consideration that went into writing code so that the website is resilient to edge cases and as future-proof as possible when it comes to bugs
+
+### Nextjs
+
+<details>
+<summary>Metadata favicon doesn't work as predicted despite what docs say</summary>
+
+A favicon is the tiny picture seen in a browser's tab of a particular website.  
+In this website's case, it's a small white square with "OMG" written in black.  
+<img src="readme_imgs/dev_journal_nextjs_img1.png?raw=false" />
+
+The official nextjs docs [here](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons#favicon) state very clearly that the file should be called "favicon.ico" and placed in the ```/app``` directory.
+
+My project uses a ```/src``` folder so my "root /app route segment" should be ```/src/app```.
+Despite placing a favicon.ico image there, the browser (Chrome) will consistently throw error 404 in the console saying it can't find the .ico file.  
+
+I also have tried placing the .ico file in a newly created folder ```/app``` that is a sibling to the ```/src``` directory. This also results in the same error 404.
+
+Many sources on stackoverflow say that the .ico file may need to be manually imported and added to the ```/app/layout.tsx``` file like so;
+
+```tsx
+import favicon from "./favicon.ico" // here
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Home | OmgItsKuei',
+  description: 'The office of Kuei-Feng Tung',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      // here
+      <head>
+        <link rel='icon' href={favicon.src}/>  
+      </head>
+      
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+```
+This solution also does not work.
+
+Another stackoverflow said that it is due to faulty conversion of the .ico file if it were converted from png. To test this solution, I tested using numerous other conversion libraries - also didn't work.  
+
+The working solution is that nextjs was handling .ico files with errors so using png instead worked - leaving a icon.png in the ```/src/app``` root did the job. No manual imports in ```/app/layout.tsx``` required.
+</details>
+
+
+### CSS
+
+<details>
+<summary>Setting body/main element to fill entire screen</summary>
+
+By default, all HTML elements are styled to take up as little space as possible. This leads to common problems such as setting a background for (eg.) body to only show for a small part of the screen, with other parts showing white, because the body isn't 'stretching' to fill the entire screen.  
+A hard-coded value *could* be given but this is a poor solution considering how many different screen sizes (like mobile vs desktop) there are.
+That's why it may be intuitive to give a percent value like so:  
+```css
+main {
+  height: 100%;
+}
+/* Notice that it appears to have no effect.  */
+```
+
+This doesn't work because the ```height: 100%``` percentage looks to a parent element for the parent's height to calculate its own percentage. 
+> HTML elements inherit from their parents:  
+> Other child elements > body > html > :root > viewport     
+
+Knowing this, one solution is to add ```height: 100%``` to body, html, and root. However, this poses a problem when child elements overflow (eg. search results are numerous and longer than screen height, or pagination is used) - the height is not expanded to cover the overflow. One potential bug may be the background cutting off after some scrolling. Also, this solution is also very verbose.
+
+It is more concise to just use viewport as a unit for height ('vh', expressed as a percentage). For example, ```height: 60vh``` means 60% of the height of the viewport.
+```CSS
+main {
+  height: 100vh;
+}
+
+```
+</details>
+
+
+<details>
+<summary>Saving time with CSS variables</summary>
+
+To have a coherent front-end experience, often times, the same colors are used in multiple UI components. To save time during development, use CSS variables to define reoccuring values like width, height, and color. The variable can then be consumed in CSS rulesets.
+```css
+/* syntax of variable declaration */
+body {
+  --varName: green;
+}
+
+/* consuming variables */
+div {
+  color: var(--varName);
+  color: green; /* same as above */
+}
+```
+
+Scope - Variables are only visible to the element ruleset it's declared in or to the element's childrens' rulesets. The variable respects scoping similar to variables in most programming languages. 
+```css
+body > div {
+  --test-parent-color: 255, 0, 0; /* red */
+  color:rgb(var(--test-parent-color));
+}
+
+body > div > div {
+  color:rgb(var(--test-parent-color));
+}
+```
+```html
+<html>
+  <body>
+    grandparent color? <!-- defaults to black -->
+    <div>
+      parent color?    <!-- red -->
+      <div>
+        child color?   <!-- red (can access parent's var) -->
+      </div>
+    </div>
+  </body>
+</html>
+```
+<img src="readme_imgs/dev_journal_css_img2.png?raw=false" />
+
+Like many languages, CSS also respects specificity. If a variable is declared multiple, it will use the value of the local variable for the element itself.
+```css
+body > div {
+  --test-parent-color: 255, 0, 0; /* red */
+  color:rgb(var(--test-parent-color));
+}
+
+body > div > div {
+  --test-parent-color: 0, 255, 0; /* green, local variable, higher specificity */
+  color:rgb(var(--test-parent-color));
+}
+```
+```html
+<html>
+  <body>
+    grandparent color? <!-- defaults to black -->
+    <div>
+      parent color?    <!-- red -->
+      <div>
+        child color?   <!-- green (overwrote red) -->
+      </div>
+    </div>
+  </body>
+</html>
+```
+<img src="readme_imgs/dev_journal_css_img1.png?raw=false" />
+
+
+A CSS variable used throughout the entire page is declared in the :root pseudo-selector, or in the html selector.  
+The root has a defined variable called 'background-start-rgb' holding 3 numbers - this is passed to rgb(var(...)) to interpret as RGB color value
+```css
+:root {
+    --background-start-rgb: 0, 0, 0; /* black */
+  }
+
+main {
+  color: rgb(var(--background-start-rgb));
+}
+```
+</details>
+
+
+<details>
+<summary>Light/Dark mode support with @media</summary>
+
+
+```css
+/* Color scheme light */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color: 230, 230, 230; /* A very dark grey */
+  }
+}
+
+/* Color scheme dark */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color: 20, 20, 20; /* A light grey */
+  }
+}
+```
+</details>
+
+
+<details>
+<summary>Styling buttons states with pseudoclasses selectors</summary>
+
+Buttons have 3 states
+- ```:hover```
+- ```:focus```
+- ```:active```
+
+The syntax is like so in CSS;
+```CSS
+.aButtonClass:hover {
+  background-color: blue;
+  transition: 1s; /* Slow down to see it in effect */
+}
+```
+
+```:hover``` triggers the transition on mouseover and 'sustains' the effect until mouseout.  
+```:focus``` is useful for accessibility purposes - the effect triggers after the button has been clicked and 'sustains' until the user presses ```[TAB]``` or clicks elsewhere. It also 'sustains' until the user switches windows, and resumes after switching back windows.
+```:active``` triggers the transition on mousedown (click) and 'sustains' until mouseup (releasing the click).
+
+For this project, made all elements have the same css effect when ```:focus``` for accessibility.
+
+Source: [freeCodeCamp](https://www.freecodecamp.org/news/css-button-style-hover-color-and-background/)
+</details>
+

@@ -2,59 +2,143 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
-
-/* body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-    margin:0;
-} */
-
-ul {
-  list-style-type: none;
+/* reset */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  top: 0;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  color: rgb(var(--text-color));
+  /* border: 1px red solid; */
+}
+/* https://css-tricks.com/box-sizing/ */
+
+/* Color scheme light / dark */
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 155, 155, 155;
+    --pages-header-text-color: 20, 20, 20;
+    --pages-header-bg-color: 255, 255, 255;
+    --button-active-bg-color: 134, 134, 134;
+    --text-color: 20, 20, 20;
+    --invert: 0;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-start-rgb: 100, 100, 100;
+    --background-end-rgb: 0, 0, 0;
+    --pages-header-text-color: 20, 20, 20;
+    --pages-header-bg-color: 50, 50, 50;
+    --button-active-bg-color: 134, 134, 134;
+    --text-color: 255, 255, 255;
+    --invert: 1;
+  }
+}
+
+*:focus {
+  /* border-radius: 0.5rem; */
+  box-shadow: 0 0 0 0.5rem dodgerblue;
+  /* transition: 0.5s; */
+}
+
+/* It hides the button text when screen size <=768px */
+@media(max-width:768px) {
+  button label {
+      display: none;
+  }
+}
+/* https://www.geeksforgeeks.org/how-to-hide-button-text-in-phone-mode/ */
+
+/* shared styling for all buttons */
+button {
+  /* border-radius: 0.4rem; */
+  cursor: pointer;
+  /* min-width: 5rem; */
+  /* min-height: 2rem; */
+  font-weight: bolder; 
+  /* outline-color: darkgrey; */
+  /* outline-style: solid ; */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  /* margin: 0.5rem; */
+  /* margin-bottom: 0.25rem; */
+}
+
+button:hover {
+  background-color: rgb(167, 167, 167);
+  border-bottom: 0.5rem ridge darkred;
+  transition: 0.15s ease-in-out;
+}
+
+button:active {
+  background-color: rgb(var(--button-active-bg-color));
+}
+
+.flexbox-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: stretch;
+  /* align-items: center; */
+  overflow: auto;
+}
+.flexbox-horizontal {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  align-items: stretch;
+  /* align-items: center; */
+  overflow: auto;
+}
+/* https://flexbox.malven.co/ */
+
+main {
+  /* height: 100vh; */
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-start-rgb))) rgb(var(--background-end-rgb));
 }
 
-li {
-  float: left;
+.page-header {
+  background-color: rgb(var(--pages-header-bg-color));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5rem 0.5rem;
+  /* margin-top: 0.75rem; */
+  /* margin-bottom: 0.75rem; */
+  /* margin-left: 0.75rem; */
+  /* margin-right: 0.75rem; */
+  
+  /* &:has(:focus-visible) {
+    outline: 3px solid rgb(17 21 36 / 50%);
+  } */
 }
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+
+.page-body {
+  background-color: rgb(var(--pages-header-bg-color));
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0.75rem;
+
+  /* &:has(:focus-visible) {
+    outline: 3px solid rgb(17 21 36 / 50%);
+  } */
 }
 
-li a:hover:not(.active) {
-  background-color: #111;
-}
 
-/* .active {
-  background-color: #04AA6D;
-} */
