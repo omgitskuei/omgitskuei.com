@@ -28,9 +28,14 @@ html {
     --background-end-rgb: 155, 155, 155;
     --pages-header-text-color: 20, 20, 20;
     --pages-header-bg-color: 255, 255, 255;
-    --button-active-bg-color: 134, 134, 134;
+    --button-active-bg-color: 140, 140, 140;
+    --button-hover-bg-color: 190, 190, 190;
     --text-color: 20, 20, 20;
     --invert: 0;
+  }
+  body::after{
+    /* content: 'l'; */
+    /* display: none; */
   }
 }
 @media (prefers-color-scheme: dark) {
@@ -40,8 +45,14 @@ html {
     --pages-header-text-color: 20, 20, 20;
     --pages-header-bg-color: 50, 50, 50;
     --button-active-bg-color: 134, 134, 134;
+    --button-hover-bg-color: 100, 100, 100;
     --text-color: 255, 255, 255;
     --invert: 1;
+    /* --logo-invert: 0.8; */
+  }
+  body::after{
+    /* content: 'd'; */
+    /* display: none; */
   }
 }
 
@@ -51,31 +62,56 @@ html {
   /* transition: 0.5s; */
 }
 
-/* It hides the button text when screen size <=768px */
-@media(max-width:768px) {
+/* tablets and ipads have a 768 upper breakpoint */
+@media only screen and (min-width: 481px) and (max-width:768px) {
   button label {
       display: none;
+      /* more later */
   }
 }
+/* mobile devices range between 320 to 480, often 340 to 375 */
+@media only screen and (max-width:480px) {
+  button label {
+      display: none;
+      /* more later */
+  }
+}
+/* https://testsigma.com/blog/css-breakpoints/#CSS_Breakpoints_8211_based_on_the_device */
 /* https://www.geeksforgeeks.org/how-to-hide-button-text-in-phone-mode/ */
+
+/* @media only screen and (orientation: landscape) and (max-width:768px) {
+  body {
+    background-color: darkgoldenrod;
+    
+  }
+}
+
+@media (orientation: portrait) {
+  body {
+    flex-direction: darkgreen;
+  }
+} */
+
 
 /* shared styling for all buttons */
 button {
-  /* border-radius: 0.4rem; */
+  border-radius: 0.4rem;
   cursor: pointer;
   /* min-width: 5rem; */
   /* min-height: 2rem; */
   font-weight: bolder; 
   /* outline-color: darkgrey; */
   /* outline-style: solid ; */
-  padding-left: 1rem;
-  padding-right: 1rem;
+  /* padding-left: 0.5rem; */
+  margin-right: 0.5rem;
+  /* padding-top: 0.2rem;
+  padding-bottom: 0.2rem; */
   /* margin: 0.5rem; */
   /* margin-bottom: 0.25rem; */
 }
 
 button:hover {
-  background-color: rgb(167, 167, 167);
+  background-color: rgb(var(--button-hover-bg-color));
   border-bottom: 0.5rem ridge darkred;
   transition: 0.15s ease-in-out;
 }
@@ -112,8 +148,8 @@ main {
 .page-header {
   background-color: rgb(var(--pages-header-bg-color));
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  /* flex-wrap: wrap; */
+  justify-content: right;
   padding: 0.5rem 0.5rem;
   /* margin-top: 0.75rem; */
   /* margin-bottom: 0.75rem; */

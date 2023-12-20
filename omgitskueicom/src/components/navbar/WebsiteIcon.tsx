@@ -1,48 +1,39 @@
 'use client'
 
-import icon_website from "../../assets/icons/icon_website.png";
-import icon_website_dm from "../../assets/icons/icon_website_dm.png";
+import icon_website from "../../assets/icons/icon_website_nobg.png";
+import icon_website_xmas from "../../assets/icons/icon_website_nobg_xmas.png";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 
 const wiStyle: { [key: string]: React.CSSProperties } = {
     container: {
-        // width: 400,
-        // backgroundColor: "lightgreen",
-        
-        // filter: "invert(var(--invert))",
-        // display: "flex",
-        // justifyContent: "flex-start",
+        flexGrow: "1",
     },
     image: {
-
+        filter: "invert(var(--invert))",
     }
 };
 
 
+function isXmas() {
+    const today = new Date();
+    return (today.getMonth()+1 == 12) && (today.getDate() > 20);
+}
 
 
-function WebsiteIcon({ w, }: { 
-    w: string
-}) {
-    let isBrowserDefaultDark = false;
+function WebsiteIcon({ w, }: { w: string }) {
+    const [finalImg, setFinalImg] = useState(icon_website);
 
-useEffect(() => {
-    isBrowserDefaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-}, []);
-
-    if (isBrowserDefaultDark) {
-        return <div style={wiStyle.container}>
-        <img src={icon_website_dm.src} 
-        style={wiStyle.image}
-        id="website_icon" 
-        width={w} height="min-content" 
-        alt="Website Logo" />
-    </div>;
-    }
+    useEffect(() => {
+        // Use Xmas festive logo instead
+        if(isXmas()) {
+            setFinalImg(icon_website_xmas);
+        }
+    }, []);
 
     return <div style={wiStyle.container}>
-            <img src={icon_website.src} 
+            <img src={finalImg.src} 
             style={wiStyle.image}
             id="website_icon" 
             width={w} height="min-content" 

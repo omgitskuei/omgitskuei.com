@@ -10,7 +10,7 @@ const bcStyle: { [key: string]: React.CSSProperties } = {
         display: "inline-block"
     },
     a: {
-        color: "lightgrey"
+        // color: "lightgrey"
     }
 };
 

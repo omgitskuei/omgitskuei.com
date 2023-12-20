@@ -18,7 +18,7 @@ export default function Home() {
 
   return ( 
     <main className="bg-metal text-metal">
-      <div className="flexbox-vertical">
+      {/* <div className="flexbox-vertical"> */}
         <PageHeader/>
         <div className="flexbox-horizontal">
           <div>
@@ -37,7 +37,7 @@ export default function Home() {
           {/* <SidePanel sfx="snowing"/> */}
           Footer
         </div>
-      </div>     {/* flexbox-rows end*/}
+      {/* </div>     flexbox-rows end */}
     </main>
   )
 }

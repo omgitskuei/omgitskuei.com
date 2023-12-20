@@ -23,7 +23,7 @@ export default function PageHeader() {
     return <>
         <div className="flexbox-vertical">
             <div className="flexbox-horizontal page-header">
-                <WebsiteIcon w="100px"></WebsiteIcon>
+                <WebsiteIcon w="85px"></WebsiteIcon>
                 <NavButton icon={homeIcon.src} id="home" label="Home" isHighlighted={true} onClick={handleClick}/>
                 <NavButton icon={resumeIcon.src} id="resume" label="Resume" isHighlighted={false} onClick={handleClick}/>
                 <NavButton icon={portfolioIcon.src} id="portfolio" label="Portfolio" isHighlighted={false} onClick={handleClick}/>
