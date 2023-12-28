@@ -60,6 +60,7 @@ export default function PageHeader({darkmode = false}: Props) {
     // https://upmostly.com/tutorials/pass-a-parameter-through-onclick-in-react
     function handleClick(key: string) {
         setHighlight(key);
+        // Imperative Routing - https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating
         router.push('/' + key);
     }
 
@@ -67,7 +68,7 @@ export default function PageHeader({darkmode = false}: Props) {
         <div className="flexbox-horizontal" style={phStyle.container}>
             <WebsiteIcon width="85px" containerStyle={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyLeft}} darkmode={darkmode}></WebsiteIcon>
             <div style={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyRight}}>
-                <NavButton icon={homeIcon.src} label="Home" isHighlighted={highlight == "home"} onClick={() => handleClick("home")}/>
+                <NavButton icon={homeIcon.src} label="Home" isHighlighted={highlight == "home"} onClick={() => handleClick("")}/>
                 <NavButton icon={resumeIcon.src} label="Resume" isHighlighted={highlight == "resume"} onClick={() => handleClick("resume")}/>
                 <NavButton icon={portfolioIcon.src} label="Portfolio" isHighlighted={highlight == "portfolio"} onClick={() => handleClick("portfolio")}/>
                 <NavButton icon={aboutIcon.src} label="About" isHighlighted={highlight == "about"} onClick={() => handleClick("about")}/>

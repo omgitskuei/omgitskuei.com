@@ -1,3 +1,5 @@
 export default function Page() {
-    return <h1>Hello, Portfolio Page!</h1>
+    return (<section>
+        <h1>Hello, Portfolio Page!</h1>
+    </section>)
 }
