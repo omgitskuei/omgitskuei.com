@@ -5,17 +5,19 @@ import { MouseEventHandler } from "react";
 const nbStyle: { [key: string]: React.CSSProperties } = {
     icon: {
         display: "inline",
-        width: "28px",
-        height: "30px",
-        filter: "invert(var(--invert))",
+        width: "30px",
+        height: "33px",
+        // marginRight: "5px"
+        // filter: "invert(var(--invert))",
     },
-    btn: {
-        // borderRadius: "0.5rem",
+    shared: { 
         color: "rgb(var(--pages-header-text-color))",
     },
-    btnHighlighted: {
-        // borderRadius: "0.5rem",
-        color: "rgb(var(--pages-header-text-color))",
+    regular: {
+    
+    },
+    highlight: {
+        backgroundColor: "rgb(255, 255, 255, 0.5)"
     },
 };
 
@@ -27,14 +29,17 @@ export default function NavButton({
     onClick
 }: {
     icon: string,
-    id: string,
+    id?: string,
     label: string,
     isHighlighted: boolean,
     onClick: MouseEventHandler
 }) {
     return <button
         id={id}
-        style={isHighlighted ? nbStyle.btnHighlighted : nbStyle.btn}
+        className="navButton"
+        // https://stackoverflow.com/questions/29979324/how-to-combine-multiple-inline-style-objects
+        // use the spread operator {...style1, ...style2}
+        style={{...isHighlighted ? nbStyle.highlight : nbStyle.regular, ...nbStyle.shared}}
         onClick={onClick}>
         <img style={nbStyle.icon} src={icon}></img>
         <label>{label}</label>

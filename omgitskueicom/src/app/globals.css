@@ -62,18 +62,35 @@ html {
   /* transition: 0.5s; */
 }
 
+
+/* desktop view */
+@media only screen and (min-width: 769px) {
+  button label {
+    display: block;
+    font-size: medium;
+}
+  button.navButton {
+      width: 6rem;
+  }
+}
 /* tablets and ipads have a 768 upper breakpoint */
 @media only screen and (min-width: 481px) and (max-width:768px) {
   button label {
-      display: none;
-      /* more later */
+      display: block;
+      font-size: small;
+  }
+  button.navButton {
+    width: 3.8rem;
   }
 }
-/* mobile devices range between 320 to 480, often 340 to 375 */
+/* mobile devices range between 320 to 480 (400s to account for landscape mode), often 340 to 375 */
 @media only screen and (max-width:480px) {
   button label {
       display: none;
       /* more later */
+  }
+  button.navButton {
+    width: 2.3rem;
   }
 }
 /* https://testsigma.com/blog/css-breakpoints/#CSS_Breakpoints_8211_based_on_the_device */
@@ -92,20 +109,21 @@ html {
   }
 } */
 
-
 /* shared styling for all buttons */
 button {
-  border-radius: 0.4rem;
-  cursor: pointer;
-  /* min-width: 5rem; */
-  /* min-height: 2rem; */
+  border-radius: 0.5rem;
   font-weight: bolder; 
+  cursor: pointer;
+  /* min-width: 10rem; */
+  /* min-height: 2rem; */
   /* outline-color: darkgrey; */
   /* outline-style: solid ; */
   /* padding-left: 0.5rem; */
-  margin-right: 0.5rem;
-  /* padding-top: 0.2rem;
-  padding-bottom: 0.2rem; */
+  /* margin-right: 0.5rem; */
+  /* padding-top: 0.2rem; */
+  /* padding-bottom: 0.2rem; */
+  /* padding-left: 10px; */
+  /* padding-right: 10px; */
   /* margin: 0.5rem; */
   /* margin-bottom: 0.25rem; */
 }
@@ -139,28 +157,11 @@ button:active {
 /* https://flexbox.malven.co/ */
 
 main {
-  /* height: 100vh; */
+  height: 100vh;
   background: linear-gradient(to bottom,
       transparent,
       rgb(var(--background-start-rgb))) rgb(var(--background-end-rgb));
 }
-
-.page-header {
-  background-color: rgb(var(--pages-header-bg-color));
-  display: flex;
-  /* flex-wrap: wrap; */
-  justify-content: right;
-  padding: 0.5rem 0.5rem;
-  /* margin-top: 0.75rem; */
-  /* margin-bottom: 0.75rem; */
-  /* margin-left: 0.75rem; */
-  /* margin-right: 0.75rem; */
-  
-  /* &:has(:focus-visible) {
-    outline: 3px solid rgb(17 21 36 / 50%);
-  } */
-}
-
 
 .page-body {
   background-color: rgb(var(--pages-header-bg-color));

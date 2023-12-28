@@ -1,7 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-// import favicon from "../assets/icons/icon.png"
+import PageHeader from './../components/navbar/PageHeader'
+import Breadcrumbs from "./../components/navbar/Breadcrumbs";
+import Footer from './../components/footer/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +22,16 @@ export default function RootLayout({
        {/* <head> */}
         {/* <link rel='icon' href="../assets/icons/icon.png"/> */}
       {/* </head> */}
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <header>
+          <PageHeader/>
+          <Breadcrumbs></Breadcrumbs>
+        </header>
+        {children}
+        <footer>
+          <Footer/>
+        </footer>
+      </body>
     </html>
   )
 }

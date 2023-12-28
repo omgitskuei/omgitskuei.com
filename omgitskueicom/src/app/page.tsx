@@ -3,7 +3,7 @@
 // import Image from 'next/image'
 // import HockeyTeamList from '../components/Example'
 import PageBody from '../components/PageBody'
-import PageHeader from '../components/navbar/PageHeader'
+
 import SidePanel from '../components/SidePanel'
 // import NavbarExample from '../components/NavbarExample'
 
@@ -17,12 +17,17 @@ export default function Home() {
   // const [index, setIndex] = useState(0);
 
   return ( 
-    <main className="bg-metal text-metal">
+    <main>
       {/* <div className="flexbox-vertical"> */}
-        <PageHeader/>
+        
         <div className="flexbox-horizontal">
           <div>
-            Sidebar
+            <h2>Sidebar</h2>
+            <ol>
+              <li>ham</li>
+              <li>cheese</li>
+              <li>lettuce</li>
+            </ol>
           </div>
           <div>
             Main article section
