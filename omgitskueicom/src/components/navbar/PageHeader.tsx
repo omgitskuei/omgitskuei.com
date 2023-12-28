@@ -1,16 +1,17 @@
 'use client'
 
 import NavButton from "./NavButton";
-
-
 import WebsiteIcon from "./../navbar/WebsiteIcon";
+
 import homeIcon from "./../../assets/icons/home.png"
 import resumeIcon from "./../../assets/icons/resume.png"
 import portfolioIcon from "./../../assets/icons/portfolio.png"
 import aboutIcon from "./../../assets/icons/about.png"
 import contactIcon from "./../../assets/icons/contact.png"
 import settingsIcon from "./../../assets/icons/settings.png"
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 
 const phStyle: { [key: string]: React.CSSProperties } = {
     container: {
@@ -54,10 +55,12 @@ export default function PageHeader({darkmode = false}: Props) {
     // const [darkmode, setDarkMode] = useState<boolean>(false);
 
     const [highlight, setHighlight] = useState<string>("home");
+    const router = useRouter();
 
     // https://upmostly.com/tutorials/pass-a-parameter-through-onclick-in-react
     function handleClick(key: string) {
         setHighlight(key);
+        router.push('/' + key);
     }
 
     return <>
