@@ -1,4 +1,10 @@
-import styles from './layout.module.css';
+const ThisStyle: { [key: string]: React.CSSProperties } = {
+    settingsMain: {
+        paddingTop: "24px",
+        paddingBottom: "24px",
+        border: "solid 2px purple",
+    }
+};
 
 export default function SettingsLayout({
     children, // will be a page or nested layout
@@ -6,7 +12,7 @@ export default function SettingsLayout({
     children: React.ReactNode
 }) {
     return (
-        <main className={styles.settingsMain}>
+        <main style={ThisStyle.settingsMain}>
             {children}
         </main>
     )

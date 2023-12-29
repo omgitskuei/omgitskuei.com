@@ -1,0 +1,72 @@
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.apples {
+  justify-content: space-between;
+  /* align-items: center; */
+  /* border: red 2px solid; */
+}
+
+/* Adjust the width/height of the oval bar */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+}
+
+/* Styles the long oval bar slider */
+.slider {
+  border-radius: 5rem;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: solid 2px rgb(35, 35, 35);
+  background-color: #ffae42; /* This gets overwritten when checked */
+  -webkit-transition: .4s;
+  transition: .4s;
+  /* filter: invert(var(--invert)) */
+}
+/* Overrides background color */
+input:checked + .slider {
+  background-color: rgb(128, 128, 158);
+}
+
+/* Styles the 'dot' or 'circle' */
+.slider:before {
+  border-radius: 5rem;
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  border: solid 2px rgb(35, 35, 35);
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+/* Animates how far the 'circle' travels */
+input:checked + .slider:before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px);
+}
+
+.on {
+  /* padding-left: 1rem; */
+  padding-right: 0.5rem;
+  /* padding-top: 0.2rem; */
+  /* padding-bottom: 0.2rem; */
+}
+.off {
+  padding-left: 0.5rem;
+}
