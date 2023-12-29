@@ -46,12 +46,7 @@ const phStyle: { [key: string]: React.CSSProperties } = {
 };
 
 
-
-type Props = {
-    darkmode?: boolean;
-}
-
-export default function PageHeader({darkmode = false}: Props) {
+export default function PageHeader() {
     // const [darkmode, setDarkMode] = useState<boolean>(false);
 
     const [highlight, setHighlight] = useState<string>("home");
@@ -63,6 +58,22 @@ export default function PageHeader({darkmode = false}: Props) {
         // Imperative Routing - https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating
         router.push('/' + key);
     }
+
+    const [darkmode, setDarkmode] = useState<boolean>(true);
+    // useEffect(() => {
+    //     if (window.matchMedia) {
+    //         console.log("has window.matchMedia");
+    //         // query returns MediaQueryList { media: '(prefers-color-scheme: dark)', matches: true, onchange: null }
+    //         const query = window.matchMedia('prefers-color-scheme: dark');
+
+    //         console.log(query);
+            
+    //         // doesnt work - always returns false
+    //         console.log(query.matches)
+    //         // doesnt work - even if set to false, websiteIcon still takes true from init useState value
+    //         setDarkmode(query.matches);
+    //     }
+    // }, []);
 
     return <>
         <div className="flexbox-horizontal" style={phStyle.container}>

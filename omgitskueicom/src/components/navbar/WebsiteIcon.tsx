@@ -1,9 +1,9 @@
 'use client'
 
 import { StaticImageData } from "next/image";
-import icon_website from "../../assets/icons/icon_website_nobg.png";
+import icon_website_lm from "../../assets/icons/icon_website_lm.png";
+// import icon_website_dm from "../../assets/icons/icon_website_dm.png";
 import icon_website_xmas from "../../assets/icons/icon_website_nobg_xmas.png";
-// import icon_website_val from "../../assets/icons/icon_website_nobg_val.png";
 
 import { CSSProperties, useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ type Props = {
 
 function WebsiteIcon({ width, containerStyle, darkmode = false }: Props) {
 
-    const [finalImg, setFinalImg] = useState<StaticImageData>(icon_website);
+    const [finalImg, setFinalImg] = useState<StaticImageData>(icon_website_lm);
 
     useEffect(() => {
         const today = new Date();
@@ -47,6 +47,10 @@ function WebsiteIcon({ width, containerStyle, darkmode = false }: Props) {
             // setFinalImg(icon_website_ny);
         }
         // ... extendable
+
+        // if(darkmode){
+        //     setFinalImg(icon_website_dm);
+        // }
     }, []);
 
     return <div style={containerStyle}>
