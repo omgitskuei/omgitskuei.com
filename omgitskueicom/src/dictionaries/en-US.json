@@ -1,0 +1,23 @@
+{
+    "navbar": {
+        "home": "Home",
+        "resume": "Resume",
+        "portfolio": "Portfolio",
+        "about": "About",
+        "contact": "Contact",
+        "settings": "Settings"
+    },
+    "settings": {
+        "language": "Language",
+        "enUS": "English",
+        "zhHANT": "Traditional Chinese",
+        "zhHANS": "Simplified Chinese",
+        "theme": "Theme",
+        "light": "Light mode",
+        "dark": "Dark mode",
+        "font": "Font",
+        "sansserif": "Sans Serif",
+        "serif": "Serif",
+        "fontsize": "Font Size"
+    }
+}
