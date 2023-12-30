@@ -49,7 +49,7 @@ const phStyle: { [key: string]: React.CSSProperties } = {
 export default function PageHeader() {
     // const [darkmode, setDarkMode] = useState<boolean>(false);
 
-    const [highlight, setHighlight] = useState<string>("home");
+    const [highlight, setHighlight] = useState<string>("");
     const router = useRouter();
 
     // https://upmostly.com/tutorials/pass-a-parameter-through-onclick-in-react
@@ -79,7 +79,7 @@ export default function PageHeader() {
         <div className="flexbox-horizontal" style={phStyle.container}>
             <WebsiteIcon width="85px" containerStyle={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyLeft}} darkmode={darkmode}></WebsiteIcon>
             <div style={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyRight}}>
-                <NavButton icon={homeIcon.src} label="Home" isHighlighted={highlight == "home"} onClick={() => handleClick("")}/>
+                <NavButton icon={homeIcon.src} label="Home" isHighlighted={highlight == ""} onClick={() => handleClick("")}/>
                 <NavButton icon={resumeIcon.src} label="Resume" isHighlighted={highlight == "resume"} onClick={() => handleClick("resume")}/>
                 <NavButton icon={portfolioIcon.src} label="Portfolio" isHighlighted={highlight == "portfolio"} onClick={() => handleClick("portfolio")}/>
                 <NavButton icon={aboutIcon.src} label="About" isHighlighted={highlight == "about"} onClick={() => handleClick("about")}/>
