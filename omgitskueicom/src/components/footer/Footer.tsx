@@ -43,7 +43,7 @@ export default function Footer({
 
     return <>
     <div className="flexbox-horizontal" style={fStyle.container}>
-        <WebsiteIcon width="50px"></WebsiteIcon>
+        <WebsiteIcon width={50}></WebsiteIcon>
         <div className="flexbox-vertical" >
             <p>Facebook: <a style={fStyle.link} href={linkFB}>Chris Tung</a></p>
             <p>LinkedIn: <a style={fStyle.link} href={linkLinkedIn}>Kuei-Feng Tung Chris</a></p>

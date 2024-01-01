@@ -77,7 +77,7 @@ export default function PageHeader() {
 
     return <>
         <div className="flexbox-horizontal" style={phStyle.container}>
-            <WebsiteIcon width="85px" containerStyle={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyLeft}} darkmode={darkmode}></WebsiteIcon>
+            <WebsiteIcon width={85} containerStyle={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyLeft}} darkmode={darkmode}></WebsiteIcon>
             <div style={{...phStyle.twoColumnsEvenWidth, ...phStyle.flexboxJustifyRight}}>
                 <NavButton icon={homeIcon.src} label="Home" isHighlighted={highlight == ""} onClick={() => handleClick("")}/>
                 <NavButton icon={resumeIcon.src} label="Resume" isHighlighted={highlight == "resume"} onClick={() => handleClick("resume")}/>

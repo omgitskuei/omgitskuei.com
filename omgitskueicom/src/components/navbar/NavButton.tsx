@@ -1,5 +1,6 @@
 'use client'
 
+import Image from "next/image";
 import { MouseEventHandler } from "react";
 
 const nbStyle: { [key: string]: React.CSSProperties } = {
@@ -41,7 +42,7 @@ export default function NavButton({
         // use the spread operator {...style1, ...style2}
         style={{...isHighlighted ? nbStyle.highlight : nbStyle.regular, ...nbStyle.shared}}
         onClick={onClick}>
-        <img style={nbStyle.icon} src={icon}></img>
+        <Image style={nbStyle.icon} src={icon} alt={label + " nav button"}/>
         <label>{label}</label>
     </button>;
 }

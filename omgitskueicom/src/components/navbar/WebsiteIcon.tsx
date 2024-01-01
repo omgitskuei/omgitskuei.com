@@ -1,6 +1,6 @@
 'use client'
 
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import icon_website_lm from "../../assets/icons/icon_website_lm.png";
 // import icon_website_dm from "../../assets/icons/icon_website_dm.png";
 import icon_website_xmas from "../../assets/icons/icon_website_nobg_xmas.png";
@@ -19,7 +19,7 @@ const wiStyle: { [key: string]: React.CSSProperties } = {
 
 // Declaring props (as type)
 type Props = {
-    width: string;
+    width: number;
     containerStyle?: CSSProperties;
     darkmode?: boolean;
 }
@@ -54,7 +54,7 @@ function WebsiteIcon({ width, containerStyle, darkmode = false }: Props) {
     }, []);
 
     return <div style={containerStyle}>
-            <img src={finalImg.src} 
+            <Image src={finalImg.src} 
             style={darkmode ? wiStyle.imageDarkMode : wiStyle.image}
             id="website_icon" 
             width={width} 
