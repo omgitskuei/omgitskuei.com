@@ -91,7 +91,7 @@ export default function Page() {
         <fieldset style={ThisStyle.fieldset}>
             <legend style={ThisStyle.legend}>Language</legend>
             <div className="flexbox-vertical flexbox-center">
-                <p style={ThisStyle.p} className="">This website supports multiple languages used to display pages. Choose which language you'd prefer for this site.</p>
+                <p style={ThisStyle.p} className="">This website supports multiple languages used to display pages. Choose which language you  would prefer for this site.</p>
                 <div className="flexbox-horizontal flexbox-center">
                     TODO add visual aid
                 </div>

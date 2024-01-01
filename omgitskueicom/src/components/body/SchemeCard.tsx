@@ -1,6 +1,8 @@
 'use client'
 
 import { StaticImageData } from "next/image";
+import Image from "next/image";
+
 import lm from "../../assets/icons/lightmode.png";
 import dm from "../../assets/icons/darkmode.png";
 
@@ -42,8 +44,12 @@ function SchemeCard({
 
     return <div style={sStyle.card}>
             <div style={sStyle.centerItems}>
-                <img src={darkmode ? dm.src : lm.src}
-                    alt={darkmode ? "Dark mode scheme" : "Light mode scheme"} />
+                <Image src={darkmode ? dm.src : lm.src}
+                    alt={darkmode ? "Dark mode scheme" : "Light mode scheme"}
+                    height={75}
+                    width={75}
+                    fill={false}
+                    placeholder="blur" />
             </div>
             <div style={{...sStyle.borderTop, ...sStyle.centerItems}}>
                 {/* <input type="radio" id={darkmode ? "dmRadio" : "lmRadio"} name="scheme" value={darkmode ? "dark" : "light"}></input> */}
