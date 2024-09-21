@@ -20,22 +20,8 @@ const roboto = Roboto({
 export default function Home() {
 
     return (
-        <main className={styles.page} style={{
-            marginTop: "70px",
-        }}>
-            <div className={styles.center}>
-                <Image
-                    src="/imgs/1517413966915.jpeg"
-                    alt="Kuei-Feng Tung"
-                    style={{
-                        borderRadius: "50%",
-                        border: "1px lime solid"
-                    }}
-                    width={250}
-                    height={250}
-                    priority
-                />
-            </div>
+        <>
+            Home
             {/* <div className={inter.className}>
                 <div style={{
                     marginBottom: "30px"
@@ -62,6 +48,6 @@ export default function Home() {
                     </div>
                 </div>
             </div> */}
-        </main>
+        </>
     );
 }

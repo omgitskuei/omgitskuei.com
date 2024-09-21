@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={styles.main}>
+            <body>
                 <nav className={styles.navbar}>
                     <Link href="/"
                         style={{
@@ -63,7 +63,17 @@ export default function RootLayout({
                         </h2>
                     </Link>
                 </nav>
-                {children}
+                <main className={styles.main}>
+                    <section style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        width: "100%",
+                        border: "1px solid red"
+                    }}>
+                        {children}
+                    </section>
+                </main>
                 <footer className={styles.footer}>
                     <Link href="/sitemap" className={styles.card}>
                         <h4>
