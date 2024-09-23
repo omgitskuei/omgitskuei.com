@@ -43,26 +43,38 @@ export default function RootLayout({
                             it's Kuei
                         </div>
                     </Link>
-                    <Link href="/portfolio">
-                        <h2>
-                            Portfolio <span className={inter.className}>-&gt;</span>
-                        </h2>
-                    </Link>
-                    <Link href="/resume">
-                        <h2>
-                            Resume <span className={inter.className}>-&gt;</span>
-                        </h2>
-                    </Link>
-                    <Link href="/about">
-                        <h2>
-                            About <span className={inter.className}>-&gt;</span>
-                        </h2>
-                    </Link>
-                    <Link href="/contact">
-                        <h2>
-                            Contact <span className={inter.className}>-&gt;</span>
-                        </h2>
-                    </Link>
+                    <div style={{ display: "flex", }}>
+                        <Link href="/resume">
+                            <h2>
+                                Resume <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                        <Link href="/portfolio">
+                            <h2>
+                                Portfolio <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                        <Link href="/notes">
+                            <h2>
+                                Notes <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                        <Link href="/blog">
+                            <h2>
+                                Blog <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                        <Link href="/about">
+                            <h2>
+                                About <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                        <Link href="/contact">
+                            <h2>
+                                Contact <span className={inter.className}>-&gt;</span>
+                            </h2>
+                        </Link>
+                    </div>
                 </nav>
                 <main className={styles.main}>
                     <section style={{
