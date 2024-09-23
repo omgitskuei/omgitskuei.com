@@ -3,6 +3,7 @@ import { Inter, Roboto, Nabla } from "next/font/google";
 import "./globals.css";
 import styles from "./page.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 const inter = Inter({
     subsets: ["latin"]
@@ -80,9 +81,77 @@ export default function RootLayout({
                             Sitemap
                         </h4>
                     </Link>
-                    <p>Copyright © 2024 Kuei Feng Tung. All Rights Reserved.</p>
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "column"
+                    }}>
+                        <FooterContact platform={"LINE ID"} username={"kueifengtung"} imgSrc={"/imgs/line.svg"} imgAlt={"LINE"}></FooterContact>
+                        <FooterContact platform={"GitHub"} username={"omgitskuei"} imgSrc={"/imgs/github.svg"} imgAlt={"GitHub"} imgInverse={true} link={"https://github.com/omgitskuei/"}></FooterContact>
+                        <FooterContact platform={"Discord"} username={"omgitskuei"} imgSrc={"/imgs/discord.svg"} imgAlt={"Discord"}></FooterContact>
+                    </div>
+                    <div>
+                        <p>Copyright © 2024 Kuei Feng Tung.</p>
+                        <p>All Rights Reserved.</p>
+                    </div>
                 </footer>
             </body>
         </html>
     );
+}
+
+const FooterContact = ({
+    platform,
+    username,
+    imgSrc,
+    imgAlt,
+    imgInverse = false,
+    link = ""
+}: {
+    platform: string,
+    username: string,
+    imgSrc: string,
+    imgAlt: string,
+    imgInverse?: boolean,
+    link?: string
+}) => {
+
+    if (link != "") {
+        return (
+            <Link href={link}>
+                <div style={{
+                    display: "flex",
+                }}>
+                    <span style={{
+                        width: "100px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px"
+                    }}>
+                        <Image src={imgSrc} alt={imgAlt} width={15} height={15} style={{ filter: imgInverse ? "invert(1)" : "none" }}></Image>{platform}:
+                    </span>
+                    <span style={{ textDecoration: "underline" }}>
+                        {username}
+                    </span>
+                </div>
+            </Link>
+        );
+    } else {
+        return (
+            <div style={{
+                display: "flex",
+            }}>
+                <span style={{
+                    width: "100px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px"
+                }}>
+                    <Image src={imgSrc} alt={imgAlt} width={15} height={15} style={{ filter: imgInverse ? "invert(1)" : "none" }}></Image>{platform}:
+                </span>
+                <span>
+                    {username}
+                </span>
+            </div>
+        );
+    }
 }

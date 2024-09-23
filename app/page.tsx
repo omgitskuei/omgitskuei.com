@@ -17,7 +17,7 @@ const roboto = Roboto({
     subsets: ['latin'],
 });
 
-export default function Home() {
+export default function Page() {
 
     return (
         <>
