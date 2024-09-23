@@ -43,17 +43,26 @@ export default function Page() {
         tags: string[],
     }) => {
         return (
-            <div>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px"
+            }}>
                 <h3>{title}</h3>
+                <h4>2024-01-31 to 2024-03-29</h4>
                 <ul style={{
                     marginLeft: "25px"
                 }}>
-                    {details.map(detail => (<li>{detail}</li>))}
+                    {details.map(detail => (<li key={`key_${detail}`}>{detail}</li>))}
                 </ul>
-                <div>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px"
+                }}>
                     <h4>Tags</h4>
                     <div>
-                        {tags.map(tag => (<Tag label={tag}></Tag>))}
+                        {tags.map(tag => (<Tag key={`key_${tag}`} label={tag}></Tag>))}
                     </div>
                 </div>
             </div>
@@ -73,7 +82,7 @@ export default function Page() {
                 <h1>Resume</h1>
                 <section id="experience">
                     <h2>Experience</h2>
-                    <Item title={"Product Owner, Full STack Developer"}
+                    <Item title={"Product Owner, Full Stack Developer"}
                         details={[
                             "Develop UI interfaces and interaction flow based on Figma designs",
                             "Maintain high-quality code base and write clear documentation",
@@ -92,6 +101,7 @@ export default function Page() {
                             ]}>
                     </Item>
                 </section>
+
                 <section id="education">
                     <h2>Education</h2>
                     <Item title={"Institute for Information Industry (資訊工業策進會)"}
@@ -112,6 +122,7 @@ export default function Page() {
                     </Item>
                     
                 </section>
+
                 <section id="volunteering">
                     <h2>Volunteering</h2>
 

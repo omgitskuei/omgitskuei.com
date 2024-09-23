@@ -89,7 +89,8 @@ main {
     justify-content: space-between;
     align-items: center;
     min-height: calc(100vh - 70px);
-    border: 1px solid lime;
+    border-left: 1px solid lime;
+    border-right: 1px solid lime;
     z-index: 1;
 }
 
