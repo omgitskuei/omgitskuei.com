@@ -4,6 +4,7 @@ import "./globals.css";
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({
     subsets: ["latin"]
@@ -29,67 +30,22 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
-                <nav className={styles.navbar}>
-                    <Link href="/"
-                        style={{
-                            filter: "hue-rotate(90deg)"
-                        }}>
-                        <div style={{ fontSize: "28px" }} className={nabla.className}>
-                            OMG
-                        </div>
-                        <div style={{ fontSize: "10px", color: "gold", letterSpacing: "1.9px" }}
-                            className={roboto.className}>
-                            it's Kuei
-                        </div>
-                    </Link>
-                    <div style={{ display: "flex", }}>
-                        <Link href="/resume">
-                            <h2>
-                                Resume <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                        <Link href="/portfolio">
-                            <h2>
-                                Portfolio <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                        <Link href="/notes">
-                            <h2>
-                                Notes <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                        <Link href="/blog">
-                            <h2>
-                                Blog <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                        <Link href="/about">
-                            <h2>
-                                About <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                        <Link href="/contact">
-                            <h2>
-                                Contact <span className={inter.className}>-&gt;</span>
-                            </h2>
-                        </Link>
-                    </div>
-                </nav>
+            <body style={{ padding: "2px " }}>
+                <Navbar></Navbar>
+
                 <main className={styles.main}>
                     <section style={{
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         width: "100%",
-                        border: "1px solid red"
                     }}>
                         {children}
                     </section>
                 </main>
                 <footer className={styles.footer}>
                     <Link href="/sitemap" className={styles.card}>
-                        <h4>
+                        <h4 style={{ color: "lime" }}>
                             Sitemap
                         </h4>
                     </Link>
@@ -97,9 +53,9 @@ export default function RootLayout({
                         display: "flex",
                         flexDirection: "column"
                     }}>
-                        <FooterContact platform={"LINE ID"} username={"kueifengtung"} imgSrc={"/imgs/line.svg"} imgAlt={"LINE"}></FooterContact>
-                        <FooterContact platform={"GitHub"} username={"omgitskuei"} imgSrc={"/imgs/github.svg"} imgAlt={"GitHub"} imgInverse={true} link={"https://github.com/omgitskuei/"}></FooterContact>
-                        <FooterContact platform={"Discord"} username={"omgitskuei"} imgSrc={"/imgs/discord.svg"} imgAlt={"Discord"}></FooterContact>
+                        <FooterContact platform={"LINE ID"} username={"kueifengtung"} imgSrc={"/imgs/ui/line.svg"} imgAlt={"LINE"}></FooterContact>
+                        <FooterContact platform={"GitHub"} username={"omgitskuei"} imgSrc={"/imgs/ui/github.svg"} imgAlt={"GitHub"} imgInverse={true} link={"https://github.com/omgitskuei/"}></FooterContact>
+                        <FooterContact platform={"Discord"} username={"omgitskuei"} imgSrc={"/imgs/ui/discord.svg"} imgAlt={"Discord"}></FooterContact>
                     </div>
                     <div>
                         <p>Copyright © 2024 Kuei Feng Tung.</p>
@@ -109,7 +65,7 @@ export default function RootLayout({
             </body>
         </html>
     );
-}
+};
 
 const FooterContact = ({
     platform,
@@ -126,7 +82,6 @@ const FooterContact = ({
     imgInverse?: boolean,
     link?: string
 }) => {
-
     if (link != "") {
         return (
             <Link href={link}>
@@ -139,9 +94,12 @@ const FooterContact = ({
                         alignItems: "center",
                         gap: "5px"
                     }}>
-                        <Image src={imgSrc} alt={imgAlt} width={15} height={15} style={{ filter: imgInverse ? "invert(1)" : "none" }}></Image>{platform}:
+                        <Image src={imgSrc} alt={imgAlt} width={15} height={15} style={{
+                            filter: imgInverse ? "invert(1)" : "none"
+                        }}>
+                        </Image>{platform}:
                     </span>
-                    <span style={{ textDecoration: "underline" }}>
+                    <span style={{ color: "lime" }}>
                         {username}
                     </span>
                 </div>
@@ -166,4 +124,4 @@ const FooterContact = ({
             </div>
         );
     }
-}
+};
