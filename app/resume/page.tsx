@@ -635,7 +635,7 @@ export default function Page() {
                     gap: "10px",
                 }}>
                     <h2 style={{ marginTop: "20px", marginLeft: "20px", marginRight: "20px", }}>
-                        Download
+                        Download / Open
                     </h2>
                     <p style={{ marginLeft: "20px", marginRight: "20px", }}>
                         Specify the type of resume file you'd like to download. 
