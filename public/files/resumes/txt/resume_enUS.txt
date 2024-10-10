@@ -1,0 +1,50 @@
+Kuei-Feng “Chris” Tung
+Section 4, Minsheng E Rd, Songshan District, Taipei City, 105, Taiwan
+0963-798-118 | omgitskuei@gmail.com | https://www.linkedin.com/in/kuei-feng-tung | https://github.com/omgitskuei 
+
+EXPERIENCE
+Product Owner, Full Stack React/Javascript Developer				Taiwan (Remote), Jan 2024
+RadSoftware
+Develop UI interfaces and interaction flow based on Figma designs
+Maintain high-quality React, TS, NodeJS code base and write clear documentation
+Act as primary point of contact for international contractors and providers
+Responsible for integrating 3rd party providers' API
+Collaborate across timezone, language, and cultural differences
+Code review contributions by other developers ensuring code base quality
+Identify potential security risks and performance bottlenecks and implement mitigations
+
+Full Stack Java/Spring Developer							Taiwan, Sep 2020 to Aug 2023
+Wistron ITS
+Develop outward/client-facing web pages with Spring framework for insurance systems
+Develop RESTful API endpoints for headless backend system
+Develop internal facing websites as part of insurance CRM systems (CRUD, forms, tables, search, filter, pdfs)
+Complete Agile weekly goals and occasionally exceeded KPI
+Communicate effectively with SA to clarify specifications and avoid blockers
+Review coworkers' commits to maintain quality control
+Wrote JUnit tests and Selenium automated test as part of Quality Assurance
+
+Full Stack Java/Spring Developer							Taiwan, Sep 2020 to Aug 2023
+Pershing Technology Services Corporation
+Exceed expectations by resolving bugs in Test-Driven-Development style ahead of deadlines
+Deliver RESTful Java server with Spring in short Agile cycles
+Develop back-end using MVC pattern, Java, Spring, Gradle, T-SQL, JPA, Apache POI, Tomcat, Docker, VirtualBox
+Develop front-end using HTML5, Javascript, jQuery, React.js, AJAX, JSP, Mustache, CSS
+Replace legacy SWIFT system with RESTful Web API at Bank SinoPac 永豐銀行(永豐金融控股) 
+
+EDUCATION
+Graduate of Cross-Platform Java Engineer Bootcamp, class of Oct 2019		Taiwan, Oct 2019 to Apr 2020
+Institute for Information Industry (資訊工業策進會)
+Write server-side/backend Java to handle business logic and data fetching with Fetch API in Spring MVC project
+Write client-side/frontend Java in JSTL to handle data fetching with JQuery AJAX
+Write Java interfacing with MSSQL databases with Hibernate and JDBC
+Manage external libraries with Maven in Spring projects
+Manage project version control and collab code reviews with Github
+
+Bachelor of Arts (BA), Major in International Affairs					USA, Sep 2011 to Apr 2016
+Northeastern University
+Minors: Political Science, History, East Asian Studies
+Co-op internship at International Institute of New England (Boston) facilitating refugee resettlement by teaching adultsEnglish, cultural etiquette, and job development
+Co-op internship at Land Mine Relief Fund in Cambodia curating museum displays, translating and recording audio tours, and teaching English
+
+SKILLS
+TypeScript, React, JavaScript, Node.js, Java, SQL, Sequelize, Spring, Springboot, Next.js, Express.js, Python, Django, Ajax, RESTful API, HTML, CSS, Flask, Git, Hibernate, jQuery, Unit testing, English, Chinese

@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Overlay } from "@/components/Overlay";
 import Link from "next/link";
+import { InputGroup } from "@/components/InputGroup";
+import styles from "./page.module.css";
 
 export default function Page() {
 
@@ -24,53 +26,21 @@ export default function Page() {
                     setTagFilter([...tagFilter, label]);
                 }
             }} style={{
-                margin: "5px",
+                margin: "3px",
                 paddingLeft: "10px",
                 paddingRight: "10px",
                 paddingTop: "3px",
                 paddingBottom: "3px",
-                color: tagFilter.includes(label) ? "lime" : "white",
-                background: "rgb(30, 40, 30)",
-                border: tagFilter.includes(label) ? "2px lime solid" : "2px white solid",
-                borderRadius: "4px"
+                color: tagFilter.includes(label) ? "rgb(var(--color_highlight))" : "rgb(var(--color))",
+                background: tagFilter.includes(label) ? "rgb(var(--tagBg_highlight))" : "rgb(var(--tagBg))",
+                border: tagFilter.includes(label) ? "2px rgb(var(--color_highlight)) solid" : "2px rgb(var(--color)) solid",
+                borderRadius: "4px",
+                fontWeight: "700",
+                fontStyle: tagFilter.includes(label) ? "italic" : "normal"
             }}>
                 {label}
             </button>
         );
-    };
-
-    const TagNA = () => {
-        return (
-            <button
-                style={{
-                    margin: "5px",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                    paddingTop: "3px",
-                    paddingBottom: "3px",
-                    color: "white",
-                    background: "rgb(50, 50, 70)",
-                    border: "2px solid rgb(30, 40, 30)",
-                    borderRadius: "4px"
-                }}>
-                N/A
-            </button>
-        )
-    };
-
-    const FilterByTagsAlphabetDisplay = ({
-        alphabetLetter,
-        children
-    }: {
-        alphabetLetter: string,
-        children: JSX.Element | JSX.Element[]
-    }) => {
-        return (
-            <div style={{ marginLeft: "10px" }}>
-                <h4>{alphabetLetter}</h4>
-                {children}
-            </div>
-        )
     };
 
     const Item = ({
@@ -115,24 +85,40 @@ export default function Page() {
                     {organization}
                     {
                         typeof orgHref == "string" ?
-                            <Link href={orgHref}>
-                                <Image src={"/imgs/ui/share.svg"} alt={"Share"} width={25} height={25}></Image>
+                            <Link href={orgHref}
+                                style={{
+                                    // border: "2px rgb(var(--color)) solid", borderRadius: "4px",
+                                    // background: "rgb(var(--tagBg))",
+                                    display: "flex", justifyContent: "center", alignItems: "center"
+                                }}>
+                                <Image src={"/imgs/ui/share.svg"} alt={"Share"}
+                                    width={25} height={25}
+                                    style={{ filter: "var(--button_filter)" }}>
+                                </Image>
                             </Link>
                             :
                             orgHref.map(link => (
-                                <Link href={link} key={`orgHref_${link}`}>
-                                    <Image src={"/imgs/ui/share.svg"} alt={"Share"} width={25} height={25}></Image>
+                                <Link href={link}
+                                    style={{
+                                        // border: "2px rgb(var(--color)) solid", borderRadius: "4px",
+                                        // background: "rgb(var(--tagBg))",
+                                        display: "flex", justifyContent: "center", alignItems: "center"
+                                    }}
+                                    key={`orgHref_${link}`}>
+                                    <Image src={"/imgs/ui/share.svg"} alt={"Share"}
+                                        width={25} height={25}
+                                        style={{ filter: "var(--button_filter)" }}></Image>
                                 </Link>
                             ))
                     }
                 </h3>
                 <div>
                     {/* Company logo */}
-                    <Image src={orgImgSrc} alt={"Company logo"} width={180} height={180} style={{ border: "white 5px solid", float: "left", marginRight: "40px", marginBottom: "10px" }}></Image>
+                    <Image src={orgImgSrc} alt={"Company logo"} width={140} height={140} style={{ border: "white 5px solid", float: "left", marginRight: "35px", marginBottom: "10px" }}></Image>
                     {/* Details */}
                     <div>
                         <ul style={{
-                            marginLeft: "25px",
+                            marginLeft: "15px",
                         }}>
                             {
                                 details.map(detail => (
@@ -148,19 +134,17 @@ export default function Page() {
                 <div style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "10px",
+                    gap: "5px",
                 }}>
                     <h4>Tags</h4>
                     <div>
                         {
                             tags.map(tag => (
-                                <Tag key={`tag_${tag}`} label={tag}></Tag>
+                                <Tag key={`${organization.replaceAll(" ", "").toLowerCase()}_${tag}`} label={tag}></Tag>
                             ))
                         }
                     </div>
                 </div>
-
-
             </div>
         )
     };
@@ -168,7 +152,9 @@ export default function Page() {
     // useState
     const [tagFilter, setTagFilter] = useState<string[]>([]);
     const [showFiltersUI, setShowFiltersUI] = useState<boolean>(false);
+    const [showDownloadUI, setShowDownloadUI] = useState<boolean>(false);
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
+    const [isDisableOpenBtn, setIsDisableOpenBtn] = useState<boolean>(false);
 
     return (
         <article style={{ overflowY: showOverlay ? "hidden" : "auto" }}>
@@ -176,7 +162,7 @@ export default function Page() {
             <section style={{
                 display: "flex",
                 justifyContent: "space-between",
-                width: "1180px",
+                // width: "80%",
                 marginTop: "20px",
                 padding: "20px",
             }}>
@@ -193,14 +179,31 @@ export default function Page() {
                         onClick={(e) => {
                             e.stopPropagation();
                             setShowFiltersUI(true);
+                            setShowDownloadUI(false);
                             setShowOverlay(true);
                         }}>
-                        <Image src={"/imgs/ui/funnel.svg"} alt={"Filter"} width={40} height={40}></Image>
+                        <Image src={"/imgs/ui/funnel.svg"} alt={"Filter"}
+                            width={40} height={40}
+                            style={{ filter: "var(--button_filter)" }}>
+                        </Image>
                     </button>
                     {/* Downloads */}
-                    <a href="/files/resume_test_2020.pdf" download="Kuei Feng Tung Chris Resume 2020">
-                        <Image src={"/imgs/ui/cloud-download.svg"} alt={"Download"} width={40} height={40}></Image>
-                    </a>
+                    <button style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowFiltersUI(false);
+                            setShowDownloadUI(true);
+                            setShowOverlay(true);
+                        }}>
+                        <Image src={"/imgs/ui/cloud-download.svg"} alt={"Download"}
+                            width={40} height={40}
+                            style={{ filter: "var(--button_filter)" }}>
+                        </Image>
+                    </button>
                 </div>
             </section>
 
@@ -210,7 +213,7 @@ export default function Page() {
                 flexDirection: "column",
                 gap: "20px",
                 margin: "20px",
-                width: "1080px",
+                // width: "80%",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Experience</h2>
@@ -231,11 +234,12 @@ export default function Page() {
                         "Identify potential security risks and performance bottle necks and implement mitigations"
                     ]}
                     tags={[
-                        "Typescript", "React.js", "NextJS", "Express.js", "RESTful API", "Sequelize",
+                        "TypeScript", "React.js", "NextJS", "Express.js", "RESTful API", "Sequelize",
                         "PostgreSQL", "Socket.io", "HTML5", "CSS", "JavaScript", "Node.js", "CI/CD", "VSCode",
                         "react-qr-code", "jsonwebtoken", "Git", "GitHub", "Google Sign In Integration", "Google Cloud API",
-                        "Remote collaboration", "Agile Methodologies", "Front-end Development", "Back-end Development",
-                        "Intercultural Skills", "3rd Party API Integration", "Migration Strategies", "English", "Chinese",
+                        "Remote collaboration", "English", "Chinese", "Agile Methodologies",
+                        "Frontend Dev", "Backend Dev", "Intercultural Skills", "Migration Strategies",
+                        "3rd Party API Integration",
                     ]}>
                 </Item>
                 <Item title={"Full Stack Developer"}
@@ -255,11 +259,11 @@ export default function Page() {
                         "Wrote JUnit and Selenium test cases as part of Quality Assurance",
                     ]}
                     tags={[
-                        "Vue.js", "Java", "HTML5", "Spring Boot", "Spring", "Ajax", "SQL", "JavaServer Pages",
+                        "Vue.js", "Java", "HTML5", "Spring Boot", "Spring", "Ajax", "SQL", "JSP",
                         "JSTL", "RESTful API", "Jenkins", "JavaScript", "jQuery", "CSS", "Python",
                         "Git", "GitHub", "Maven", "Hibernate", "Tomcat", "JUnit", "Eclipse", "VSCode",
                         "DB2", "Sourcetree", "MSSQL", "TOAD", "Ant", "Selenium", "JIRA", "BitBucket",
-                        "Teamwork", "English", "Chinese", "Front-end Development", "Back-end Development",
+                        "Teamwork", "English", "Chinese", "Frontend Dev", "Backend Dev",
                         "CI/CD", "Agile Methodologies",
                     ]}>
                 </Item>
@@ -279,18 +283,19 @@ export default function Page() {
                     tags={[
                         "Java", "HTML5", "CSS", "Spring Boot", "Spring", "JavaScript", "RESTful API", "CI/CD",
                         "React.js", "Git", "GitHub", "Maven", "Hibernate", "Tomcat", "Ajax", "jQuery", "SQL",
-                        "MSSQL", "Eclipse", "Teamwork", "English", "Chinese", "Front-end Development",
-                        "Back-end Development", "CI/CD", "Agile Methodologies",
+                        "MSSQL", "Eclipse", "Teamwork", "English", "Chinese", "Frontend Dev",
+                        "Backend Dev", "Agile Methodologies",
                     ]}>
                 </Item>
             </section >
 
+            {/* Education */}
             <section id="education" style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
                 margin: "20px",
-                width: "1080px",
+                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Education</h2>
@@ -312,7 +317,7 @@ export default function Page() {
                         "Java", "Ajax", "Spring", "Spring Boot", "RESTful API", "SQL",
                         "jQuery", "MSSQL", "HTML5", "CSS", "JavaScript", "JSTL",
                         "Hibernate", "JDBC", "Git", "GitHub", "Maven", "Tomcat",
-                        "Python", "Agile Methodologies", "Front-end Development", "Back-end Development",
+                        "Python", "Agile Methodologies", "Frontend Dev", "Backend Dev",
                         "Leadership", "Bootstrap", "Teamwork", "CI/CD", "Eclipse",
                     ]}>
                 </Item>
@@ -329,19 +334,20 @@ export default function Page() {
                         "Co-op internship at Land Mine Relief Fund in Cambodia curating museum displays, translating and recording audio tours, and teaching English ",
                     ]}
                     tags={[
-                        "Teamwork", "International Relations", "Research", "Public Speaking", "English", "Administrative Assistance", "Grant Writing", "Translation", "Chinese", "Audio Recording", 
-                        "Audio Tour Implementation", 
+                        "Teamwork", "International Relations", "Research", "Public Speaking", "English", "Administrative Assistance", "Grant Writing", "Translation", "Chinese", "Audio Recording",
+                        "Audio Tour Implementation",
                     ]}>
                 </Item>
                 {/* northeastern-university-logo.jpeg */}
             </section>
 
+            {/* Volunteering */}
             <section id="volunteering" style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
                 margin: "20px",
-                width: "1080px",
+                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Volunteering</h2>
@@ -365,12 +371,13 @@ export default function Page() {
                 </Item>
             </section>
 
+            {/* Honors */}
             <section id="honors" style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
                 margin: "20px",
-                width: "1080px",
+                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Honors & Awards</h2>
@@ -404,15 +411,16 @@ export default function Page() {
                 </Item>
             </section>
 
-            <Overlay showOverlay={showOverlay} closeOverlay={() => setShowOverlay(false)} dim={true}>
+            {/* Overlay */}
+            <Overlay showOverlay={showOverlay} closeOverlay={() => setShowOverlay(false)} dim={true} blur={true}>
                 {/* Filter by Tags */}
-                <div style={{
+                <section style={{
                     width: "90vw",
                     height: "80vh",
-                    border: "1px solid white",
+                    border: "2px solid rgb(var(--color))",
                     borderRadius: "10px",
-                    background: "black",
-                    display: "flex",
+                    background: "rgb(var(--themeColor1))",
+                    display: showFiltersUI ? "flex" : "none",
                     flexDirection: "column",
                     gap: "10px",
                 }}>
@@ -429,8 +437,8 @@ export default function Page() {
                         marginBottom: "10px",
                         flexGrow: "1",
                         overflowY: "scroll",
-                        borderTop: "1px lime solid",
-                        borderBottom: "1px lime solid",
+                        borderTop: "1px rgb(var(--color_highlight)) solid",
+                        borderBottom: "1px rgb(var(--color_highlight)) solid",
                         paddingTop: "5px",
                         paddingBottom: "5px",
                     }}>
@@ -448,7 +456,7 @@ export default function Page() {
 
                         </FilterByTagsAlphabetDisplay>
                         <FilterByTagsAlphabetDisplay alphabetLetter={"B"}>
-                            <Tag label={"Back-end Development"}></Tag>
+                            <Tag label={"Backend Dev"}></Tag>
                             <Tag label={"BitBucket"}></Tag>
                             <Tag label={"Bootstrap"}></Tag>
                         </FilterByTagsAlphabetDisplay>
@@ -472,7 +480,7 @@ export default function Page() {
                             <Tag label={"Express.js"}></Tag>
                         </FilterByTagsAlphabetDisplay>
                         <FilterByTagsAlphabetDisplay alphabetLetter={"F"}>
-                            <Tag label={"Front-end Development"}></Tag>
+                            <Tag label={"Frontend Dev"}></Tag>
                         </FilterByTagsAlphabetDisplay>
                         <FilterByTagsAlphabetDisplay alphabetLetter={"G"}>
                             <Tag label={"Git"}></Tag>
@@ -492,7 +500,7 @@ export default function Page() {
                         <FilterByTagsAlphabetDisplay alphabetLetter={"J"}>
                             <Tag label={"Java"}></Tag>
                             <Tag label={"JavaScript"}></Tag>
-                            <Tag label={"JavaServer Pages"}></Tag>
+                            <Tag label={"JSP"}></Tag>
                             <Tag label={"JDBC"}></Tag>
                             <Tag label={"Jenkins"}></Tag>
                             <Tag label={"JIRA"}></Tag>
@@ -554,7 +562,7 @@ export default function Page() {
                             <Tag label={"TOAD"}></Tag>
                             <Tag label={"Tomcat"}></Tag>
                             <Tag label={"Translation"}></Tag>
-                            <Tag label={"Typescript"}></Tag>
+                            <Tag label={"TypeScript"}></Tag>
                         </FilterByTagsAlphabetDisplay>
                         <FilterByTagsAlphabetDisplay alphabetLetter={"U"}>
                             <TagNA></TagNA>
@@ -576,7 +584,7 @@ export default function Page() {
                             <TagNA></TagNA>
                         </FilterByTagsAlphabetDisplay>
                     </div>
-                    {/* Close overlay */}
+                    {/* Submit tags / Reset tags Buttons */}
                     <div style={{ display: "flex", gap: "20px" }}>
                         <button
                             onClick={() => {
@@ -584,13 +592,13 @@ export default function Page() {
                             }}
                             style={{
                                 display: "flex", justifyContent: "center", alignItems: "center",
-                                border: "1px solid lime",
+                                border: "2px solid lime",
                                 borderRadius: "10px",
                                 background: "rgb(30, 40, 30)",
                                 marginLeft: "20px",
                                 marginBottom: "20px",
-                                paddingTop: "10px",
-                                paddingBottom: "10px",
+                                paddingTop: "5px",
+                                paddingBottom: "5px",
                                 flexBasis: "50%"
                             }}>
                             <Image src={"/imgs/ui/check-mark.svg"} alt={"Check mark"} width={30} height={30}></Image>
@@ -602,21 +610,244 @@ export default function Page() {
                             }}
                             style={{
                                 display: "flex", justifyContent: "center", alignItems: "center",
-                                border: "1px solid lime",
+                                border: "2px solid lime",
                                 borderRadius: "10px",
                                 background: "rgb(30, 40, 30)",
                                 marginRight: "20px",
                                 marginBottom: "20px",
-                                paddingTop: "10px",
-                                paddingBottom: "10px",
+                                paddingTop: "5px",
+                                paddingBottom: "5px",
                                 flexBasis: "50%"
                             }}>
                             <Image src={"/imgs/ui/trash-can.svg"} alt={"Cancel"} width={30} height={30}></Image>
                         </button>
                     </div>
-                </div>
+                </section>
+                {/* Download / Open */}
+                <section style={{
+                    width: "90vw",
+                    height: "80vh",
+                    border: "2px solid rgb(var(--color))",
+                    borderRadius: "10px",
+                    background: "rgb(var(--themeColor1))",
+                    display: showDownloadUI ? "flex" : "none",
+                    flexDirection: "column",
+                    gap: "10px",
+                }}>
+                    <h2 style={{ marginTop: "20px", marginLeft: "20px", marginRight: "20px", }}>
+                        Download
+                    </h2>
+                    <p style={{ marginLeft: "20px", marginRight: "20px", }}>
+                        Specify the type of resume file you'd like to download. <br />
+                        Please note that the [Open] button only works if 'PDF', 'Word', or 'Text file' is the selected file format.
+                    </p>
+                    <div style={{
+                        marginLeft: "20px",
+                        marginRight: "20px",
+                        marginBottom: "10px",
+                        flexGrow: "1",
+                        overflowY: "scroll",
+                        borderTop: "1px rgb(var(--color_highlight)) solid",
+                        borderBottom: "1px rgb(var(--color_highlight)) solid",
+                        paddingTop: "5px",
+                        paddingBottom: "5px",
+                        paddingLeft: "10px",
+                        paddingRight: "20px",
+
+                        display: "flex", flexDirection: "column", gap: "5px"
+                    }}>
+                        <h3 style={{ marginBottom: "5px" }}>Language</h3>
+                        <InputGroup id={"enUS"} name={"lang"} label={"English (American)"} type={"radio"} inputWidth={"50"} checked={true}></InputGroup>
+                        <InputGroup id={"enGB"} name={"lang"} label={"English (British)"} type={"radio"} inputWidth={"50"}></InputGroup>
+                        {/* <InputGroup id={"zhHant"} name={"lang"} label={"Chinese (Traditional)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
+                        {/* <InputGroup id={"zhhans"} name={"lang"} label={"Chinese (Simplified)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
+                        <br />
+                        <h3 style={{ marginBottom: "5px" }}>File Format</h3>
+                        <InputGroup id={"pdf"} name={"file"} label={"PDF (.pdf)"} type={"radio"} inputWidth={"50"} checked={true} onChange={() => {
+                            if (isDisableOpenBtn == true) {
+                                setIsDisableOpenBtn(false);
+                            }
+                        }}>
+                        </InputGroup>
+                        <InputGroup id={"docx"} name={"file"} label={"Word (.docx)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                            if (isDisableOpenBtn == true) {
+                                setIsDisableOpenBtn(false);
+                            }
+                        }}>
+                        </InputGroup>
+                        <InputGroup id={"txt"} name={"file"} label={"Text file (.txt)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                            if (isDisableOpenBtn == true) {
+                                setIsDisableOpenBtn(false);
+                            }
+                        }}>
+                        </InputGroup>
+                        <InputGroup id={"odt"} name={"file"} label={"OpenDocument Text(.odt)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                            // Get Radios
+                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                            // Get Radios value
+                            const file = input_file?.id;
+                            // Disable Open button
+                            if (file != "pdf" && file != "docx" && isDisableOpenBtn == false) {
+                                setIsDisableOpenBtn(true);
+                            }
+                        }}>
+                        </InputGroup>
+                        <br />
+                    </div>
+                    {/* Download file / Close overlay Buttons */}
+                    <div style={{ display: "flex", gap: "20px" }}>
+                        {/* Download btn */}
+                        <button onClick={() => {
+                            // Get Radios
+                            const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
+                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                            // Get Radios value
+                            const lang = input_lang?.id;
+                            const file = input_file?.id;
+                            if (lang && file) {
+                                // Download file
+                                const link = document.createElement('a');
+                                link.target = '_blank';
+                                link.href = `/files/resumes/${file}/resume_${lang}.${file}`;
+                                link.download = `Kuei Feng Tung Chris Resume.${file}`;
+                                link.click();
+                                link.remove();
+                            }
+                            setShowOverlay(false);
+                        }}
+                            style={{
+                                display: "flex", justifyContent: "center", alignItems: "center", gap: "10px",
+                                border: "2px solid rgb(var(--color_highlight))", borderRadius: "10px",
+                                background: "rgb(var(--tagBg))",
+                                marginLeft: "20px",
+                                marginBottom: "20px",
+                                paddingTop: "5px",
+                                paddingBottom: "5px",
+                                flexBasis: "33%",
+                                minHeight: "44px"
+                            }}>
+                            <Image src={"/imgs/ui/cloud-download.svg"} alt={"Download"}
+                                className={styles.optionalIcon}
+                                width={30} height={30}
+                                style={{ filter: "var(--button_filter)" }}>
+                            </Image>
+                            <span style={{ fontSize: "15px", color: "rgb(var(--color))" }}>
+                                Download
+                            </span>
+                        </button>
+                        {/* Open btn */}
+                        <button disabled={isDisableOpenBtn} onClick={() => {
+                            // Get Radios
+                            const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
+                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                            // Get Radios value
+                            const lang = input_lang?.id;
+                            const file = input_file?.id;
+                            if (lang && file) {
+                                if (file == "pdf") {
+                                    // Open file
+                                    if (window != null) {
+                                        window.open(`/files/resumes/pdf/resume_${lang}.pdf`, '_blank', 'noopener,noreferrer')!;
+                                    }
+                                } else if (file == "docx") {
+                                    // window.open(`/resume/doc?language=${lang}`, '_blank', 'noopener,noreferrer');
+                                    if (lang == "enUS") {
+                                        window.open(`https://docs.google.com/document/d/e/2PACX-1vSxwxlSi9zITRbtbVnQiQaW5YIrPpsQoYiXu8qTJH3fofOuSTc7pMMp9GsToKZ1P9mjgktMc4rXs6JG/pub`, '_blank', 'noopener,noreferrer');
+                                    }
+                                    if (lang == "enGB") {
+                                        window.open(`https://docs.google.com/document/d/e/2PACX-1vT1ekkLPzg1GB3A6ETB3VuwntsBAU72-8Lb8A1oIMBmxlhQQ4hXlv7dX4KSgnIXy7PsyxkI_0ohBOgT/pub`, '_blank', 'noopener,noreferrer');
+                                    }
+                                } else if (file == "txt") {
+                                    window.open(`/files/resumes/txt/resume_${lang}.txt`, '_blank', 'noopener,noreferrer');
+                                }
+                            } else {
+
+                            }
+                        }}
+                            style={{
+                                display: "flex", justifyContent: "center", alignItems: "center", gap: "10px",
+                                border: "2px solid rgb(var(--color_highlight))", borderRadius: "10px",
+                                background: "rgb(var(--tagBg))",
+                                marginBottom: "20px",
+                                paddingTop: "5px",
+                                paddingBottom: "5px",
+                                flexBasis: "33%",
+                                minHeight: "44px",
+                                filter: isDisableOpenBtn ? "grayscale(1)" : "",
+                                cursor: isDisableOpenBtn ? "not-allowed" : "pointer",
+                            }}>
+                            <Image src={"/imgs/ui/expand.svg"} alt={"Download"}
+                                className={styles.optionalIcon}
+                                width={30} height={30}
+                                style={{ filter: "var(--button_filter)" }}>
+                            </Image>
+                            <span style={{ fontSize: "15px", color: "rgb(var(--color))" }}>
+                                Open
+                            </span>
+                        </button>
+                        {/* Close */}
+                        <button
+                            onClick={() => {
+                                setShowOverlay(false);
+                            }}
+                            style={{
+                                display: "flex", justifyContent: "center", alignItems: "center",
+                                border: "2px solid rgb(var(--color_highlight))", borderRadius: "10px",
+                                background: "rgb(var(--tagBg))",
+                                marginRight: "20px",
+                                marginBottom: "20px",
+                                paddingTop: "5px",
+                                paddingBottom: "5px",
+                                flexBasis: "33%",
+                                minHeight: "44px"
+                            }}>
+                            <Image src={"/imgs/ui/trash-can.svg"} alt={"Cancel"}
+                                className={styles.optionalIcon}
+                                width={30} height={30}
+                                style={{ filter: "var(--button_filter)" }}>
+                            </Image>
+                            <span style={{ fontSize: "15px", color: "rgb(var(--color))" }}>
+                                Close
+                            </span>
+                        </button>
+                    </div>
+
+                </section>
             </Overlay>
         </article>
     );
 }
 
+const TagNA = () => {
+    return (
+        <button
+            style={{
+                margin: "5px",
+                paddingLeft: "10px",
+                paddingRight: "10px",
+                paddingTop: "3px",
+                paddingBottom: "3px",
+                color: "white",
+                background: "rgb(50, 50, 70)",
+                border: "2px solid rgb(30, 40, 30)",
+                borderRadius: "4px"
+            }}>
+            N/A
+        </button>
+    )
+};
+
+const FilterByTagsAlphabetDisplay = ({
+    alphabetLetter,
+    children
+}: {
+    alphabetLetter: string,
+    children: JSX.Element | JSX.Element[]
+}) => {
+    return (
+        <div style={{ marginLeft: "10px" }}>
+            <h4>{alphabetLetter}</h4>
+            {children}
+        </div>
+    )
+};

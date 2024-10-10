@@ -14,13 +14,12 @@ const roboto = Roboto({
     subsets: ['latin'],
 });
 
-const Style: { [key: string]: React.CSSProperties }  = {
+const Style: { [key: string]: React.CSSProperties } = {
     navbarItem: { display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }
 }
 
 export const Navbar = ({ }: {}) => {
 
-    const [activeTab, setActiveTab] = useState<string>("home");
     const [showNav, setShowNav] = useState<boolean>(false);
     const [showSettings, setShowSettings] = useState<boolean>(false);
 
@@ -37,7 +36,10 @@ export const Navbar = ({ }: {}) => {
             <Link href={hrefLink}>
                 <h2 className={roboto.className}
                     style={Style.navbarItem}>
-                    <Image src={imgSrc} alt={label} width={30} height={30}></Image>
+                    <Image src={imgSrc} alt={label}
+                        width={30} height={30}
+                        style={{ filter: "var(--button_filter)" }}>
+                    </Image>
                     {label}
                 </h2>
             </Link>
@@ -54,7 +56,7 @@ export const Navbar = ({ }: {}) => {
             width: "100%",
             height: "70px",
             zIndex: "10",
-            background: "linear-gradient(to bottom, rgba(var(--background-start-rgb), 0.1), rgba(var(--callout-rgb), 0.1))",
+            background: "linear-gradient(to bottom, rgba(var(--themeColor1), 0.1), rgba(var(--callout-rgb), 0.1))",
             borderRadius: "0px",
             borderBottom: "1px solid rgba(var(--callout-border-rgb), 0.80)",
             backgroundClip: "padding-box",
@@ -65,11 +67,8 @@ export const Navbar = ({ }: {}) => {
             inset: "0 0 auto",
         }}>
             {/* Logo */}
-            <Link href="/"
-                style={{
-                    filter: "hue-rotate(260deg)"
-                }}>
-                <Image src={"/imgs/logo/icon_website_teal.png"} alt={"Notes"} width={100} height={70}></Image>
+            <Link href="/">
+                <Image src={"/imgs/logo/icon_website_black.png"} alt={"Notes"} width={100} height={70} style={{ background: "rgb(50, 205, 50)" }}></Image>
             </Link>
 
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -91,7 +90,10 @@ export const Navbar = ({ }: {}) => {
                                 setShowNav(true);
                             }
                             }>
-                            <Image src={"/imgs/ui/hamburger-menu.svg"} alt={"Nav menu"} width={50} height={50}></Image>
+                            <Image src={"/imgs/ui/hamburger-menu.svg"} alt={"Nav menu"}
+                                width={50} height={50}
+                                style={{ filter: "var(--button_filter)" }}>
+                            </Image>
                         </button>
                         :
                         <div style={{ display: "flex", gap: "20px" }}>
@@ -111,7 +113,7 @@ export const Navbar = ({ }: {}) => {
                 }
 
                 {/* Divider */}
-                <div style={{ width: "4px", background: 'lime', height: "50px", marginLeft: "40px", marginRight: "40px" }}></div>
+                <div style={{ width: "4px", background: 'lime', height: "50px", marginLeft: "40px", marginRight: "40px", filter: "var(--button_filter)" }}></div>
 
                 {/* Settings */}
                 {
@@ -129,7 +131,10 @@ export const Navbar = ({ }: {}) => {
                                 setShowNav(false);
                             }
                             }>
-                            <Image src={"/imgs/ui/settings-knobs.svg"} alt={"Settings"} width={50} height={50}></Image>
+                            <Image src={"/imgs/ui/settings-knobs.svg"} alt={"Settings"}
+                                width={50} height={50}
+                                style={{ filter: "var(--button_filter)" }}>
+                            </Image>
                         </button>
                         :
                         <div style={{ display: "flex", gap: "20px" }}>
