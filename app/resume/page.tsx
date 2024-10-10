@@ -638,7 +638,8 @@ export default function Page() {
                         Download
                     </h2>
                     <p style={{ marginLeft: "20px", marginRight: "20px", }}>
-                        Specify the type of resume file you'd like to download. <br />
+                        Specify the type of resume file you'd like to download. 
+                        You may also choose to Open the file inside your web browser instead.
                         Please note that the [Open] button only works if 'PDF', 'Word', or 'Text file' is the selected file format.
                     </p>
                     <div style={{
