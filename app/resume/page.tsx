@@ -155,6 +155,8 @@ export default function Page() {
     const [showDownloadUI, setShowDownloadUI] = useState<boolean>(false);
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
     const [isDisableOpenBtn, setIsDisableOpenBtn] = useState<boolean>(false);
+    const [hideLang, setHideLang] = useState<boolean>(false);
+    const [hideFile, setHideFile] = useState<boolean>(false);
 
     return (
         <article style={{ overflowY: showOverlay ? "hidden" : "auto" }}>
@@ -638,7 +640,7 @@ export default function Page() {
                         Download / Open
                     </h2>
                     <p style={{ marginLeft: "20px", marginRight: "20px", }}>
-                        Specify the type of resume file you'd like to download. 
+                        Specify the type of resume file you'd like to download.
                         You may also choose to Open the file inside your web browser instead.
                         Please note that the [Open] button only works if 'PDF', 'Word', or 'Text file' is the selected file format.
                     </p>
@@ -657,65 +659,117 @@ export default function Page() {
 
                         display: "flex", flexDirection: "column", gap: "5px"
                     }}>
-                        <h3 style={{ marginBottom: "5px" }}>Language</h3>
-                        <InputGroup id={"enUS"} name={"lang"} label={"English (American)"} type={"radio"} inputWidth={"50"} checked={true}></InputGroup>
-                        <InputGroup id={"enGB"} name={"lang"} label={"English (British)"} type={"radio"} inputWidth={"50"}></InputGroup>
-                        {/* <InputGroup id={"zhHant"} name={"lang"} label={"Chinese (Traditional)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
-                        {/* <InputGroup id={"zhhans"} name={"lang"} label={"Chinese (Simplified)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
-                        <br />
-                        <h3 style={{ marginBottom: "5px" }}>File Format</h3>
-                        <InputGroup id={"pdf"} name={"file"} label={"PDF (.pdf)"} type={"radio"} inputWidth={"50"} checked={true} onChange={() => {
-                            if (isDisableOpenBtn == true) {
-                                setIsDisableOpenBtn(false);
-                            }
-                        }}>
-                        </InputGroup>
-                        <InputGroup id={"docx"} name={"file"} label={"Word (.docx)"} type={"radio"} inputWidth={"50"} onChange={() => {
-                            if (isDisableOpenBtn == true) {
-                                setIsDisableOpenBtn(false);
-                            }
-                        }}>
-                        </InputGroup>
-                        <InputGroup id={"txt"} name={"file"} label={"Text file (.txt)"} type={"radio"} inputWidth={"50"} onChange={() => {
-                            if (isDisableOpenBtn == true) {
-                                setIsDisableOpenBtn(false);
-                            }
-                        }}>
-                        </InputGroup>
-                        <InputGroup id={"odt"} name={"file"} label={"OpenDocument Text(.odt)"} type={"radio"} inputWidth={"50"} onChange={() => {
-                            // Get Radios
-                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
-                            // Get Radios value
-                            const file = input_file?.id;
-                            // Disable Open button
-                            if (file != "pdf" && file != "docx" && isDisableOpenBtn == false) {
-                                setIsDisableOpenBtn(true);
-                            }
+                        <h4>Resume Style</h4>
+                        <InputGroup id={"custom"} name={"style"} label={"Custom"} type={"radio"} inputWidth={"50"} checked={true} onChange={() => {
+                            setHideLang(false);
+                            setHideFile(false);
+                        }}></InputGroup>
+                        <InputGroup id={"linkedin"} name={"style"} label={"LinkedIn"} type={"radio"} inputWidth={"50"} onChange={() => {
+                            setHideLang(true);
+                            setHideFile(true);
                         }}>
                         </InputGroup>
                         <br />
+                        {
+                            !hideLang ? 
+                            <div style={{ marginLeft: "20px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                <h4 style={{ marginBottom: "5px" }}>Language</h4>
+                                <InputGroup id={"enUS"} name={"lang"} label={"English (American)"} type={"radio"} inputWidth={"50"} checked={true}></InputGroup>
+                                <InputGroup id={"enGB"} name={"lang"} label={"English (British)"} type={"radio"} inputWidth={"50"}></InputGroup>
+                                {/* <InputGroup id={"zhHant"} name={"lang"} label={"Chinese (Traditional)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
+                                {/* <InputGroup id={"zhhans"} name={"lang"} label={"Chinese (Simplified)"} type={"radio"} inputWidth={"50"}></InputGroup> */}
+                                <br />
+                            </div>
+                            :
+                            <div style={{ marginLeft: "20px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                <h4 style={{ marginBottom: "5px" }}>Language</h4>
+                                <InputGroup id={"enUS"} name={"lang"} label={"English (American)"} type={"radio"} inputWidth={"50"} checked={true}></InputGroup>
+                                <br />
+                            </div>
+                        }
+                        {
+                            !hideFile ?
+                            <div style={{ marginLeft: "20px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                <h4 style={{ marginBottom: "5px" }}>File Format</h4>
+                                <InputGroup id={"pdf"} name={"file"} label={"PDF (.pdf)"} type={"radio"} inputWidth={"50"} checked={true} onChange={() => {
+                                    if (isDisableOpenBtn == true) {
+                                        setIsDisableOpenBtn(false);
+                                    }
+                                }}>
+                                </InputGroup>
+                                <InputGroup id={"docx"} name={"file"} label={"Word (.docx)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                                    if (isDisableOpenBtn == true) {
+                                        setIsDisableOpenBtn(false);
+                                    }
+                                }}>
+                                </InputGroup>
+                                <InputGroup id={"txt"} name={"file"} label={"Text file (.txt)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                                    if (isDisableOpenBtn == true) {
+                                        setIsDisableOpenBtn(false);
+                                    }
+                                }}>
+                                </InputGroup>
+                                <InputGroup id={"odt"} name={"file"} label={"OpenDocument Text(.odt)"} type={"radio"} inputWidth={"50"} onChange={() => {
+                                    // Get Radios
+                                    const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                                    // Get Radios value
+                                    const file = input_file?.id;
+                                    // Disable Open button
+                                    if (file != "pdf" && file != "docx" && isDisableOpenBtn == false) {
+                                        setIsDisableOpenBtn(true);
+                                    }
+                                }}>
+                                </InputGroup>
+                                <br />
+                            </div>
+                            :
+                            <div style={{ marginLeft: "20px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                <h4 style={{ marginBottom: "5px" }}>File Format</h4>
+                                <InputGroup id={"pdf"} name={"file"} label={"PDF (.pdf)"} type={"radio"} inputWidth={"50"} checked={true} onChange={() => {
+                                    if (isDisableOpenBtn == true) {
+                                        setIsDisableOpenBtn(false);
+                                    }
+                                }}>
+                                </InputGroup>
+                                <br />
+                            </div>
+                        }
                     </div>
-                    {/* Download file / Close overlay Buttons */}
+                    {/* Download file / Open file / Close overlay Buttons */}
                     <div style={{ display: "flex", gap: "20px" }}>
                         {/* Download btn */}
-                        <button onClick={() => {
-                            // Get Radios
-                            const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
-                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
-                            // Get Radios value
-                            const lang = input_lang?.id;
-                            const file = input_file?.id;
-                            if (lang && file) {
-                                // Download file
-                                const link = document.createElement('a');
-                                link.target = '_blank';
-                                link.href = `/files/resumes/${file}/resume_${lang}.${file}`;
-                                link.download = `Kuei Feng Tung Chris Resume.${file}`;
-                                link.click();
-                                link.remove();
-                            }
-                            setShowOverlay(false);
-                        }}
+                        <button
+                            onClick={() => {
+                                // Get Radios
+                                const input_style = document.querySelector('input[name="style"]:checked') as HTMLInputElement;
+                                // Get Radios value
+                                const style = input_style?.id;
+                                if (style == "custom") {
+                                    // Get Radios
+                                    const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
+                                    const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                                    // Get Radios value
+                                    const lang = input_lang?.id;
+                                    const file = input_file?.id;
+                                    if (lang && file) {
+                                        // Download file
+                                        const link = document.createElement('a');
+                                        link.target = '_blank';
+                                        link.href = `/files/resumes/${file}/resume_${lang}.${file}`;
+                                        link.download = `Kuei Feng Tung Chris Resume.${file}`;
+                                        link.click();
+                                        link.remove();
+                                    }
+                                } else if (style == "linkedin") {
+                                    // Download file
+                                    const link = document.createElement('a');
+                                    link.target = '_blank';
+                                    link.href = `/files/resumes/resume_linkedin.pdf`;
+                                    link.download = `Kuei Feng Tung Chris Resume.pdf`;
+                                    link.click();
+                                    link.remove();
+                                }
+                            }}
                             style={{
                                 display: "flex", justifyContent: "center", alignItems: "center", gap: "10px",
                                 border: "2px solid rgb(var(--color_highlight))", borderRadius: "10px",
@@ -737,34 +791,40 @@ export default function Page() {
                             </span>
                         </button>
                         {/* Open btn */}
-                        <button disabled={isDisableOpenBtn} onClick={() => {
-                            // Get Radios
-                            const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
-                            const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
-                            // Get Radios value
-                            const lang = input_lang?.id;
-                            const file = input_file?.id;
-                            if (lang && file) {
-                                if (file == "pdf") {
+                        <button disabled={isDisableOpenBtn}
+                            onClick={() => {
+                                // Get Radios
+                                const input_style = document.querySelector('input[name="style"]:checked') as HTMLInputElement;
+                                // Get Radios value
+                                const style = input_style?.id;
+                                if (style == "custom") {
+                                    // Get Radios
+                                    const input_lang = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
+                                    const input_file = document.querySelector('input[name="file"]:checked') as HTMLInputElement;
+                                    // Get Radios value
+                                    const lang = input_lang?.id;
+                                    const file = input_file?.id;
+                                    if (lang && file) {
+                                        if (file == "pdf") {
+                                            // Open file
+                                            window.open(`/files/resumes/pdf/resume_${lang}.pdf`, '_blank', 'noopener,noreferrer');
+                                        } else if (file == "docx") {
+                                            // window.open(`/resume/doc?language=${lang}`, '_blank', 'noopener,noreferrer');
+                                            if (lang == "enUS") {
+                                                window.open(`https://docs.google.com/document/d/e/2PACX-1vSxwxlSi9zITRbtbVnQiQaW5YIrPpsQoYiXu8qTJH3fofOuSTc7pMMp9GsToKZ1P9mjgktMc4rXs6JG/pub`, '_blank', 'noopener,noreferrer');
+                                            }
+                                            if (lang == "enGB") {
+                                                window.open(`https://docs.google.com/document/d/e/2PACX-1vT1ekkLPzg1GB3A6ETB3VuwntsBAU72-8Lb8A1oIMBmxlhQQ4hXlv7dX4KSgnIXy7PsyxkI_0ohBOgT/pub`, '_blank', 'noopener,noreferrer');
+                                            }
+                                        } else if (file == "txt") {
+                                            window.open(`/files/resumes/txt/resume_${lang}.txt`, '_blank', 'noopener,noreferrer');
+                                        }
+                                    }
+                                } else if (style == "linkedin") {
                                     // Open file
-                                    if (window != null) {
-                                        window.open(`/files/resumes/pdf/resume_${lang}.pdf`, '_blank', 'noopener,noreferrer')!;
-                                    }
-                                } else if (file == "docx") {
-                                    // window.open(`/resume/doc?language=${lang}`, '_blank', 'noopener,noreferrer');
-                                    if (lang == "enUS") {
-                                        window.open(`https://docs.google.com/document/d/e/2PACX-1vSxwxlSi9zITRbtbVnQiQaW5YIrPpsQoYiXu8qTJH3fofOuSTc7pMMp9GsToKZ1P9mjgktMc4rXs6JG/pub`, '_blank', 'noopener,noreferrer');
-                                    }
-                                    if (lang == "enGB") {
-                                        window.open(`https://docs.google.com/document/d/e/2PACX-1vT1ekkLPzg1GB3A6ETB3VuwntsBAU72-8Lb8A1oIMBmxlhQQ4hXlv7dX4KSgnIXy7PsyxkI_0ohBOgT/pub`, '_blank', 'noopener,noreferrer');
-                                    }
-                                } else if (file == "txt") {
-                                    window.open(`/files/resumes/txt/resume_${lang}.txt`, '_blank', 'noopener,noreferrer');
+                                    window.open(`/files/resumes/resume_linkedin.pdf`, '_blank', 'noopener,noreferrer');
                                 }
-                            } else {
-
-                            }
-                        }}
+                            }}
                             style={{
                                 display: "flex", justifyContent: "center", alignItems: "center", gap: "10px",
                                 border: "2px solid rgb(var(--color_highlight))", borderRadius: "10px",
@@ -786,7 +846,7 @@ export default function Page() {
                                 Open
                             </span>
                         </button>
-                        {/* Close */}
+                        {/* Close btn */}
                         <button
                             onClick={() => {
                                 setShowOverlay(false);
@@ -812,7 +872,6 @@ export default function Page() {
                             </span>
                         </button>
                     </div>
-
                 </section>
             </Overlay>
         </article>
