@@ -17,9 +17,48 @@ export default function Page() {
                         <li><Link href={"/resume#education"}>Education</Link></li>
                         <li><Link href={"/resume#volunteering"}>Volunteering</Link></li>
                         <li><Link href={"/resume#honors"}>Honors & Awards</Link></li>
-                        <li>LinkedIn format [download PDF]</li>
-                        <li>Indeed format [download PDF]</li>
-                        <li>Custom format [download PDF]</li>
+                        <li>
+                            <h3>Download</h3>
+                            <ul className={styles.indent}>
+                                <li>
+                                    <h4>English (American)</h4>
+                                    <ul className={styles.indent}>
+                                        <li><a href="/files/resumes/resume_linkedin.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">LinkedIn format, en-US, PDF</a></li>
+                                        <li><a href="/files/resumes/pdf/resume_enUS.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-US, PDF</a></li>
+                                        <li><a href="/files/resumes/docx/resume_enUS.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-US, DOCX</a></li>
+                                        <li><a href="/files/resumes/odt/resume_enUS.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-US, ODT</a></li>
+                                        <li><a href="/files/resumes/txt/resume_enUS.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-US, TXT</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h4>English (British)</h4>
+                                    <ul className={styles.indent}>
+                                        <li><a href="/files/resumes/pdf/resume_enGB.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-GB, PDF</a></li>
+                                        <li><a href="/files/resumes/docx/resume_enGB.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-GB, DOCX</a></li>
+                                        <li><a href="/files/resumes/odt/resume_enGB.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-GB, ODT</a></li>
+                                        <li><a href="/files/resumes/txt/resume_enGB.pdf" target="_blank" download="Kuei Feng Tung Chris Resume.pdf">Custom format, en-GB, TXT</a></li>
+                                    </ul>
+                                </li>
+                                {/* <li>
+                                    <h4>Mandarin (Traditional)</h4>
+                                    <ul className={styles.indent}>
+                                        <li>Custom format, zh-HANT, PDF</li>
+                                        <li>Custom format, zh-HANT, DOCX</li>
+                                        <li>Custom format, zh-HANT, ODT</li>
+                                        <li>Custom format, zh-HANT, TXT</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h4>Mandarin (Simplified)</h4>
+                                    <ul className={styles.indent}>
+                                        <li>Custom format, zh-HANS, PDF</li>
+                                        <li>Custom format, zh-HANS, DOCX</li>
+                                        <li>Custom format, zh-HANS, ODT</li>
+                                        <li>Custom format, zh-HANS, TXT</li>
+                                    </ul>
+                                </li> */}
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -31,8 +70,8 @@ export default function Page() {
                                 <li><Link href={"/portfolio/app/todolist"}>To Do List</Link></li>
                                 <li><Link href={"/portfolio/app/calc"}>Calculator</Link></li>
                                 <li><Link href={"/portfolio/app/chat"}>Chat</Link></li>
-                                <li>Music player</li>
-                                <li>Surverys</li>
+                                {/* <li>Music player</li>
+                                <li>Surverys</li> */}
                             </ul>
                         </li>
                         <li>
@@ -90,11 +129,9 @@ export default function Page() {
                 <li>
                     <h2>About</h2>
                     <ul className={styles.indent}>
-                        <li>Early education</li>
-                        <li>Northeastern University</li>
-                        <li>Institute for Information Industry</li>
-                        <li>Volunteering and coops</li>
-                        <li>Programming Career</li>
+                        <li>Meet the developer</li>
+                        <li>Purpose of this website</li>
+                        <li>How to use this website</li>
                     </ul>
                 </li>
                 <li>
