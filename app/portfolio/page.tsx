@@ -21,7 +21,7 @@ export default function Page() {
                     <Link href={"/portfolio/app"} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <Image src={"/imgs/ui/pc.svg"} alt={"Games"} width={128} height={128}></Image>
                         <h2>Web Apps</h2>
-                        <p>Various projects </p>
+                        <p>Various projects</p>
                     </Link>
                 </div>
                 <br />
