@@ -15,7 +15,11 @@ const roboto = Roboto({
 });
 
 const Style: { [key: string]: React.CSSProperties } = {
-    navbarItem: { display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }
+    navbarItem: { 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        gap: "5px" }
 }
 
 export const Navbar = ({ }: {}) => {
@@ -97,18 +101,18 @@ export const Navbar = ({ }: {}) => {
                         </button>
                         :
                         <div style={{ display: "flex", gap: "20px" }}>
-                            <NavbarItem hrefLink={"/resume"} imgSrc={"/imgs/ui/graduate-cap.svg"} label={"Resume"}>
-                            </NavbarItem>
+                            {/* <NavbarItem hrefLink={"/professional/resume"} imgSrc={"/imgs/ui/graduate-cap.svg"} label={"Resume"}>
+                            </NavbarItem> */}
                             <NavbarItem hrefLink={"/portfolio"} imgSrc={"/imgs/ui/medal.svg"} label={"Portfolio"}>
                             </NavbarItem>
                             <NavbarItem hrefLink={"/notes"} imgSrc={"/imgs/ui/inspiration.svg"} label={"Notes"}>
                             </NavbarItem>
-                            <NavbarItem hrefLink={"/blog"} imgSrc={"/imgs/ui/chat-bubble.svg"} label={"Blog"}>
-                            </NavbarItem>
+                            {/* <NavbarItem hrefLink={"/blog"} imgSrc={"/imgs/ui/chat-bubble.svg"} label={"Blog"}>
+                            </NavbarItem> */}
                             <NavbarItem hrefLink={"/about"} imgSrc={"/imgs/ui/magnifying-glass.svg"} label={"About"}>
                             </NavbarItem>
-                            <NavbarItem hrefLink={"/contact"} imgSrc={"/imgs/ui/envelope.svg"} label={"Contact"}>
-                            </NavbarItem>
+                            {/* <NavbarItem hrefLink={"/professional/contact"} imgSrc={"/imgs/ui/envelope.svg"} label={"Contact"}>
+                            </NavbarItem> */}
                         </div>
                 }
 

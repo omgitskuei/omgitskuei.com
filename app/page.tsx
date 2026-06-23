@@ -21,7 +21,8 @@ export default function Page() {
 
     return (
         <>
-            Home
+            <Link href={"/professional"}>Professional</Link>
+            <Link href={"/personal"}>Personal</Link>
             {/* <div className={inter.className}>
                 <div style={{
                     marginBottom: "30px"
