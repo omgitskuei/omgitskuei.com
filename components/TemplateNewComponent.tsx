@@ -5,7 +5,7 @@ export const NewComponent = ({
     string = "false",
     bool = false,
     children
-}: {
+} : {
     exampleFunction: Function,
     string?: string,
     bool?: boolean,
