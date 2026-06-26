@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Overlay } from "@/components/Overlay";
 import Link from "next/link";
+import { Overlay } from "@/components/Overlay";
 import { InputGroup } from "@/components/InputGroup";
 import styles from "./page.module.css";
 

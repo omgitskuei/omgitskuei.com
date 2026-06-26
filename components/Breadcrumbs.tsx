@@ -1,50 +1,98 @@
 'use client'
 
+import React, { useEffect, useState } from 'react';
+
+interface BreadcrumbItem {
+    label: string,
+    href: string,
+}
+
 export const Breadcrumbs = ({
-    exampleFunction,
-    string = "false",
-    bool = false,
-    children
+    items = [],
+    separator = '/',
+    showSeperatorAtBeginning = false,
+    showSeperatorAtEnd = false
 }: {
-    exampleFunction: Function,
-    string?: string,
-    bool?: boolean,
-    children: JSX.Element[] | JSX.Element
+    items?: BreadcrumbItem[],
+    separator?: string,
+    showSeperatorAtBeginning?: boolean,
+    showSeperatorAtEnd?: boolean,
 }) => {
-    return (
-        <div id="breadcrumb" style={{
-            position: "fixed",
-            top: "0px",
-            left: "0px",
-            height: "100vh",
-            width: "100vw",
-            zIndex: "10",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-        }}
-            onClick={() => {
-                exampleFunction();
-            }}>
-            <div onClick={(e) => {
-                e.stopPropagation();
-            }}
-                style={{
-                    width: "min-content",
-                    height: "min-content"
 
-                }}>{
-                    children
+    const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>(items);
+
+    useEffect(() => {
+        if (items == undefined || items.length === 0) {
+            if (typeof window) {
+                const segments = window.location.pathname.split("/").filter(Boolean);
+                const itemsNew: BreadcrumbItem[] = [];
+                for (let i = 0; i < segments.length; i++) {
+                    const eachSegment = segments[i];
+                    // Grabs everything from the beginning up to the current segment and stitches them back together
+                    const generatedHref = "/" + segments.slice(0, i + 1).join("/");
+                    itemsNew.push({
+                        label: eachSegment.charAt(0).toUpperCase() + eachSegment.slice(1), // Optional: Capitalizes "home" to "Home"
+                        href: generatedHref
+                    });
                 }
-            </div>
-        </div>
-    )
-}
+                setBreadcrumbItems(itemsNew);
+            }
+        }
 
-const Breadcrumb = () => {
+        // This is completely safe from SSR errors
+    }, []);
+
+
+
     return (
-        <>
-        
-        </>
-    )
-}
+        <nav aria-label="Breadcrumb" style={{ padding: '10px 0' }}>
+            <ol style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, alignItems: 'center' }}>
+                <li style={{ display: 'flex', alignItems: 'center' }}>
+                    <a href="/" style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}>
+                        Home
+                    </a>
+                    <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                        {separator}
+                    </span>
+                </li>
+                {
+                    breadcrumbItems.map((item, index) => {
+                        return (
+                            <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                {index === (breadcrumbItems.length) - 1 ? (
+                                    <>
+                                        {/* Last item is the current page: unclickable and tagged for accessibility */}
+                                        <span
+                                            aria-current="page"
+                                            style={{ color: '#666', fontWeight: 'bold', fontFamily: 'sans-serif' }}
+                                        >
+                                            {item.label}
+                                        </span>
+                                        {/* Separator symbol rendered at the right end of the last element */}
+                                        {/* <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                            {separator}
+                                        </span> */}
+                                    </>
+                                ) : (
+                                    // Regular navigational links
+                                    <>
+                                        <a
+                                            href={item.href}
+                                            style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}
+                                        >
+                                            {item.label}
+                                        </a>
+                                        {/* Separator symbol rendered between elements */}
+                                        <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                            {separator}
+                                        </span>
+                                    </>
+                                )}
+                            </li>
+                        );
+                    })
+                }
+            </ol>
+        </nav>
+    );
+};

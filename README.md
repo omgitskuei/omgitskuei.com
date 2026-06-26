@@ -10,7 +10,7 @@ MetaDescription: Instructions for setting up the project
 
 <table border="0">
  <tr>
-    <td width="150"><img src="readme_imgs/linkedin_headshot.png?raw=false" /></td>
+    <td width="150"><img src="public/photos/profile_pic.png" /></td>
     <td>Kuei-Feng Tung (Chris) is a software engineer based in Taipei, Taiwan, with a passion for building and making things of all kinds. Known for his coolheaded results-oriented leadership among teammates, perseverance under stressful situations, and dauntless attitude when facing big problems, Kuei-Feng is enthusiastic, dependable, and always striving to self-improve. </td>
  </tr>
 </table>
