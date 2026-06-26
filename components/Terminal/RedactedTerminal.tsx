@@ -19,6 +19,8 @@ export default function FakeTerminal() {
     // Constant defining terminal green color code
     const colorTerminalGreen = "#00FF66";
     const colorTerminalBlack = "#0d1117";
+    const colorTerminalGrey = "#bac2cc";
+    const colorTerminalWhite = "#FFFFFF"
     // Constant defining the directory tree that the terminal can climb
     const fileSystem: Directory[] = [
         {
@@ -80,6 +82,10 @@ export default function FakeTerminal() {
             ]
         }
     ];
+    // Constant defining terminal cmd that users can Tab to auto-complete
+    const cmdsAutocompletable: string[] = [
+        "cd", "clear", "help", "login", "ls", "pwd", "redirect"
+    ]
 
     // The current/starting Directory, start at ${username}/home/
     const workingDirectory = useRef<Directory>(fileSystem[0].children[0]);
@@ -131,7 +137,7 @@ export default function FakeTerminal() {
         ]);
         // Clear input line
         setInput("");
-        inputRef.current?.focus();
+        focusInput();
     }
 
     /**
@@ -139,7 +145,8 @@ export default function FakeTerminal() {
      * @param e event's keystroke as string - pressing [Enter] gives a string of "Enter"
      * @returns Handles changes to response, workingDirectory, input, history
      */
-    const handleKeyDown = (e: { key: string; }) => {
+    // const handleKeyDown = (e: { key: string; }) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             const cmd = input.trim().toLowerCase();
             let response = "";
@@ -184,7 +191,7 @@ export default function FakeTerminal() {
                 setInput("");
                 return;     // Skip Updating terminal history a second time later
             } else if (cmd === "help") {
-                response = "sh: help: built-in commands: cd, clear, help, login, ls, pwd, redirect";
+                response = "sh: help: built-in commands: cd, clear, help, login, ls, pwd, redirect; terminal features: arrow-up, tab;";
             } else if (cmd === "login") {
                 response = "sh: login: line 0: no OTP provided via --args";
             } else if (cmd.substring(0, 8) === "login --") {
@@ -240,12 +247,32 @@ export default function FakeTerminal() {
             ]);
             // Clear input line
             setInput("");
+        } else if (e.key === "Tab") {
+            // Stop the tab keydown from leaving focus from the terminal input field
+            e.preventDefault();
+            // Filter the array to keep only items that contain the input as a substring
+            const matches = cmdsAutocompletable.filter(item => item.includes(input));
+            // Count how many items matched
+            const matchCount = matches.length;
+            // Evaluate if it's 0, 1, or more than 1
+            if (matchCount === 0) {
+                // Do nothing
+                return;
+            } else if (matchCount === 1) {
+                // Handle autocomplete
+                setInput(matches[0]);
+                return;
+            } else {
+                // Do nothing
+                return;
+            }
         }
     };
 
     return (
         <div style={{
             minWidth: "320px",
+            maxWidth: "320px",
             boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
         }}>
             {/* Window top bar, window name, and close btn */}
@@ -257,7 +284,7 @@ export default function FakeTerminal() {
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-                <span style={{}}>#Redacted Terminal</span>
+                <span style={{}}>❖Redacted Terminal</span>
                 <button style={{
                     width: "20px",
                     height: "100%",
@@ -266,7 +293,7 @@ export default function FakeTerminal() {
                     cursor: "pointer"
                 }}
                     onClick={clickClose}>
-                    X
+                    ⨉
                 </button>
             </div>
             {/* Terminal */}
@@ -274,12 +301,14 @@ export default function FakeTerminal() {
                 onClick={focusInput}
                 style={{
                     backgroundColor: colorTerminalBlack,
-                    color: colorTerminalGreen,
+                    color: colorTerminalGrey,
                     fontFamily: "Courier New, monospace",
                     minHeight: "300px",
                     maxHeight: "320px",
                     scrollbarColor: `${colorTerminalGreen} ${colorTerminalBlack}`,
-                    scrollbarWidth: "thin"
+                    scrollbarWidth: "thin",
+                    // overflowWrap: "break-word",
+                    wordBreak: "break-word"
                 }}
                 className={styles.terminalWindow}>
 
@@ -288,7 +317,7 @@ export default function FakeTerminal() {
                     <div key={index}
                         style={{
                             marginBottom: "8px",
-                            whiteSpace: "pre-wrap"
+                            whiteSpace: "pre-wrap",
                         }}
                     >
                         {line.text}
@@ -297,9 +326,13 @@ export default function FakeTerminal() {
 
                 {/* Active Input Line */}
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    <span style={{ marginRight: "8px", color: "#8b949e" }}>{username}$</span>
-                    <span style={{ position: "relative", color: "#fff" }}>
+                    
+                    <span style={{ position: "relative", color: colorTerminalWhite }}>
+                        {/* User header */}
+                        <span style={{ marginRight: "8px", color: colorTerminalGreen, flexShrink: "0" }}>{username}$</span>
+                        {/* Input */}
                         {input}
+                        {/* Blinking cursor */}
                         <span className={styles.inlineBlinkingCursor}
                             style={{
                                 backgroundColor: colorTerminalGreen,
@@ -314,7 +347,7 @@ export default function FakeTerminal() {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
+                        onKeyDown={(e) => handleKeyDown(e)}
                         style={{
                             position: "absolute",
                             opacity: 0,
