@@ -250,21 +250,44 @@ export default function FakeTerminal() {
         } else if (e.key === "Tab") {
             // Stop the tab keydown from leaving focus from the terminal input field
             e.preventDefault();
-            // Filter the array to keep only items that contain the input as a substring
-            const matches = cmdsAutocompletable.filter(item => item.includes(input));
-            // Count how many items matched
-            const matchCount = matches.length;
-            // Evaluate if it's 0, 1, or more than 1
-            if (matchCount === 0) {
-                // Do nothing
-                return;
-            } else if (matchCount === 1) {
-                // Handle autocomplete
-                setInput(matches[0]);
-                return;
+            // Check if we are auto-completing a cmd command or a directory label
+            if (input.substring(0, 3) === "cd " && input.length > 3) {  // Ignore autocompleting if the input provided no string to autocomplete from
+                // Prepare array of directory labels to check matches against
+                const possibleDirectories: Directory[] = workingDirectory.current.children;
+                const possibleLabels: string[] = possibleDirectories.map(directory => directory.label);
+                // Filter the array to keep only items that contain the input as a substring
+                const matches = possibleLabels.filter(label => label.includes(input.substring(3)));
+                // Count how many items matched
+                const matchCount = matches.length;
+                // Evaluate if it's 0, 1, or more than 1
+                if (matchCount === 0) {
+                    // Do nothing
+                    return;
+                } else if (matchCount === 1) {
+                    // Handle autocomplete
+                    setInput(`cd ${matches[0]}`);
+                    return;
+                } else {
+                    // Do nothing
+                    return;
+                }
             } else {
-                // Do nothing
-                return;
+                // Filter the array to keep only items that contain the input as a substring
+                const matches = cmdsAutocompletable.filter(item => item.includes(input));
+                // Count how many items matched
+                const matchCount = matches.length;
+                // Evaluate if it's 0, 1, or more than 1
+                if (matchCount === 0) {
+                    // Do nothing
+                    return;
+                } else if (matchCount === 1) {
+                    // Handle autocomplete
+                    setInput(matches[0]);
+                    return;
+                } else {
+                    // Do nothing
+                    return;
+                }
             }
         }
     };
@@ -326,7 +349,7 @@ export default function FakeTerminal() {
 
                 {/* Active Input Line */}
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    
+
                     <span style={{ position: "relative", color: colorTerminalWhite }}>
                         {/* User header */}
                         <span style={{ marginRight: "8px", color: colorTerminalGreen, flexShrink: "0" }}>{username}$</span>
