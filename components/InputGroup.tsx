@@ -1,3 +1,5 @@
+'use client'
+
 // Local shared styles
 const Style: { [key: string]: React.CSSProperties } = {
     item: {
@@ -12,8 +14,9 @@ type Props = {
     label: string,
     type: string,
     inputWidth: string,
-    onChange?: Function,
+    onChange?: Function | undefined,
     checked?: boolean,
+    value?: string
 }
 
 // Component
@@ -23,18 +26,24 @@ export const InputGroup = ({
     label,
     type,
     inputWidth,
-    onChange,
-    checked
+    onChange = undefined,
+    checked,
+    value
 }: Props) => {
     return (
-        <span style={{ display: "flex", justifyContent: "space-between"}}>
+        <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <label htmlFor={id}>{label}: </label>
-            <input type={type} id={id} name={name} style={{ width: inputWidth}} onChange={() => {
-                if (onChange) {
-                    onChange();
-                }
-            }}
-            defaultChecked={checked}/>
+            <input type={type} id={id}
+                name={name}
+                style={{ width: inputWidth }}
+                onChange={() => {
+                    if (onChange) {
+                        onChange();
+                    }
+                }}
+                defaultChecked={checked} 
+                value={value}
+                disabled={true}/>
         </span>
     )
 }
