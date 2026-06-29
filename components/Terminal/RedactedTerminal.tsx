@@ -12,7 +12,7 @@ interface Directory {
     children: Directory[],
 }
 
-export default function FakeTerminal() {
+export default function RedactedTerminal() {
 
     // Constant defining user name
     const username = "redacted";
