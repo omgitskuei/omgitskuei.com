@@ -295,7 +295,8 @@ export default function RedactedTerminal() {
     return (
         <div style={{
             minWidth: "320px",
-            maxWidth: "320px",
+            width: "100%",
+            // maxWidth: "320px",
             boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
         }}>
             {/* Window top bar, window name, and close btn */}
@@ -324,10 +325,10 @@ export default function RedactedTerminal() {
                 onClick={focusInput}
                 style={{
                     backgroundColor: colorTerminalBlack,
-                    color: colorTerminalGrey,
+                    color: colorTerminalGreen,
                     fontFamily: "Courier New, monospace",
                     minHeight: "300px",
-                    maxHeight: "320px",
+                    // maxHeight: "320px",
                     scrollbarColor: `${colorTerminalGreen} ${colorTerminalBlack}`,
                     scrollbarWidth: "thin",
                     // overflowWrap: "break-word",
@@ -352,7 +353,7 @@ export default function RedactedTerminal() {
 
                     <span style={{ position: "relative", color: colorTerminalWhite }}>
                         {/* User header */}
-                        <span style={{ marginRight: "8px", color: colorTerminalGreen, flexShrink: "0" }}>{username}$</span>
+                        <span style={{ marginRight: "8px", color: colorTerminalGrey, flexShrink: "0" }}>{username}$</span>
                         {/* Input */}
                         {input}
                         {/* Blinking cursor */}
