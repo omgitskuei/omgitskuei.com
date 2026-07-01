@@ -1,6 +1,7 @@
 // import styles from "./page.module.css";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ReviewRating } from "@/components/ReviewRating";
+import Image from "next/image";
 
 export default function Page() {
 
@@ -44,11 +45,12 @@ export default function Page() {
                     {/* Game */}
                     <div>
                         <h3>Kingdom Come: Deliverance</h3>
+                        <Image src={"/personal/videogames/kcd1/kcd1_artwork.png"} alt={"Game artwork"} width={340} height={185}></Image>
                         <p>Kingdom Come: Deliverance is a first-person, open-world RPG set in the medieval Kingdom of Bohemia. The game is known for its realistic combat system, historical accuracy, and immersive storytelling. Players take on the role of Henry, a blacksmith's son, who becomes embroiled in a civil war after his village is destroyed.</p>
                     </div>
                     {/* Review */}
                     <div>
-                        <h4>Review</h4>
+                        <h4>Rating</h4>
                         <ReviewRating endorsementText={"Expertly transports you into the life of a medieval knight! - Kuei"} rating={4}></ReviewRating>
                     </div>
                     {/* Gallery */}
