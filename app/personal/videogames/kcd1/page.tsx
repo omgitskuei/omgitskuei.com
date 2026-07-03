@@ -1,9 +1,11 @@
 // import styles from "./page.module.css";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ReviewRating } from "@/components/ReviewRating";
-import Image from "next/image";
+import { Keypress } from "@/components/Keypress";
+// import Image from "next/image";
 
 export default function Page() {
+
+
 
     return (
         <section style={{ width: "960px" }}>
@@ -23,78 +25,62 @@ export default function Page() {
             ]}>
             </Breadcrumbs>
             <section style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                {/* Online Presence */}
+                {/* The Good, Bad, Weird */}
                 <section>
-                    <h2>Online Presence</h2>
-                    <div>
-                        <h3>Steam</h3>
+                    <h2>The Good, Bad, and Weird</h2>
+                    <h3>The Good</h3>
 
-                    </div>
-                    <div>
-                        <h3>Epic</h3>
+                    <h3>The Bad</h3>
 
+                    <h3>The Weird</h3>
+                </section>
+
+                {/* Improvements */}
+                <section>
+                    <h2>Improvements</h2>
+                </section>
+
+                {/* Gallery */}
+                <section>
+                    <h2>Gallery</h2>
+                </section>
+
+                {/* Highlights */}
+                <section>
+                    <h2>Highlights</h2>
+
+                    <div>
+                        <p>
+                            Henry enrolls in a longsword tournament to prove his skill and gain recognition. 
+                            The video showcases strategic timing of perfect block, riposte, quick in-and-out jabs, clinching, and shoving the opponent into arena fences to disorient them followed-up with a free hit.
+                        </p>
+
+{/* <video id="myVideo" width="400" controls>
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+<button onclick="document.getElementById('myVideo').currentTime = 90;">Jump to 1:30</button> */}
+
+{/* Pressing Block <Keypress label="Q"></Keypress> as soon as the green shield icon appears or when the opponent moves his arms to attack, immediately will  */}
+
+
+                        <video controls width="100%" disablePictureInPicture
+                            poster="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.jpg">
+                            <source src="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                        <a href="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.mp4"
+                            type="video/mp4"
+                            download="omgitskuei_kcd1_longsword_tourney_480p.mp4">
+                            Download as MP4
+                        </a>
                     </div>
 
                 </section>
 
-                {/* Looking for group */}
-                <section>
-                    <h2>Looking for group</h2>
-                    <p>Reach out and lets team up for these games:</p>
-
-                </section>
-
-                {/* Reviews */}
-                <section>
-                    <h2>Reviews</h2>
-
-                    {/* Game title card */}
-                    <div>
-
-                    </div>
 
 
 
-
-                    {/* Game */}
-                    <div>
-                        <h3>Kingdom Come: Deliverance</h3>
-                        <Image src={"/personal/videogames/kcd1/kcd1_artwork.jpg"} alt={"Game artwork"} width={340} height={185}></Image>
-                        <p>Kingdom Come: Deliverance is a first-person, open-world RPG set in the medieval Kingdom of Bohemia. The game is known for its realistic combat system, historical accuracy, and immersive storytelling. Players take on the role of Henry, a blacksmith's son, who becomes embroiled in a civil war after his village is destroyed.</p>
-                    </div>
-                    {/* Review */}
-                    <div>
-                        <h4>Rating</h4>
-                        <ReviewRating analysis={"Expertly transports you into the life of a medieval knight! - Kuei"} rating={4}></ReviewRating>
-                    </div>
-                    {/* Gallery */}
-                    <div>
-                        <h4>Gallery</h4>
-                        <div>
-                            ... WORK IN PROGRESS ...
-                        </div>
-                    </div>
-                    {/* Highlights */}
-                    <div>
-                        <h4>Highlights</h4>
-                        <div>
-                            <p>
-                                Henry enrolls in a longsword tournament to prove his skill and gain recognition. The video showcases strategic timing of perfect block, riposte, quick in-and-out jabs, clinching, and shoving the opponent into arena fences to disorient them followed-up with a free hit.
-                            </p>
-                            <video controls width="100%" disablePictureInPicture 
-                                poster="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.jpg">
-                                <source src="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.mp4" type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                            <a href="/personal/videogames/kcd1/kcd1_longsword_tourney_480p.mp4"
-                                type="video/mp4"
-                                download="omgitskuei_kcd1_longsword_tourney_480p.mp4">
-                                Download as MP4
-                            </a>
-                        </div>
-
-                    </div>
-                </section>
             </section>
         </section>
     );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Roboto, Nabla } from "next/font/google";
 import styles from "./page.module.css";
+import '@/app/globals.css'
 import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
