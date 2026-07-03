@@ -65,7 +65,7 @@ export default function Page() {
                     {/* Review */}
                     <div>
                         <h4>Rating</h4>
-                        <ReviewRating endorsementText={"Expertly transports you into the life of a medieval knight! - Kuei"} rating={4}></ReviewRating>
+                        <ReviewRating analysis={"Expertly transports you into the life of a medieval knight! - Kuei"} rating={4}></ReviewRating>
                     </div>
                     {/* Gallery */}
                     <div>

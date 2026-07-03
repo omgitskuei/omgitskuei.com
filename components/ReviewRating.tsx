@@ -1,11 +1,11 @@
 'use client'
 
 export const ReviewRating = ({
-    endorsementText,
+    analysis,
     rating,
     ratingTotal = 5,
 }: {
-    endorsementText: string,
+    analysis: string,
     rating: number,
     ratingTotal?: number,
 }) => {
@@ -13,16 +13,23 @@ export const ReviewRating = ({
     const starFontSize = "25px";
     const starOnColor = "#0d1117";
     const starOffColor = "#bac2cc";
-    const endorsementTextColor = starOnColor;
+    const textColor = starOnColor;
 
     return (
         <div>
+
+            {/* Review text */}
+            <span style={{ color: textColor }}>
+                "{analysis}" - Kuei
+            </span>
+
             <div>
-                <span style={{ color: endorsementTextColor }}>
-                    "{endorsementText}"
+                {/* Stars */}
+                <span style={{
+                    marginRight: "5px"
+                }}>
+                    Rating:
                 </span>
-            </div>
-            <div>
                 {
                     Array.from({ length: rating }).map((_, index) => (
                         <span key={`on_${index}`} style={{ fontSize: starFontSize, color: starOnColor }}>★</span>
@@ -35,5 +42,6 @@ export const ReviewRating = ({
                 }
             </div>
         </div>
+
     )
 }
