@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { Roboto, Nabla, Inter } from 'next/font/google'
 import { ExpandableBox } from "@/components/ExpandableBox";
+import { Overlay } from "@/components/Overlay/Overlay";
+import { PreferencesDialog } from "@/components/Overlay/PreferencesDialog";
 
 const inter = Inter({
     weight: "400",
@@ -82,6 +84,15 @@ export default function Page() {
                 paddingLeft: "10%",
                 paddingRight: "10%",
             }}>
+                <PreferencesDialog dim={true} blur={false}>
+                    <></>
+                </PreferencesDialog>
+
+
+
+
+
+
                 {/* <h1>Welcome to OmgItsKuei</h1> */}
                 <section style={{
                     display: "flex",
