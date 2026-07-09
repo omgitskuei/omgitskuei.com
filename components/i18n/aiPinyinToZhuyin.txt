@@ -1,0 +1,110 @@
+// Core conversion dictionaries
+const INITIALS: Record<string, string> = {
+  "b": "ㄅ", "p": "ㄆ", "m": "ㄇ", "f": "ㄈ",
+  "d": "ㄉ", "t": "ㄊ", "n": "ㄋ", "l": "ㄌ",
+  "g": "ㄍ", "k": "ㄎ", "h": "ㄏ",
+  "j": "ㄐ", "q": "ㄑ", "x": "ㄒ",
+  "zh": "ㄓ", "ch": "ㄔ", "sh": "ㄕ", "r": "ㄖ",
+  "z": "ㄗ", "c": "ㄘ", "s": "ㄙ"
+};
+
+const FINALS: Record<string, string> = {
+  "a": "ㄚ", "o": "ㄛ", "e": "ㄜ", "ie": "ㄝ", "e^": "ㄝ",
+  "ai": "ㄞ", "ei": "ㄟ", "ao": "ㄠ", "ou": "ㄡ",
+  "an": "ㄢ", "en": "ㄣ", "ang": "ㄤ", "eng": "ㄥ", "er": "ㄦ",
+  "i": "ㄧ", "yi": "ㄧ", "ia": "ㄧㄚ", "iao": "ㄧㄠ", "ie_final": "ㄧㄝ", // handled in logic
+  "iu": "ㄧㄡ", "ian": "ㄧㄢ", "in": "ㄧㄣ", "iang": "ㄧㄤ", "ing": "ㄧㄥ",
+  "u": "ㄨ", "wu": "ㄨ", "ua": "ㄨㄚ", "uo": "ㄨㄛ", "uai": "ㄨㄞ",
+  "ui": "ㄨㄟ", "uan": "ㄨㄢ", "un": "ㄨㄣ", "uang": "ㄨㄤ", "ueng": "ㄨㄥ",
+  "v": "ㄩ", "yu": "ㄩ", "ü": "ㄩ", "ue": "ㄩㄝ", "ve": "ㄩㄝ",
+  "üe": "ㄩㄝ", "van": "ㄩㄢ", "üan": "ㄩㄢ", "vn": "ㄩㄣ", "ün": "ㄩㄣ",
+  "ong": "ㄨㄥ", "iong": "ㄩㄥ"
+};
+
+const TONES: Record<string, string> = {
+  "1": "",   // First tone is blank in standard Zhuyin string output
+  "2": "ˊ",
+  "3": "ˇ",
+  "4": "ˋ",
+  "5": "˙",
+  "0": "˙"
+};
+
+export function pinyinToZhuyin(input: string): string {
+  // 1. Clean input and extract tone number if present anywhere in the string
+  let cleaned = input.trim().toLowerCase();
+  let tone = "";
+  
+  const toneMatch = cleaned.match(/[0-5]/);
+  if (toneMatch) {
+    tone = TONES[toneMatch[0]] || "";
+    cleaned = cleaned.replace(/[0-5]/g, ""); // Remove the tone number from the spelling
+  }
+
+  if (!cleaned) return "";
+
+  // 2. Handle standalone Pinyin special combinations
+  if (["zhi", "chi", "shi", "ri", "zi", "ci", "si"].includes(cleaned)) {
+    return (INITIALS[cleaned.slice(0, -1)] || "") + tone;
+  }
+
+  // 3. Separate Initial (Consonant) from Final (Vowel)
+  let initial = "";
+  let final = cleaned;
+
+  // Check 2-letter initials first, then 1-letter initials
+  if (cleaned.startsWith("zh") || cleaned.startsWith("ch") || cleaned.startsWith("sh")) {
+    initial = cleaned.slice(0, 2);
+    final = cleaned.slice(2);
+  } else if (INITIALS[cleaned[0]]) {
+    initial = cleaned[0];
+    final = cleaned.slice(1);
+  }
+
+  // 4. Handle context-dependent Pinyin spelling shortcuts (Crucial Rules)
+  
+  // Rule A: j, q, x, y + u -> u is actually ㄩ (ü)
+  if (["j", "q", "x", "y"].includes(initial) || cleaned.startsWith("y")) {
+    if (final.startsWith("u")) {
+      // Replace the standard 'u' with 'v' (ㄩ) to match the correct dictionary entry
+      final = "v" + final.slice(1); 
+    }
+  }
+
+  // Rule B: Standalone y/w transformations
+  if (initial === "" && cleaned.startsWith("y")) {
+    if (cleaned === "yi") final = "i";
+    else if (cleaned === "yu") final = "v";
+    else if (cleaned === "yuan") final = "van";
+    else if (cleaned === "yue") final = "ve";
+    else if (cleaned === "yun") final = "vn";
+    else final = "i" + cleaned.slice(1); // e.g. ya -> ia
+  }
+  if (initial === "" && cleaned.startsWith("w")) {
+    if (cleaned === "wu") final = "u";
+    else if (cleaned === "wen") final = "un";
+    else final = "u" + cleaned.slice(1); // e.g. wa -> ua
+  }
+
+  // 5. Look up components in maps
+  const zhuyinInitial = INITIALS[initial] || "";
+  let zhuyinFinal = FINALS[final] || "";
+
+  // Edge case adjustment: plain 'ie' after an initial maps to ㄧㄝ
+  if (initial !== "" && final === "ie") {
+    zhuyinFinal = "ㄧㄝ";
+  }
+
+  // Fallback: If parsing failed to find a valid final, return original input
+  if (!zhuyinFinal && !zhuyinInitial) {
+    return input; 
+  }
+
+  // Neutral tone (5) typically goes at the FRONT of the syllable in Zhuyin layout, 
+  // while tones 2, 3, 4 go at the END.
+  if (tone === "˙") {
+    return tone + zhuyinInitial + zhuyinFinal;
+  }
+
+  return zhuyinInitial + zhuyinFinal + tone;
+}
