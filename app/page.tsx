@@ -84,8 +84,7 @@ export default function Page() {
                 paddingLeft: "10%",
                 paddingRight: "10%",
             }}>
-                <PreferencesDialog dim={true} blur={false}>
-                    <></>
+                <PreferencesDialog>
                 </PreferencesDialog>
 
 
