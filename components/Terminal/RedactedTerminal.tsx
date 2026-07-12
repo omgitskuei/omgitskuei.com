@@ -85,7 +85,7 @@ export default function RedactedTerminal() {
     // Constant defining terminal cmd that users can Tab to auto-complete
     const cmdsAutocompletable: string[] = [
         "cd", "clear", "help", "login", "ls", "pwd", "redirect"
-    ]
+    ];
 
     // The current/starting Directory, start at ${username}/home/
     const workingDirectory = useRef<Directory>(fileSystem[0].children[0]);
@@ -105,7 +105,7 @@ export default function RedactedTerminal() {
      * Iterate (recursively) over all nodes in the Directory tree looking for a Directory with a specific string label value
      * @param label the string label to look for
      * @param directoryTree the tree of Directory objects to look through
-     * @returns 
+     * @returns
      */
     function getDirectoryByLabel(label: string, directoryTree: Directory[]): Directory | null {
         for (const node of directoryTree) {
