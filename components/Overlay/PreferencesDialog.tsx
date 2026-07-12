@@ -19,6 +19,8 @@ export const PreferencesDialog = ({}: {}) => {
     const themeSelectRef = useRef<HTMLSelectElement>(null);
     const fontsizeSelectRef = useRef<HTMLSelectElement>(null);
 
+    const selectWidth = "120px";
+
     // Constant defining the select options
     const langOptions: Option[] = [
         {
@@ -95,15 +97,15 @@ export const PreferencesDialog = ({}: {}) => {
         <dialog ref={dialogRef} className={styles.dialog} style={{ padding: "0px", borderRadius: "4px", overflowX: "hidden" }}>
             {/* This puts the form and image side-by-side */}
             <div style={{ display: "flex" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "6% 3%" }}>
-                    <h2>Welcome!</h2>
-                    <p>Personalize your visit here.</p>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "6% 3%", padding: "10px" }}>
+                    <h2>Welcome</h2>
+                    <p style={{ textWrap: "nowrap"}}>Personalize your visit!</p>
                     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                         {/* Languages */}
                         <div style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center" }}>
-                            <label htmlFor="langSelect" style={{ width: "75px" }}>Language: </label>
-                            <select ref={langSelectRef} name="langSelect" id="langSelect" defaultValue="" style={{ width: "100px", textAlign: "left", paddingLeft: "5px" }}>
-                                <option value={""} disabled>-- Select --</option>
+                            {/* <label htmlFor="langSelect" style={{ width: "75px" }}>Language: </label> */}
+                            <select ref={langSelectRef} name="langSelect" id="langSelect" defaultValue="" style={{ width: selectWidth, textAlign: "center", paddingLeft: "5px" }}>
+                                <option value={""} disabled>-- Language --</option>
                                 {
                                     langOptions.map((item, index) => {
                                         return <option key={`${item.value}_${index}`} value={item.value}>{item.label}</option>;
@@ -113,9 +115,9 @@ export const PreferencesDialog = ({}: {}) => {
                         </div>
                         {/* Themes */}
                         <div style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center" }}>
-                            <label htmlFor="themeSelect" style={{ width: "75px" }}>Theme: </label>
-                            <select ref={themeSelectRef} name="themeSelect" id="themeSelect" defaultValue="" style={{ width: "100px", textAlign: "left", paddingLeft: "5px" }}>
-                                <option value={""} disabled>-- Select --</option>
+                            {/* <label htmlFor="themeSelect" style={{ width: "75px" }}>Theme: </label> */}
+                            <select ref={themeSelectRef} name="themeSelect" id="themeSelect" defaultValue="" style={{ width: selectWidth, textAlign: "center", paddingLeft: "5px" }}>
+                                <option value={""} disabled>-- Theme --</option>
                                 {
                                     themeOptions.map((item, index) => {
                                         return <option key={`${item.value}_${index}`} value={item.value}>{item.label}</option>;
@@ -125,9 +127,9 @@ export const PreferencesDialog = ({}: {}) => {
                         </div>
                         {/* Font sizes */}
                         <div style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center" }}>
-                            <label htmlFor="fontsizeSelect" style={{ width: "75px" }}>Text size: </label>
-                            <select ref={fontsizeSelectRef} name="fontsizeSelect" id="fontsizeSelect" defaultValue="" style={{ width: "100px", textAlign: "left", paddingLeft: "5px" }}>
-                                <option value={""} disabled>-- Select --</option>
+                            {/* <label htmlFor="fontsizeSelect" style={{ width: "75px" }}>Text size: </label> */}
+                            <select ref={fontsizeSelectRef} name="fontsizeSelect" id="fontsizeSelect" defaultValue="" style={{ width: selectWidth, textAlign: "center", paddingLeft: "5px" }}>
+                                <option value={""} disabled>-- Text size --</option>
                                 {
                                     textSizeOptions.map((item, index) => {
                                         return <option key={`${item.value}_${index}`} value={item.value}>{item.label}</option>;
