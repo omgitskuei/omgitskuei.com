@@ -5,14 +5,7 @@ export default function Page() {
     return (
         <>
             <Breadcrumbs separator="/"></Breadcrumbs>
-            Contact
-
-            Email
-            Tel
-            LinkedIn
-            Telegram
-            Discord
-            Contact form
+            Projects!
         </>
     );
 }

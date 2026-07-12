@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Overlay } from "@/components/Overlay/Overlay";
 import { InputGroup } from "@/components/InputGroup";
 import styles from "./page.module.css";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export default function Page() {
 
@@ -159,14 +160,14 @@ export default function Page() {
     const [hideFile, setHideFile] = useState<boolean>(false);
 
     return (
-        <article style={{ overflowY: showOverlay ? "hidden" : "auto" }}>
+        <article style={{ overflowY: showOverlay ? "hidden" : "auto",
+        display: "flex", flexDirection: "column", gap: "20px", paddingLeft: "10%", paddingRight: "10%", alignItems: "center" }}>
+            <Breadcrumbs separator="/"></Breadcrumbs>
             {/* Header */}
             <section style={{
                 display: "flex",
                 justifyContent: "space-between",
-                // width: "80%",
-                marginTop: "20px",
-                padding: "20px",
+                width: "100%",
             }}>
                 {/* Title */}
                 <h1>Resume</h1>
@@ -214,8 +215,6 @@ export default function Page() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
-                margin: "20px",
-                // width: "80%",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Experience</h2>
@@ -296,8 +295,6 @@ export default function Page() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
-                margin: "20px",
-                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Education</h2>
@@ -348,8 +345,6 @@ export default function Page() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
-                margin: "20px",
-                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Volunteering</h2>
@@ -378,8 +373,6 @@ export default function Page() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
-                margin: "20px",
-                // width: "1080px",
                 scrollMarginTop: "70px"
             }}>
                 <h2>Honors & Awards</h2>
@@ -671,7 +664,7 @@ export default function Page() {
                         </InputGroup>
                         <br />
                         {
-                            !hideLang ? 
+                            !hideLang ?
                             <div style={{ marginLeft: "20px", display: "flex", flexDirection: "column", gap: "5px" }}>
                                 <h4 style={{ marginBottom: "5px" }}>Language</h4>
                                 <InputGroup id={"enUS"} name={"lang"} label={"English (American)"} type={"radio"} inputWidth={"50"} checked={true}></InputGroup>
