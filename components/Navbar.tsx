@@ -48,7 +48,7 @@ export const Navbar = ({ }: {}) => {
                 </h2>
             </Link>
         )
-    }
+    };
 
     return (
         <nav style={{
