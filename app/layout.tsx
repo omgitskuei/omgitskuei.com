@@ -58,7 +58,7 @@ export default function RootLayout({
                         <FooterContact platform={"Discord"} username={"omgitskuei"} imgSrc={"/imgs/ui/discord.svg"} imgAlt={"Discord"}></FooterContact>
                     </div>
                     <div>
-                        <p>Copyright © 2024 Kuei Feng Tung.</p>
+                        <p>Copyright © 2026 Kuei Feng Tung.</p>
                         <p>All Rights Reserved.</p>
                     </div>
                 </footer>
