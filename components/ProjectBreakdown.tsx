@@ -1,5 +1,7 @@
 'use client'
 
+import { ExpandableBox } from "./ExpandableBox";
+
 export const ProjectBreakdown = ({
     projectName,
     createDate,
@@ -36,30 +38,25 @@ export const ProjectBreakdown = ({
     };
 
     return (
-        <section>
+        <>
+            <h2>Project Breakdown</h2>
             <div>
-                <h3>
-                    Project Breakdown
-                </h3>
+                <label htmlFor="projectName">Project Name: </label>
+                <span>{projectName}</span>
             </div>
-            <Section title="Project Name:">
-                <p>
-                    {projectName}
-                </p>
-            </Section>
-            <Section title="Create Date:">
-                <p>
-                    {createDate}
-                </p>
-            </Section>
-            <Section title="Last Updated:">
-                <p>
-                    {updateDate}
-                </p>
-            </Section>
+            <div>
+                <label htmlFor="createDate">Create Date: </label>
+                <span>{createDate}</span>
+            </div>
+            <div>
+                <label htmlFor="updateDate">Last Updated: </label>
+                <span>{updateDate}</span>
+            </div>
+
+
             <Section title="Toolkit:">
                 <p>
-                    <ul>
+                    <ul style={{ columnCount: 2, columnGap: "1em", listStylePosition: "inside"}}>
                         {
                             technologyUsed.map((item, index) => {
                                 return (
@@ -102,6 +99,6 @@ export const ProjectBreakdown = ({
                     })
                 }
             </Section>
-        </section>
+        </>
     )
 }

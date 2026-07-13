@@ -41,6 +41,9 @@ export default function Page() {
             <Link href={"/professional/projects/react/webapps/diceroll"}>
                 {"Dice Roll"}
             </Link>
+            <Link href={"/professional/projects/react/webapps/terminal"}>
+                {"Terminal"}
+            </Link>
             <Link href={"/professional/projects/react/webapps/tictactoe"}>
                 {"Tic Tac Toe"}
             </Link>
