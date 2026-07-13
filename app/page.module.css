@@ -20,7 +20,7 @@
         min-height: calc(100vh - 74px);
         z-index: 1;
     }
-    
+
     .page {
         width: 100%;
         display: flex;
@@ -85,6 +85,7 @@
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         inset: 0 0 auto;
+        margin-top: 10px;
     }
 
 
@@ -134,12 +135,16 @@
         grid-template-columns: repeat(4, minmax(25%, auto));
         max-width: 100%;
         width: var(--max-width);
-      }
+    }
 }
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
 
+
+    .footer {
+        margin-top: 10px;
+    }
 }
 
 /* Mobile */
@@ -147,8 +152,13 @@
     .optionalIcon {
         display: none
     }
+
     .optionalText {
         display: none
+    }
+
+    .footer {
+        margin-top: 10px;
     }
 }
 

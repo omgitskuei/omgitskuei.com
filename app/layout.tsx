@@ -43,6 +43,8 @@ export default function RootLayout({
                         {children}
                     </section>
                 </main>
+
+              {/* Footer */}
                 <footer className={styles.footer}>
                     <Link href="/sitemap" className={styles.card}>
                         <h4 style={{ color: "lime" }}>
