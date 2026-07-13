@@ -29,6 +29,24 @@ export default function Page() {
                 ]}>
             </Breadcrumbs>
             <h1>Web Apps</h1>
+            <Link href={"/professional/projects/react/webapps/bubblewrap"}>
+                {"Bubble Wrap"}
+            </Link>
+            <Link href={"/professional/projects/react/webapps/calculator"}>
+                {"Calculator"}
+            </Link>
+            <Link href={"/professional/projects/react/webapps/chess"}>
+                {"Chess"}
+            </Link>
+            <Link href={"/professional/projects/react/webapps/diceroll"}>
+                {"Dice Roll"}
+            </Link>
+            <Link href={"/professional/projects/react/webapps/tictactoe"}>
+                {"Tic Tac Toe"}
+            </Link>
+            <Link href={"/professional/projects/react/webapps/todolist"}>
+                {"To-Do List"}
+            </Link>
         </>
     );
 }

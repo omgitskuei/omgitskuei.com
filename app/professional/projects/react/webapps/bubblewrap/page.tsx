@@ -1,5 +1,6 @@
 'use client'
 
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,12 +14,34 @@ export default function Page() {
 
     return (
         <>
-            <h1>
-                <Link href={"/portfolio"}>Portfolio</Link> &gt; <Link href={"/portfolio/game"}>Game</Link> &gt; Bubble Wrap
-            </h1>
-            <br />
+            <Breadcrumbs separator="/"
+                items={[
+                    {
+                        label: "Professional",
+                        href: "/professional"
+                    },
+                    {
+                        label: "Projects",
+                        href: "/professional/projects"
+                    },
+                    {
+                        label: "React",
+                        href: "/professional/projects/react"
+                    },
+                    {
+                        label: "Web Apps",
+                        href: "/professional/projects/react/webapps"
+                    },
+                    {
+                        label: "Bubble Wrap",
+                        href: "/professional/projects/react/webapps/bubblewrap"
+                    },
+                ]}>
+            </Breadcrumbs>
             <h1>Bubble Wrap</h1>
-            <br />
+
+
+
             <p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                 <Image src={"/imgs/ui/info.svg"} alt={"A nice bubble"} height={30} width={30}></Image>Clicking on any of these bubbles will pop them. Popping all of them is Perfect for scratching that OCD itch.
             </p>
