@@ -5,7 +5,7 @@ export default function Page() {
     return (
         <>
             <Breadcrumbs separator="/"></Breadcrumbs>
-            Contact
+            <h1>Contact</h1>
 
             Email
             Tel
