@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { zhuyinMap } from "./mandarinZhuyinMap";
+import { zhuyinMap } from "./mandarinPinyinToZhuyinMap";
 
 export const MandarinPinyinToZhuyin = ({
     baseText,
