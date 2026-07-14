@@ -14,28 +14,28 @@ export const Breadcrumbs = ({
     items?: BreadcrumbItem[];
     separator?: string;
 }) => {
-    // 1. Keep state ONLY for client-side generated items
-    const [generatedItems, setGeneratedItems] = useState<BreadcrumbItem[]>([]);
+
+    const [itemsFromURL, setItemsFromURL] = useState<BreadcrumbItem[]>([]);
     const maxLinks = 4;
 
     useEffect(() => {
         // Only generate from URL if no items were passed as props
         if (items.length === 0) {
             if (typeof window !== 'undefined') {
-                const segments = window.location.pathname.split("/").filter(Boolean);
-                const itemsNew = segments.map((segment, i) => ({
+                const segmentsFromURL = window.location.pathname.split("/").filter(Boolean);
+                const itemsNew = segmentsFromURL.map((segment, i) => ({
                     label: segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' '),
-                    href: "/" + segments.slice(0, i + 1).join("/")
+                    href: "/" + segmentsFromURL.slice(0, i + 1).join("/")
                 }));
-                setGeneratedItems(itemsNew);
+                setItemsFromURL(itemsNew);
             }
         }
-    }, [items.length]); // 💡 Crucial: Depend on length (primitive number) to avoid infinite reference-check loops
+    }, []);
 
-    // 2. Derive the active list: use prop items if provided, otherwise use generated ones
-    const activeItems = items.length > 0 ? items : generatedItems;
+    // Use items from props if provided, otherwise use items from URL
+    const activeItems = items.length > 0 ? items : itemsFromURL;
 
-    // 3. Compute visible items
+    // Add left-most item "Home" or "..." based on how many items there are
     const getVisibleItems = (): BreadcrumbItem[] => {
         if (activeItems.length <= maxLinks) {
             return [{ label: 'Home', href: '/' }, ...activeItems];
@@ -52,36 +52,42 @@ export const Breadcrumbs = ({
     return (
         <nav aria-label="Breadcrumb" style={{ padding: '10px 0' }}>
             <ol style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, alignItems: 'center' }}>
-                {visibleItems.map((item, index) => {
-                    const isLast = index === visibleItems.length - 1;
+                {
+                    visibleItems.map((item, index) => {
+                        const isLast = index === visibleItems.length - 1;
 
-                    return (
-                        <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
-                            {isLast ? (
-                                // Last (non-link) segment
-                                <span aria-current="page" style={{ color: '#666', fontWeight: 'bold', ...commonTextStyle }}>
-                                    {item.label}
-                                </span>
-                            ) : item.label === '...' ? (
-                                // ...
-                                <span style={{ color: '#666', fontWeight: 'bold', ...commonTextStyle }}>
-                                    {item.label}
-                                </span>
-                            ) : (
-                                // Link segments
-                                <a href={item.href} style={{ textDecoration: 'none', color: '#0066cc', ...commonTextStyle }}>
-                                    {item.label}
-                                </a>
-                            )}
-                            {/* Separators */}
-                            {!isLast && (
-                                <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
-                                    {separator}
-                                </span>
-                            )}
-                        </li>
-                    );
-                })}
+                        return (
+                            <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                {
+                                    isLast ? (
+                                        // Last (non-link) item
+                                        <span aria-current="page" style={{ color: '#666', fontWeight: 'bold', ...commonTextStyle }}>
+                                            {item.label}
+                                        </span>
+                                    ) : item.label === '...' ? (
+                                        // ... alternative to Home
+                                        <span style={{ color: '#666', fontWeight: 'bold', ...commonTextStyle }}>
+                                            {item.label}
+                                        </span>
+                                    ) : (
+                                        // Items (including Home)
+                                        <a href={item.href} style={{ textDecoration: 'none', color: '#0066cc', ...commonTextStyle }}>
+                                            {item.label}
+                                        </a>
+                                    )
+                                }
+                                {/* Separators */}
+                                {
+                                    !isLast && (
+                                        <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                            {separator}
+                                        </span>
+                                    )
+                                }
+                            </li>
+                        );
+                    })
+                }
             </ol>
         </nav>
     );
