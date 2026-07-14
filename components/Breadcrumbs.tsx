@@ -10,16 +10,14 @@ interface BreadcrumbItem {
 export const Breadcrumbs = ({
     items = [],
     separator = '/',
-    showSeperatorAtBeginning = false,
-    showSeperatorAtEnd = false
 }: {
     items?: BreadcrumbItem[],
     separator?: string,
-    showSeperatorAtBeginning?: boolean,
-    showSeperatorAtEnd?: boolean,
 }) => {
 
     const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>(items);
+    const maxLinks = 4;
+    const truncatedBreadcrumbItems = breadcrumbItems.slice(breadcrumbItems.length - maxLinks);
 
     useEffect(() => {
         if (items == undefined || items.length === 0) {
@@ -38,59 +36,88 @@ export const Breadcrumbs = ({
                 setBreadcrumbItems(itemsNew);
             }
         }
-
-        // This is completely safe from SSR errors
     }, []);
-
-
 
     return (
         <nav aria-label="Breadcrumb" style={{ padding: '10px 0' }}>
             <ol style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, alignItems: 'center' }}>
-                <li style={{ display: 'flex', alignItems: 'center' }}>
-                    <a href="/" style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}>
-                        Home
-                    </a>
-                    <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
-                        {separator}
-                    </span>
-                </li>
                 {
-                    breadcrumbItems.map((item, index) => {
-                        return (
-                            <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
-                                {index === (breadcrumbItems.length) - 1 ? (
-                                    <>
-                                        {/* Last item is the current page: unclickable and tagged for accessibility */}
-                                        <span
-                                            aria-current="page"
-                                            style={{ color: '#666', fontWeight: 'bold', fontFamily: 'sans-serif' }}
-                                        >
-                                            {item.label}
-                                        </span>
-                                        {/* Separator symbol rendered at the right end of the last element */}
-                                        {/* <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
-                                            {separator}
-                                        </span> */}
-                                    </>
-                                ) : (
-                                    // Regular navigational links
-                                    <>
-                                        <a
-                                            href={item.href}
-                                            style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}
-                                        >
-                                            {item.label}
-                                        </a>
-                                        {/* Separator symbol rendered between elements */}
-                                        <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
-                                            {separator}
-                                        </span>
-                                    </>
-                                )}
-                            </li>
-                        );
-                    })
+                    breadcrumbItems.length > maxLinks ?
+                        <li style={{ display: 'flex', alignItems: 'center' }}>
+                            {/* Last item is the current page: unclickable and tagged for accessibility */}
+                            <span aria-current="page"
+                                style={{
+                                    color: '#666',
+                                    fontWeight: 'bold',
+                                    fontFamily: 'sans-serif'
+                                }}>
+                                ...
+                            </span>
+                            <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                {separator}
+                            </span>
+                        </li>
+                        :
+                        <li style={{ display: 'flex', alignItems: 'center' }}>
+                            <a href="/" style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}>
+                                Home
+                            </a>
+                            <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                {separator}
+                            </span>
+                        </li>
+                }
+                {
+                    breadcrumbItems.length > maxLinks ?
+                        truncatedBreadcrumbItems.map((item, index) => {
+                            return (
+                                <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                    {
+                                        index === (truncatedBreadcrumbItems.length) - 1 ? (
+                                            <span aria-current="page" style={{ color: '#666', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
+                                                {item.label}
+                                            </span>
+                                        ) : (
+                                            // Regular navigational links
+                                            <>
+                                                <a href={item.href} style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}>
+                                                    {item.label}
+                                                </a>
+                                                {/* Separator symbol rendered between elements */}
+                                                <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                                    {separator}
+                                                </span>
+                                            </>
+                                        )
+                                    }
+                                </li>
+                            );
+                        })
+                        :
+                        breadcrumbItems.map((item, index) => {
+                            return (
+                                <li key={`${item.href}_${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                    {
+                                        index === (breadcrumbItems.length) - 1 ? (
+                                            <span aria-current="page" style={{ color: '#666', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
+                                                {item.label}
+                                            </span>
+                                        ) : (
+                                            // Regular navigational links
+                                            <>
+                                                <a href={item.href} style={{ textDecoration: 'none', color: '#0066cc', fontFamily: 'sans-serif' }}>
+                                                    {item.label}
+                                                </a>
+                                                {/* Separator symbol rendered between elements */}
+                                                <span style={{ margin: '0 8px', color: '#ccc', userSelect: 'none' }} aria-hidden="true">
+                                                    {separator}
+                                                </span>
+                                            </>
+                                        )
+                                    }
+                                </li>
+                            );
+                        })
                 }
             </ol>
         </nav>
