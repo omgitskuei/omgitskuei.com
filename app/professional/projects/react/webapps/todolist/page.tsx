@@ -1,8 +1,49 @@
+'use client'
+
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import Link from "next/link";
+import { useState } from "react";
 
 
 export default function Page() {
+
+    interface TodolistItem {
+        text: string,
+        deadlineDate: string,
+        deadlineTime: string,
+        priority: string,
+    }
+
+    const localStorage_todolist = localStorage.getItem("todolist");
+    const todolist: TodolistItem[] = localStorage_todolist === null ?
+        []
+        :
+        JSON.parse(localStorage_todolist);
+
+    const [todolistData, setTodolistData] = useState<TodolistItem>();
+
+
+    function handleSave() {
+        localStorage.setItem("todolist", JSON.stringify(todolistData))
+    }
+
+    // We can use a standard form action function
+    const handleSubmit = (formData: FormData) => {
+        // 1. Extract data easily from the FormData object
+        const newEntry = Object.fromEntries(formData.entries());
+
+        // 2. Safely read, push, and write to localStorage
+        const existingData = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
+        existingData.push(newEntry);
+        localStorage.setItem('formSubmissions', JSON.stringify(existingData));
+
+        alert('Data saved successfully!');
+
+        // 3. Reset the form natively (if desired)
+        // Note: Since this is standard HTML, you can target the event creator
+        (document.getElementById('my-form') as HTMLFormElement)?.reset();
+    };
+
     return (
         <>
             <Breadcrumbs separator="/"
@@ -31,8 +72,83 @@ export default function Page() {
             </Breadcrumbs>
             <h1>To-Do List</h1>
             <section>
+                <form onSubmit={() => {
 
+                }}>
+                    {/* Text */}
+                    <label htmlFor="">*required</label>
+                    <input type="text" name="" id="" maxLength={150} required />
+                    {/* Deadline */}
+                    <div>
+                        <label htmlFor="">Deadline:</label>
+                        <input type="date" name="" id="" />
+                        <input type="time" name="" id="" />
+                    </div>
+                    {/* Priority */}
+                    <div>
+                        <label htmlFor="">Priority: </label>
+                        <select name="" style={{}}>
+                            <option value="" style={{ textAlign: "center" }}>High</option>
+                            <option value="" selected>Medium</option>
+                            <option value="">Low</option>
+                        </select>
+                    </div>
+                    {/* Tags */}
+                    <div>
+
+                    </div>
+                    <div>
+                        {/* Add */}
+                        <button type="submit" style={{ width: "50px" }} onClick={handleSave}>+Add</button>
+                        {/* Clear */}
+                        <button type="reset" style={{ width: "50px" }}>Clear</button>
+                    </div>
+                </form>
             </section>
+
+
+            <form id="my-form"
+                action={handleSubmit}
+                className="flex flex-col gap-4 max-w-md p-4">
+                <div>
+                    <label htmlFor="username" className="block font-bold">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        className="border p-2 w-full"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="email" className="block font-bold">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="border p-2 w-full"
+                    />
+                </div>
+
+                <button type="submit" className="bg-blue-600 text-white p-2 rounded">
+                    Submit
+                </button>
+            </form>
+
+
+
+            <output>
+                {
+                    todolist.map((item, index) => {
+                        return (
+                            <div key={`${index}`}>{item.text}</div>
+                        )
+                    })
+                }
+            </output>
+
         </>
     );
 }
