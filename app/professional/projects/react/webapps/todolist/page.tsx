@@ -88,9 +88,9 @@ export default function Page() {
                     <div>
                         <label htmlFor="">Priority: </label>
                         <select name="" style={{}}>
-                            <option value="" style={{ textAlign: "center" }}>High</option>
-                            <option value="" selected>Medium</option>
-                            <option value="">Low</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
                         </select>
                     </div>
                     {/* Tags */}
