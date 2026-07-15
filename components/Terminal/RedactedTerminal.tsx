@@ -296,7 +296,7 @@ export default function RedactedTerminal() {
         <div style={{
             minWidth: "320px",
             alignSelf: "stretch",
-            border: "1px solid green",
+            border: "1px solid grey",
             // maxWidth: "320px",
             boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
         }}>
