@@ -6,73 +6,45 @@ export const ProjectBreakdown = ({
     projectName,
     createDate,
     updateDate,
-    technologyUsed,
-    goal,
     summary,
+    goal,
+    technologyUsed,
     scope,
     limitations
 }: {
     projectName: string,
     createDate: string,
     updateDate: string,
-    technologyUsed: string[],
-    goal: string,
     summary: string[],
+    goal: string,
+    technologyUsed: string[],
     scope: string[],
     limitations: string[]
 
 }) => {
 
-    const Section = ({
-        title,
-        children = <></>
-    }: {
-        title: string,
-        children?: JSX.Element[] | JSX.Element
-    }) => {
-        return (<div>
-            <h4>{title}</h4>
-            {children}
-        </div>
-        )
-    };
 
     return (
-        <>
-            <h2>Project Breakdown</h2>
+        <div style={{
+            width: "100%",
+            // border: "1px solid red" 
+        }}>
+            {/* <h2>Project Breakdown</h2> */}
+            <br />
             <div>
                 <label htmlFor="projectName">Project Name: </label>
                 <span>{projectName}</span>
             </div>
             <div>
-                <label htmlFor="createDate">Create Date: </label>
+                <label htmlFor="createDate">Created Date: </label>
                 <span>{createDate}</span>
             </div>
             <div>
                 <label htmlFor="updateDate">Last Updated: </label>
                 <span>{updateDate}</span>
             </div>
-
-
-            <Section title="Toolkit:">
-                <p>
-                    <ul style={{ columnCount: 2, columnGap: "1em", listStylePosition: "inside"}}>
-                        {
-                            technologyUsed.map((item, index) => {
-                                return (
-                                    <li key={`${item}_${index}`}>{item}</li>
-                                )
-                            })
-                        }
-                    </ul>
-                </p>
-            </Section>
-            <Section title="Goal:">
-                <p>
-                    {goal}
-                </p>
-            </Section>
-            <Section title="Summary:">
+            <br />
+            <div>
                 {
                     summary.map((string, index) => {
                         return (
@@ -80,8 +52,22 @@ export const ProjectBreakdown = ({
                         )
                     })
                 }
-            </Section>
-            <Section title={"Scope:"}>
+            </div>
+            <ExpandableBox header={"Goal"}>
+                <p>{goal}</p>
+            </ExpandableBox>
+            <ExpandableBox header={"Toolkit"}>
+                <ul style={{ columnCount: 2, columnGap: "1em", listStylePosition: "inside" }}>
+                    {
+                        technologyUsed.map((item, index) => {
+                            return (
+                                <li key={`${item}_${index}`}>{item}</li>
+                            )
+                        })
+                    }
+                </ul>
+            </ExpandableBox>
+            <ExpandableBox header={"Scope"}>
                 {
                     scope.map((string, index) => {
                         return (
@@ -89,8 +75,8 @@ export const ProjectBreakdown = ({
                         )
                     })
                 }
-            </Section>
-            <Section title={"Limitations"}>
+            </ExpandableBox>
+            <ExpandableBox header={"Limitations"}>
                 {
                     limitations.map((string, index) => {
                         return (
@@ -98,7 +84,8 @@ export const ProjectBreakdown = ({
                         )
                     })
                 }
-            </Section>
-        </>
+            </ExpandableBox>
+            <br />
+        </div>
     )
 }

@@ -39,7 +39,10 @@ export default function Page() {
             </Breadcrumbs>
             <h1>Terminal</h1>
 
-            <section style={{ marginLeft: "10%", marginRight: "10%" }}>
+            <section style={{
+                marginLeft: "10%", marginRight: "10%", alignSelf: "stretch",
+                // border: "1px solid blue" 
+            }}>
                 <ProjectBreakdown projectName={"Redacted Terminal"}
                     createDate="2026/06/25"
                     updateDate="2026/06/30"
@@ -82,9 +85,8 @@ export default function Page() {
                 </ProjectBreakdown>
             </section>
 
-            <section style={{ maxWidth: "960px" }}>
+            <section style={{ marginLeft: "10%", marginRight: "10%", alignSelf: "stretch" }}>
                 <RedactedTerminal></RedactedTerminal>
-
             </section>
         </>
     );

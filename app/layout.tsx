@@ -38,13 +38,14 @@ export default function RootLayout({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "100%",
+                        width: "99vw",
+                        // border: "1px solid blue"
                     }}>
                         {children}
                     </section>
                 </main>
 
-              {/* Footer */}
+                {/* Footer */}
                 <footer className={styles.footer}>
                     <Link href="/sitemap" className={styles.card}>
                         <h4 style={{ color: "lime" }}>

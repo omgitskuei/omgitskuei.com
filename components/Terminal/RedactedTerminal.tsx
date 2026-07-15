@@ -295,7 +295,8 @@ export default function RedactedTerminal() {
     return (
         <div style={{
             minWidth: "320px",
-            width: "100%",
+            alignSelf: "stretch",
+            border: "1px solid green",
             // maxWidth: "320px",
             boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
         }}>
@@ -377,7 +378,7 @@ export default function RedactedTerminal() {
                             opacity: 0,
                             pointerEvents: "none",
                         }}
-                        autoFocus
+                        // autoFocus
                     />
                 </div>
             </div>
