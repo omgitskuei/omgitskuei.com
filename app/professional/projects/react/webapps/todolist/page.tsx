@@ -2,7 +2,7 @@
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 export default function Page() {
@@ -14,11 +14,13 @@ export default function Page() {
         priority: string,
     }
 
-    const localStorage_todolist = localStorage.getItem("todolist");
-    const todolist: TodolistItem[] = localStorage_todolist === null ?
-        []
-        :
-        JSON.parse(localStorage_todolist);
+    const [todolist, setTodolist] = useState<TodolistItem[]>(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("todolist");
+            return saved ? JSON.parse(saved) : [];
+        }
+        return [];
+    });
 
     const [todolistData, setTodolistData] = useState<TodolistItem>();
 
