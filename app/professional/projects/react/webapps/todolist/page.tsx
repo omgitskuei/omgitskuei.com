@@ -1,6 +1,7 @@
 'use client'
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { ProjectBreakdown } from "@/components/ProjectBreakdown";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,21 +13,22 @@ export default function Page() {
         deadlineDate: string,
         deadlineTime: string,
         priority: string,
+        tags: string[]
     }
+
+    const [tags, setTags] = useState<string[]>();
 
     const [todolist, setTodolist] = useState<TodolistItem[]>(() => {
         if (typeof window !== "undefined") {
-            const saved = localStorage.getItem("todolist");
-            return saved ? JSON.parse(saved) : [];
+            const storedTodolist = localStorage.getItem("todolist");
+
+            return storedTodolist ? JSON.parse(storedTodolist) : [];
         }
         return [];
     });
 
-    const [todolistData, setTodolistData] = useState<TodolistItem>();
-
-
     function handleSave() {
-        localStorage.setItem("todolist", JSON.stringify(todolistData))
+        localStorage.setItem("todolist", JSON.stringify(todolist))
     }
 
     // We can use a standard form action function
@@ -73,13 +75,79 @@ export default function Page() {
                 ]}>
             </Breadcrumbs>
             <h1>To-Do List</h1>
+
+            <section style={{
+                marginLeft: "10%", marginRight: "10%", alignSelf: "stretch",
+            }}>
+                <ProjectBreakdown projectName={"To-Do List"}
+                    createDate="2026/07/16"
+                    updateDate="2026/07/16"
+                    technologyUsed={[
+                        "HTML",
+                        "CSS",
+                        "JavaScript",
+                        "TypeScript",
+                        "React",
+                        "Next.js"
+                    ]}
+                    goal={"..."}
+                    summary={[
+                        "...",
+                    ]}
+                    scope={[
+                        "...",
+                    ]}
+                    limitations={[
+                        "...",
+                    ]}>
+                </ProjectBreakdown>
+            </section>
+
+            <section style={{ marginLeft: "10%", marginRight: "10%", alignSelf: "stretch" }}>
+                {/* Menu bar up top */}
+                <div style={{
+                    minWidth: "320px",
+                    alignSelf: "stretch",
+                    border: "1px solid grey",
+                    // maxWidth: "320px",
+                    boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
+                }}>
+                    <button onClick={() => {
+
+                    }}>
+                        New Task
+                    </button>
+                    <button onClick={() => {
+                        setTodolist([]);
+                    }}>
+                        Clear Tasks
+                    </button>
+                </div>
+                {/* Display list */}
+                <div>
+                    {
+                        todolist.map((todo, index) => {
+                            return (
+                                <div>
+                                    <input type="checkbox" />
+                                    <label>{todo.text}</label>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </section>
+
+
+
+
             <section>
                 <form onSubmit={() => {
 
                 }}>
-                    {/* Text */}
-                    <label htmlFor="">*required</label>
-                    <input type="text" name="" id="" maxLength={150} required />
+                    {/* Text - required */}
+                    <label htmlFor="newItemText">*required</label>
+                    <input type="text" id="newItemText" maxLength={150} required />
                     {/* Deadline */}
                     <div>
                         <label htmlFor="">Deadline:</label>
