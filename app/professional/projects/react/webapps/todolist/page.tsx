@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 export default function Page() {
 
     interface TodolistItem {
+        done: boolean,
         text: string,
         deadlineDate: string,
         deadlineTime: string,
@@ -18,28 +19,81 @@ export default function Page() {
 
     const [tags, setTags] = useState<string[]>();
 
-    const [todolist, setTodolist] = useState<TodolistItem[]>(() => {
-        if (typeof window !== "undefined") {
-            const storedTodolist = localStorage.getItem("todolist");
 
-            return storedTodolist ? JSON.parse(storedTodolist) : [];
+    // 1. Initialize state as an empty array (perfect server-client match)
+    const [todolist, setTodolist] = useState<TodolistItem[]>([]);
+
+    // 2. Fetch the data only *after* mounting has successfully completed
+    useEffect(() => {
+        const localStorage_todolist = localStorage.getItem("todolist");
+        if (localStorage_todolist) {
+            setTodolist(JSON.parse(localStorage_todolist));
         }
-        return [];
-    });
+    }, []);
 
+
+
+    /**
+     * Save todolist as is into localStorage
+     */
     function handleSave() {
-        localStorage.setItem("todolist", JSON.stringify(todolist))
+        if (typeof window !== "undefined") {
+            localStorage.setItem("todolist", JSON.stringify(todolist))
+        }
     }
 
-    // We can use a standard form action function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const TodoItem = ({ todo }: {
+        todo: TodolistItem,
+    }) => {
+        // It is perfectly safe to use useState here!
+        const [editable, setEditable] = useState<boolean>(false);
+
+        return (
+            <div>
+                <input type="checkbox" />
+                <label style={{ display: editable ? "none" : "inline" }}>{todo.text}</label>
+                <input style={{ display: editable ? "inline" : "none" }} type="text" defaultValue={todo.text} />
+                <button onClick={() => {
+                    if (editable) {
+                        handleSave();
+                    }
+                    setEditable(!editable);
+                }}>
+                    {editable ? "OK" : "Edit"}
+                </button>
+                <button>Trash</button>
+            </div>
+        );
+    };
+
+
+    /**
+     * 
+     * @param formData 
+     */
     const handleSubmit = (formData: FormData) => {
         // 1. Extract data easily from the FormData object
         const newEntry = Object.fromEntries(formData.entries());
 
         // 2. Safely read, push, and write to localStorage
-        const existingData = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
+        const existingData = JSON.parse(localStorage.getItem('todolist') || '[]');
         existingData.push(newEntry);
-        localStorage.setItem('formSubmissions', JSON.stringify(existingData));
+        localStorage.setItem('todolist', JSON.stringify(existingData));
 
         alert('Data saved successfully!');
 
@@ -75,7 +129,6 @@ export default function Page() {
                 ]}>
             </Breadcrumbs>
             <h1>To-Do List</h1>
-
             <section style={{
                 marginLeft: "10%", marginRight: "10%", alignSelf: "stretch",
             }}>
@@ -113,25 +166,44 @@ export default function Page() {
                     boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
                 }}>
                     <button onClick={() => {
-
+                        handleSave();
                     }}>
-                        New Task
+                        💾Save
+                    </button>
+                    <button onClick={() => {
+                        setTodolist([
+                            ...todolist,
+                            {
+                                done: false,
+                                text: "wow",
+                                deadlineDate: "",
+                                deadlineTime: "",
+                                priority: "",
+                                tags: []
+                            }
+                        ]);
+                    }}>
+                        ➕New
                     </button>
                     <button onClick={() => {
                         setTodolist([]);
                     }}>
-                        Clear Tasks
+                        🗑️Clear
                     </button>
+
                 </div>
                 {/* Display list */}
-                <div>
+                <div style={{
+                    minWidth: "320px",
+                    alignSelf: "stretch",
+                    border: "1px solid grey",
+                    // maxWidth: "320px",
+                    boxShadow: "0px 10px 20px rgba(0,0,0,0.5)",
+                }}>
                     {
                         todolist.map((todo, index) => {
                             return (
-                                <div>
-                                    <input type="checkbox" />
-                                    <label>{todo.text}</label>
-                                </div>
+                                <TodoItem todo={todo}></TodoItem>
                             );
                         })
                     }
@@ -164,9 +236,9 @@ export default function Page() {
                         </select>
                     </div>
                     {/* Tags */}
-                    <div>
+                    {/* <div>
 
-                    </div>
+                    </div> */}
                     <div>
                         {/* Add */}
                         <button type="submit" style={{ width: "50px" }} onClick={handleSave}>+Add</button>
@@ -176,7 +248,7 @@ export default function Page() {
                 </form>
             </section>
 
-
+            {/* 
             <form id="my-form"
                 action={handleSubmit}
                 className="flex flex-col gap-4 max-w-md p-4">
@@ -205,7 +277,7 @@ export default function Page() {
                 <button type="submit" className="bg-blue-600 text-white p-2 rounded">
                     Submit
                 </button>
-            </form>
+            </form> */}
 
 
 
