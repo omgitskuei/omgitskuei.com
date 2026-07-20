@@ -70,7 +70,7 @@ export const PreferencesDialog = ({}: {}) => {
                 dialogRef.current.showModal();
             }
         }
-    }, [])
+    }, []);
 
     // Submit button onClick validates the user inputs and (if all valid) sets localStorage and closes the dialog
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -90,7 +90,7 @@ export const PreferencesDialog = ({}: {}) => {
                 dialogRef.current?.close();
             }
         }
-    }
+    };
 
     return (
         // Note that the dialog HTML element doesn't have a style.display - this is because it is automatically handled as display:none unless dialog.showModal() is called
