@@ -13,6 +13,7 @@ interface Player {
 
 interface Square {
     owner: Player | null,
+    symbol: string
 }
 
 type Board = Square[][];
@@ -48,14 +49,16 @@ export default function TicTacToe() {
     const [showGameConfigPlayerTurnOrder, setShowGameConfigPlayerTurnOrder] = useState<boolean>(false);
     // Menu:Config>step 4
     const [showGameConfigBoardDimensions, setShowConfigBoardDimensions] = useState<boolean>(false);
+    // Board
+    const [showGameBoard, setShowGameBoard] = useState<boolean>(false);
 
     // Remember game configs
     const playerCountRef = useRef<number>(2);
 
-    const playersRef = useRef<Player[]>([]);
-    const boardRowsCountRef = useRef<number>(3);
-    const boardColsCountRef = useRef<number>(3);
-
+    const [players, setPlayers] = useState<Player[]>([]);
+    const [boardRows, setBoardRows] = useState<number>(3);
+    const [boardCols, setBoardCols] = useState<number>(3);
+    const [board, setBoard] = useState<Square[][]>([]);
 
     const GameConfigSymbolButtonStyle = {
         height: "25px", width: "25px",
@@ -87,20 +90,19 @@ export default function TicTacToe() {
             if (draggedIndex === null || draggedIndex === targetIndex) return;
 
             // Reorder the array
-            const updatedPlayers: Player[] = playersRef.current;
+            const updatedPlayers: Player[] = players;
             const [draggedItem] = updatedPlayers.splice(draggedIndex, 1);
             updatedPlayers.splice(targetIndex, 0, draggedItem);
 
-            playersRef.current = updatedPlayers;
+            setPlayers(updatedPlayers);
             setDraggedIndex(null);
         };
 
         return (
             <div style={{ maxWidth: '300px', margin: '20px auto' }}>
-                <h3>Set Turn Order</h3>
                 <ol style={{ padding: 0, listStyle: 'none' }}>
                     {
-                        playersRef.current.map((player, index) => (
+                        players.map((player, index) => (
                             <li
                                 key={player.id}
                                 draggable
@@ -196,66 +198,192 @@ export default function TicTacToe() {
                 {/* Config Step 2: New Players symbols and names */}
                 <div style={{
                     display: showGameConfigNewPlayers ? "flex" : "none",
+                    flexWrap: "wrap",
+                    // justifyContent: "space-around",
                     // flexDirection: "column"
-                    gap: "10px"
+                    gap: "10px",
+                    border: "1px solid red"
                 }}>
                     {
-                        playersRef.current.map((player, index) => {
+                        players.map((player, index) => {
 
                             return (
-                                <div>
+                                <div style={{
+                                    width: "calc(50% - 5px)",
+                                    boxSizing: "border-box",
+                                    border: "1px solid red",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center"
+                                }}>
                                     <div>
                                         <label htmlFor="newPlayerName">Name: </label>
                                         <br />
-                                        <input type="text" 
-                                            id="newPlayerName" 
-                                            value={player.username} 
-                                            style={{ width: "115px"}}/>
+                                        <input type="text"
+                                            id="newPlayerName"
+                                            value={player.username}
+                                            onChange={(e) => {
+                                                const currentPlayers = [...players];
+                                                currentPlayers[index] = {
+                                                    ...player,
+                                                    username: e.target.value
+                                                };
+                                                setPlayers(currentPlayers);
+                                                console.log(currentPlayers);
+                                            }}
+                                            style={{ width: "115px" }} />
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                        <label htmlFor="newPlayerSymbol">Symbol:</label>
+                                        <label htmlFor="newPlayerSymbol">Symbol: {player.symbol}</label>
                                         {/* 1 row of symbol btns */}
                                         <div style={{ display: "flex", gap: "5px" }}>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "❌";
+                                                        currentPlayers[index] = player
+                                                        setPlayers(currentPlayers);
+                                                        console.log(currentPlayers);
+                                                    }
+                                                }}>
                                                 ❌
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "⭕";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 ⭕
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🐈";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🐈
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🐩";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🐩
                                             </button>
                                         </div>
                                         {/* 2 row of symbol btns */}
                                         <div style={{ display: "flex", gap: "5px" }}>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "💎";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 💎
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🗑️";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🗑️
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "👑";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 👑
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🏰";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🏰
                                             </button>
                                         </div>
                                         {/* 3 row of symbol btns */}
                                         <div style={{ display: "flex", gap: "5px" }}>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle} onClick={() => {
+                                                const currentPlayers = [...players];
+                                                if (currentPlayers) {
+                                                    player.symbol = "🍎";
+                                                    currentPlayers[index] = player
+                                                    console.log(currentPlayers)
+                                                    setPlayers(currentPlayers);
+                                                }
+                                            }}>
                                                 🍎
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle} onClick={() => {
+                                                const currentPlayers = [...players];
+                                                if (currentPlayers) {
+                                                    player.symbol = "🍌";
+                                                    currentPlayers[index] = player
+                                                    console.log(currentPlayers)
+                                                    setPlayers(currentPlayers);
+                                                }
+                                            }}>
                                                 🍌
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🗡️";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🗡️
                                             </button>
-                                            <button style={GameConfigSymbolButtonStyle}>
+                                            <button style={GameConfigSymbolButtonStyle}
+                                                onClick={() => {
+                                                    const currentPlayers = [...players];
+                                                    if (currentPlayers) {
+                                                        player.symbol = "🛡️";
+                                                        currentPlayers[index] = player
+                                                        console.log(currentPlayers)
+                                                        setPlayers(currentPlayers);
+                                                    }
+                                                }}>
                                                 🛡️
                                             </button>
                                         </div>
@@ -264,37 +392,32 @@ export default function TicTacToe() {
                             );
                         })
                     }
-
                 </div>
-
+                {/* Config Step 3: Modify turn order of players */}
                 <div style={{
-                    display: showGameConfigPlayerTurnOrder ? "flex" : "none"
+                    display: showGameConfigPlayerTurnOrder ? "flex" : "none",
+                    flexDirection: "column"
                 }}>
-                    <label htmlFor="">Turn order: </label>
-
-
-
-
+                    <label htmlFor="">Customize turn order: </label>
                     <PlayerTurnOrderArranger></PlayerTurnOrderArranger>
-
-                    {/* <TurnOrderOrganizer></TurnOrderOrganizer> */}
-
-
-
-
-
-
                     <button>Randomize 🎲</button>
                 </div>
+                {/* Config Step 4: Modify board dimensions */}
                 <div style={{
-                    display: showGameConfigBoardDimensions ? "flex" : "none"
+                    display: showGameConfigBoardDimensions ? "flex" : "none",
+                    flexDirection: "column"
                 }}>
-                    <label htmlFor="">Board Dimensions: </label>
-                    <label htmlFor="">Rows: </label>
-                    <label htmlFor="">Columns: </label>
+                    <span>Board Dimensions: {boardRows}x{boardCols}</span>
+                    <div style={{ width: "300px", display: "flex", justifyContent: "space-between" }}>
+                        <label htmlFor="newBoardRows">Rows: </label>
+                        <input type="number" id="newBoardRows" value={boardRows} onChange={e => setBoardRows(parseInt(e.target.value))} />
+                    </div>
+                    <div style={{ width: "300px", display: "flex", justifyContent: "space-between" }}>
+                        <label htmlFor="newBoardCols">Columns: </label>
+                        <input type="number" id="newBoardCols" value={boardCols} onChange={e => setBoardCols(parseInt(e.target.value))} />
+                    </div>
                 </div>
-
-
+                {/* Config - Nav button */}
                 <button onClick={() => {
                     if (showGameConfigPlayerCount) {
                         setShowGameConfigPlayerCount(false);
@@ -309,7 +432,7 @@ export default function TicTacToe() {
                                     username: `Player ${i + 1}`,  // default player name
                                     symbol: ""
                                 };
-                                playersRef.current.push(newPlayer);
+                                players.push(newPlayer);
                             }
                         } else {
                             alert("ERROR: Unable to get Player Count, defaulting to 2 players");
@@ -328,6 +451,21 @@ export default function TicTacToe() {
                         setShowConfigBoardDimensions(false);
                         setShowGameConfig(false);
                         // START GAME
+                        setShowGameBoard(true);
+                        var newBoard: Square[][] = [];
+                        for (let r = 0; r < boardRows; r++) {
+                            const row: Square[] = [];
+
+                            for (let c = 0; c < boardCols; c++) {
+                                row.push({
+                                    owner: null,
+                                    symbol: ""
+                                })
+                            }
+
+                            newBoard.push(row);
+                        }
+                        setBoard(newBoard);
                     }
                 }}
                     style={{
@@ -341,17 +479,96 @@ export default function TicTacToe() {
                             "NEXT"
                     }
                 </button>
-
-
-
-
-
-
-
-
             </div>
             {/* Start playing */}
-            <div>
+            <div style={{
+                display: showGameBoard ? "flex" : "none",
+                height: "300px",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                // gap: "20px"
+            }}>
+                Game board
+                {
+                    board.map((row, rowIndex) => {
+                        return (
+                            <>
+                                <div style={{ display: "flex", flexDirection: "row" }}>
+
+                                    {
+                                        row.map((col, colIndex) => {
+                                            return (
+                                                <>
+                                                    <div style={{
+                                                        border: "1px solid black",
+                                                        width: "40px",
+                                                        height: "40px",
+                                                        cursor: col.owner === null ? "pointer" : "no-drop"
+                                                    }}
+                                                        onClick={() => {
+                                                            alert(`Row:${rowIndex}, Col:${colIndex}`)
+                                                        }}>
+                                                        {/* {`Username: ${col.owner?.username}`} */}
+                                                        {`${col.symbol}`}
+                                                    </div>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                    {/* R# display */}
+                                    <div style={{
+                                        // border: "1px dashed black",
+                                        width: "40px",
+                                        height: "40px",
+                                        // cursor: col.owner === null ? "pointer" : "no-drop",
+                                        display: "flex",
+                                        justifyContent: "start",
+                                        alignItems: "center"
+                                    }}>
+                                        R{rowIndex + 1}
+                                    </div>
+                                </div>
+                                {
+                                    (rowIndex + 1) == board.length ?
+                                        // C# display
+                                        <div style={{ display: "flex", flexDirection: "row" }}>
+                                            {
+                                                row.map((col, colIndex) => {
+                                                    return (
+                                                        <div style={{
+                                                            // border: "1px dashed black",
+                                                            width: "40px",
+                                                            height: "40px",
+                                                            // cursor: col.owner === null ? "pointer" : "no-drop",
+                                                            display: "flex",
+                                                            justifyContent: "center"
+                                                        }}>
+                                                            C{colIndex + 1}
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            {/* R#/C# joint layout display */}
+                                            <div style={{
+                                                // border: "1px dashed black",
+                                                width: "40px",
+                                                height: "40px",
+                                                // cursor: col.owner === null ? "pointer" : "no-drop",
+                                                display: "flex",
+                                                justifyContent: "center"
+                                            }}>
+                                            </div>
+                                        </div>
+                                        :
+                                        <></>
+
+                                }
+                            </>
+                        )
+                    })
+                }
+
 
             </div>
             {/* Stats */}
@@ -366,6 +583,6 @@ export default function TicTacToe() {
 
                 }
             </div>
-        </div>
+        </div >
     );
 }
