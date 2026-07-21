@@ -2,7 +2,6 @@
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ProjectBreakdown } from "@/components/ProjectBreakdown";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import styles from "./page.module.css";
@@ -28,12 +27,9 @@ export default function Page() {
     // States for tasks
     interface Task {
         taskListId: number,
+        id: number,        // timestamp
         done: boolean,
         text: string,
-        deadlineDate: string,
-        deadlineTime: string,
-        priority: string,
-        tags: string[]
     };
     const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -42,7 +38,6 @@ export default function Page() {
         id: number,
         name: string,
     };
-    // const selectedListIndex = useRef<number>(0);
     const [taskLists, setTaskLists] = useState<TaskList[]>([
         {
             id: 0,
@@ -64,47 +59,21 @@ export default function Page() {
     const [activeTaskListId, setActiveTasklistId] = useState<number>(0);
 
     // Dialog for adding new list
-    const newListDialogRef = useRef<HTMLDialogElement>(null);
-
-
-
-
-
-
-
-    const [tags, setTags] = useState<string[]>();
-
-
-
-
-
-
-
-
-
+    const dialogNewListRef = useRef<HTMLDialogElement>(null);
+    // Dialog for help
+    const dialogHelpRef = useRef<HTMLDialogElement>(null);
+    const [dialogHelpPage, setShowDialogHelpPage] = useState<number>(0);
 
     const TopbarButtonStyle: React.CSSProperties = {
         padding: "0px",
         margin: "0px",
         borderRadius: "0px",
-        background: "transparent",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         fontFamily: "sans-serif",
         fontSize: "13px",
     };
-
-
-    /**
-     * Open the Create new list dialog
-     */
-    function handleCreateList() {
-        // Show dialog window
-        if (newListDialogRef.current) {
-            newListDialogRef.current.showModal();
-        }
-    }
 
     /**
      * Delete the selected todolist
@@ -117,14 +86,24 @@ export default function Page() {
             return;
         }
 
-        // Get current selected option
+        // Get current selected option (a list)
         const selectAllTodolists = document.getElementById("selectAllTodolists") as HTMLSelectElement;
-        const copyOfTodolists = [...taskLists];
+        const updatedLists = [...taskLists];                                // Copy to mutate it
+        // Delete the list at the currently selected index
         const indexToRemove = selectAllTodolists.selectedIndex;
-        const poppedItem = copyOfTodolists.splice(indexToRemove, 1)[0];     // Mutated by .splice()
-        // console.log(`Updated taskLists: ${copyOfTodolists}, removing this todolist ${poppedItem}`);
-        // Delete the item at the currently selected index
-        setTaskLists(copyOfTodolists);
+        const removedList = updatedLists.splice(indexToRemove, 1)[0];       // Mutated by .splice()
+
+        // Clean up tasks belonging to the deleted list
+        const updatedTasks = tasks.filter((task) => task.taskListId !== removedList.id);
+        
+        setTasks(updatedTasks);
+        setTaskLists(updatedLists);
+
+        // Update localStorage
+        if (typeof window !== "undefined") {
+            localStorage.setItem("taskLists", JSON.stringify(updatedLists));
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        }
     };
 
     /**
@@ -132,6 +111,7 @@ export default function Page() {
      */
     function handleSave() {
         if (typeof window !== "undefined") {
+            localStorage.setItem("taskLists", JSON.stringify(taskLists));
             localStorage.setItem("tasks", JSON.stringify(tasks));
         }
     };
@@ -140,31 +120,31 @@ export default function Page() {
      * New todolist as is into localStorage
      */
     function handleNewTask() {
-        const newList: Task[] = [
+        const updatedTasks: Task[] = [
             ...tasks,
             {
-                taskListId: 0,
+                taskListId: activeTaskListId,
                 done: false,
                 text: "New task",
-                deadlineDate: "",
-                deadlineTime: "",
-                priority: "",
-                tags: [],
+                id: Date.now(),
             }
         ];
-        setTasks(newList);
+        setTasks(updatedTasks);
         if (typeof window !== "undefined") {
-            localStorage.setItem("tasks", JSON.stringify(newList));
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
         }
     };
 
     /**
-     * Clear todolist as is into localStorage
+     * Clear the active task list of all tasks
      */
-    function handleClear() {
-        setTasks([]);
+    function handleDeleteAllTasksFromActiveList() {
+        const tasksFromOtherLists = tasks.filter(eachTask => { activeTaskListId != eachTask.taskListId })
+        console.log(tasksFromOtherLists)
+
+        setTasks(tasksFromOtherLists);
         if (typeof window !== "undefined") {
-            localStorage.setItem("tasks", JSON.stringify([]));
+            localStorage.setItem("tasks", JSON.stringify(tasksFromOtherLists));
         }
     };
 
@@ -172,6 +152,73 @@ export default function Page() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Delete a specific task from state and update localStorage
+     */
+    function handleDeleteThisTask(taskToDelete: Task) {
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.filter((t) => t !== taskToDelete);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+            }
+            return updatedTasks;
+        });
+    }
 
 
 
@@ -180,103 +227,105 @@ export default function Page() {
 
 
     const Task = ({
-        todo
+        todo: task
     }: {
         todo: Task
     }) => {
         // It is perfectly safe to use useState here!
         const [editable, setEditable] = useState<boolean>(false);
-        const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
         return (
             <div style={{
                 // padding: "5px",
                 border: "1px solid #6666665e",
                 display: "flex",
-                // justifyContent: "center",
+                // justifyContent: "space-between",
                 alignItems: "center",
                 gap: "10px",
                 height: "35px",
-                paddingLeft: "10px"
+                // paddingLeft: "10px"
             }}>
+                <div style={{ display: "flex", }}>
+                    <button style={{
+                        borderTop: "1px solid #6666665e",
+                        borderBottom: "1px solid #6666665e",
+                        borderLeft: "none",
+                        borderRight: "black 1px solid",
+                        height: "35px",
+                        width: "35px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                        ...TopbarButtonStyle
+                    }}
+                        onClick={() => {
 
+                        }}>
+                        🡱
+                    </button>
+                    <button style={{
+                        borderTop: "1px solid #6666665e",
+                        borderBottom: "1px solid #6666665e",
+                        borderLeft: "none",
+                        borderRight: "black 1px solid",
+                        height: "35px",
+                        width: "35px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                        ...TopbarButtonStyle
+                    }}
+                        onClick={() => {
 
-
-                {/* Done/Not-Done */}
-                <input style={{ transform: "scale(1.2)" }} type="checkbox" />
-
-                {/* Text and text's edit/confirm */}
-                <div>
-                    <label style={{ display: editable ? "none" : "inline-block", width: "200px" }}>
-                        {todo.text}
-                    </label>
-                    <input style={{ display: editable ? "inline" : "none", width: "200px" }}
-                        type="text"
-                        defaultValue={todo.text} />
-                    <button
-
+                        }}>
+                        🡳
+                    </button>
+                    <button style={{
+                        borderTop: "1px solid #6666665e",
+                        borderBottom: "1px solid #6666665e",
+                        borderLeft: "none",
+                        borderRight: "black 1px solid",
+                        height: "35px",
+                        width: "35px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                        ...TopbarButtonStyle
+                    }}
                         onClick={() => {
                             if (editable) {
                                 handleSave();
                             }
                             setEditable(!editable);
                         }}>
-                        {editable ? "OK" : "✏️"}
+                        {editable ? "💾" : "✏️"}
+                    </button>
+                    <button style={{
+                        borderTop: "1px solid #6666665e",
+                        borderBottom: "1px solid #6666665e",
+                        borderLeft: "none",
+                        borderRight: "black 1px solid",
+                        height: "35px",
+                        width: "34px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                        ...TopbarButtonStyle
+                    }}
+                        onClick={() => handleDeleteThisTask(task)}>
+                        ➖
                     </button>
                 </div>
 
-                {/* Deadline */}
+
+                {/* Done/Not-Done */}
+                <input style={{ transform: "scale(1.2)" }} type="checkbox" checked={task.done} onChange={(e) => {
+                    task.done = e.target.checked
+                }} />
+
+                {/* Text and text's edit/confirm */}
                 <div>
-                    {/* <label htmlFor="">Deadline:</label> */}
-                    <input type="date" name="" id="" />
-                    <input type="time" name="" id="" />
+                    <label style={{ display: editable ? "none" : "inline-block", minWidth: "95px" }}>
+                        {task.text}
+                    </label>
+                    <input style={{ display: editable ? "inline" : "none", minWidth: "95px" }}
+                        type="text"
+                        defaultValue={task.text} />
                 </div>
 
-                {/* Priority */}
-                <div>
-                    {/* <label htmlFor="">Priority: </label> */}
-                    <select name="" style={{}}>
-                        <option value="" selected disabled>--Priority--</option>
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
-                    </select>
-                </div>
-
-
-
-
-
-                {/* <button style={{
-                    borderTop: "none",
-                    borderBottom: "none",
-                    borderLeft: "black 1px solid",
-                    borderRight: "none",
-                    flexBasis: "35px",
-                    background: "red",
-                    cursor: "pointer",
-                    ...TopbarButtonStyle
-                }}
-                    onClick={() => {
-                        alert("UP")
-                    }}>
-                    🔼
-                </button>
-                <button style={{
-                    borderTop: "none",
-                    borderBottom: "none",
-                    borderLeft: "black 1px solid",
-                    borderRight: "none",
-                    flexBasis: "35px",
-                    cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
-                    ...TopbarButtonStyle
-                }}
-                    onClick={() => {
-                        alert("DWON")
-                    }}>
-                    🔽
-                </button> */}
-
+                {`${task.taskListId}.${task.id}`}
             </div >
         );
     };
@@ -350,7 +399,7 @@ export default function Page() {
                 boxShadow: "0px 10px 5px 0px rgba(0,0,0,0.5)",
             }}>
                 {/* New list dialog */}
-                <dialog ref={newListDialogRef} className={styles.dialog}
+                <dialog ref={dialogNewListRef} className={styles.dialog}
                     style={{ padding: "0px", borderRadius: "4px", overflowX: "hidden" }}>
                     {/* This puts the form and image side-by-side */}
                     <div style={{ display: "flex" }}>
@@ -370,7 +419,7 @@ export default function Page() {
                                     },
                                     ...taskLists,]);
                                     inputNewListName.value = "";
-                                    newListDialogRef.current?.close();
+                                    dialogNewListRef.current?.close();
                                 }}>
                                 {/* Font sizes */}
                                 <div style={{ display: "flex", flexDirection: "row", gap: "5px", alignItems: "center" }}>
@@ -384,7 +433,7 @@ export default function Page() {
                                     <button type="button" onClick={() => {
                                         const inputNewListName = document.getElementById("inputNewListName") as HTMLInputElement;
                                         inputNewListName.value = "";
-                                        newListDialogRef.current?.close();
+                                        dialogNewListRef.current?.close();
                                     }}
                                         style={{ minWidth: "80px", padding: "5px" }}>
                                         Cancel
@@ -394,6 +443,74 @@ export default function Page() {
                         </div>
                     </div>
                 </dialog >
+                {/* Help dialog */}
+                <dialog ref={dialogHelpRef} className={styles.dialog}
+                    style={{ padding: "0px", borderRadius: "4px", overflowX: "hidden" }}>
+                    {/* This puts the form and image side-by-side */}
+                    <div style={{ display: "flex" }}>
+                        <div style={{
+                            display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+                            margin: "10px",
+                        }}>
+                            <h3>Help</h3>
+                            {/* Instructions #1 - top bar, new/activate/delete list*/}
+                            <ol type="a" style={{ display: (dialogHelpPage === 0) ? "block" : "none" }}>
+                                <li>Click on the dropdown menu to switch lists</li>
+                                <li>Click the + button to create a new list</li>
+                                <li>Click the - button to delete the current list</li>
+                            </ol>
+                            {/* Instructions #2 - side bar, save/new/delete/delete-all tasks*/}
+                            <ol type="a" style={{ display: (dialogHelpPage === 1) ? "block" : "none" }}>
+                                <li>Click the save button to save all displayed tasks</li>
+                                <li>Click the - button to delete checked tasks</li>
+                                <li>Click the - button to delete all tasks</li>
+                            </ol>
+
+
+                            <p style={{ textWrap: "nowrap" }}>A to-do list must have a name or title.</p>
+                            {/* Instructions #3 - task window, edit tasks */}
+                            <p style={{ textWrap: "nowrap" }}>A to-do list must have a name or title.</p>
+
+
+
+                            <form style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+                                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                    e.preventDefault();
+                                    const inputNewListName = document.getElementById("inputNewListName") as HTMLInputElement;
+                                    setTaskLists([{
+                                        name: inputNewListName.value,
+                                        id: 0
+                                    },
+                                    ...taskLists,]);
+                                    inputNewListName.value = "";
+                                    dialogNewListRef.current?.close();
+                                }}>
+                                {/* Font sizes */}
+                                <div style={{ display: "flex", flexDirection: "row", gap: "5px", alignItems: "center" }}>
+                                    <label>New list name: </label>
+                                    <input type="text" id="inputNewListName" maxLength={18}></input>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <button type="submit" style={{ minWidth: "80px", padding: "5px" }}>
+                                        Confirm
+                                    </button>
+                                    <button type="button" onClick={() => {
+                                        const inputNewListName = document.getElementById("inputNewListName") as HTMLInputElement;
+                                        inputNewListName.value = "";
+                                        dialogNewListRef.current?.close();
+                                    }}
+                                        style={{ minWidth: "80px", padding: "5px" }}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </dialog >
+
+
+
+
                 {/* Menu bar at the top for manipulating all taskLists */}
                 <div style={{
                     height: "35px",
@@ -444,7 +561,12 @@ export default function Page() {
                             flexBasis: "35px",
                             ...TopbarButtonStyle,
                         }}
-                            onClick={handleCreateList}>
+                            onClick={() => {
+                                // Show Create new list dialog window
+                                if (dialogNewListRef.current) {
+                                    dialogNewListRef.current.showModal();
+                                }
+                            }}>
                             ➕
                         </button>
                         <button style={{
@@ -471,63 +593,7 @@ export default function Page() {
                     borderRight: "1px solid grey",
                     borderBottom: "1px solid grey"
                 }}>
-                    {/* Sidebar for manipulating a todolist's todos*/}
-                    <div style={{
-                        height: "100%",
-                        minHeight: "300px",
-                        width: "35px",
-                        borderRight: "1px solid grey",
-                        // borderBottom: "1px solid grey",
-                        display: "flex",
-                        flexDirection: "column"
-                        // justifyContent: "space-between",
-                    }}>
-                        <button style={{
-                            borderTop: "none",
-                            borderBottom: "black 1px solid",
-                            borderLeft: "none",
-                            borderRight: "none",
-                            width: "100%",
-                            height: "35px",
-                            ...TopbarButtonStyle
-                        }} onClick={handleSave}>
-                            💾
-                            {/* <span className="hideOnMobile">Save list</span> */}
-                        </button>
-                        <button style={{
-                            borderTop: "none",
-                            borderBottom: "black 1px solid",
-                            borderLeft: "none",
-                            borderRight: "none",
-                            width: "100%",
-                            height: "35px",
-                            ...TopbarButtonStyle
-                        }} onClick={handleNewTask}>
-                            ➕
-                        </button>
-                        <button style={{
-                            borderTop: "none",
-                            borderBottom: "black 1px solid",
-                            borderLeft: "none",
-                            borderRight: "none",
-                            width: "100%",
-                            height: "35px",
-                            ...TopbarButtonStyle
-                        }} onClick={handleClear}>
-                            ➖
-                        </button>
-                        <button style={{
-                            borderTop: "none",
-                            borderBottom: "black 1px solid",
-                            borderLeft: "none",
-                            borderRight: "none",
-                            width: "100%",
-                            height: "35px",
-                            ...TopbarButtonStyle
-                        }} onClick={handleClear}>
-                            🗑️
-                        </button>
-                    </div>
+
 
 
                     <div style={{
@@ -542,13 +608,57 @@ export default function Page() {
                                 if (eachTask.taskListId === activeTaskListId) {
                                     // 2. The Map Step: Push the JSX element into our array
                                     accumulator.push(
-                                        <Task key={eachTask.taskListId} todo={eachTask} />
+                                        <Task key={`${eachTask.taskListId}.${eachTask.id}.${tasks.length}`} todo={eachTask} />
                                     );
                                 }
                                 // Always return the array for the next loop iteration
                                 return accumulator;
                             }, []) // <-- Start with an empty array []
                         }
+
+
+
+
+
+
+
+
+                        <button style={{
+                            border: "1px solid #6666665e",
+                            // background: "none",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "35px",
+                        }}
+                            onClick={handleNewTask}>
+                            ➕
+                        </button>
+                    </div>
+
+
+                    {/* Sidebar for manipulating a todolist's todos*/}
+                    <div style={{
+                        height: "100%",
+                        minHeight: "300px",
+                        width: "35px",
+                        borderLeft: "1px solid black",
+                        // borderBottom: "1px solid grey",
+                        display: "flex",
+                        flexDirection: "column-reverse"
+                        // justifyContent: "space-between",
+                    }}>
+                        <button style={{
+                            borderTop: "black 1px solid",
+                            borderBottom: "none",
+                            borderLeft: "none",
+                            borderRight: "none",
+                            width: "100%",
+                            height: "35px",
+                            ...TopbarButtonStyle
+                        }} onClick={handleDeleteAllTasksFromActiveList}>
+                            🗑️
+                        </button>
                     </div>
                 </div>
 
@@ -587,14 +697,35 @@ export default function Page() {
 
                     justifyContent: "space-between",
                 }}>
+                    {/* Help button */}
+                    <button style={{
+                        borderTop: "none",
+                        borderBottom: "none",
+                        borderLeft: "none",
+                        // boxSizing: "border-box",
+                        borderRight: "1px solid black",
+                        flexBasis: "35px",
+                        cursor: "pointer",
+                        ...TopbarButtonStyle
+                    }}
+                        onClick={() => {
+                            // Show help dialog window
+                            if (dialogHelpRef.current) {
+                                dialogHelpRef.current.showModal();
+                            }
+                        }}>
+                        ❔
+                    </button>
                     {/* Count tasks */}
                     <div style={{
                         display: "flex",
                         alignItems: "center",
-                        // border: "1px dashed red"
+                        // border: "1px dashed red",
+                        padding: "5px"
                     }}>
                         <span>Tasks: {tasks.length}</span>
                     </div>
+
                 </div>
             </section>
         </>
