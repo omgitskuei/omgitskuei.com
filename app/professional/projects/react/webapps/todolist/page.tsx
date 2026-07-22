@@ -148,7 +148,81 @@ export default function Page() {
         }
     };
 
-
+    /**
+     * Top bar of the webapp, for creating, deleting, and selecting lists
+     */
+    const TasklistTopBar = ({ }: {}) => {
+        return (
+            <div style={{
+                height: "35px",
+                width: "100%",
+                border: "1px solid grey",
+                display: "flex",
+                justifyContent: "space-between",
+            }}>
+                {/* Select which todolist is active */}
+                <select id="selectAllTodolists"
+                    style={{
+                        flexGrow: "1",
+                        borderRadius: "0px",
+                        border: "none",
+                        boxSizing: "border-box",
+                        paddingLeft: "5px",
+                        marginRight: "2px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const selectedTasklistId = parseInt(e.target.value);
+                        setActiveTasklistId(selectedTasklistId);
+                    }}
+                    disabled={taskLists.length === 0 ? true : false}>
+                    {
+                        taskLists.map((taskList, index) => {
+                            return (
+                                <option value={taskList.id}
+                                    key={`${taskList.id}_${index}`}
+                                    style={{}}>
+                                    {taskList.name}
+                                    {/* {`${todolist.name.substring(0, 15)}${todolist.name.length > 15 ? "..." : ""}`} */}
+                                </option>
+                            )
+                        })
+                    }
+                </select>
+                {/* Buttons (Add, Delete) on the right */}
+                <div style={{ display: "flex", width: "70px" }}>
+                    <button style={{
+                        borderTop: "none",
+                        borderBottom: "none",
+                        borderLeft: "black 1px solid",
+                        borderRight: "none",
+                        flexBasis: "35px",
+                        ...TopbarButtonStyle,
+                    }}
+                        onClick={() => {
+                            // Show Create new list dialog window
+                            if (dialogNewListRef.current) {
+                                dialogNewListRef.current.showModal();
+                            }
+                        }}>
+                        ➕
+                    </button>
+                    <button style={{
+                        borderTop: "none",
+                        borderBottom: "none",
+                        borderLeft: "black 1px solid",
+                        borderRight: "none",
+                        flexBasis: "35px",
+                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                        ...TopbarButtonStyle
+                    }}
+                        onClick={handleDeleteList}>
+                        ➖
+                    </button>
+                </div>
+            </div>
+        );
+    };
 
 
 
