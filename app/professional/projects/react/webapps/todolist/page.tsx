@@ -27,12 +27,61 @@ export default function Page() {
 
     // States for tasks
     interface Task {
-        taskListId: number,
-        id: number,        // timestamp
         done: boolean,
+        id: number,        // timestamp
+        taskListId: number,
         text: string,
     };
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([
+        {
+            taskListId: 0,
+            id: 0,
+            done: false,
+            text: "Test this webapp"
+        },
+        {
+            taskListId: 1,
+            id: 1,
+            done: false,
+            text: "Milk"
+        },
+        {
+            taskListId: 1,
+            id: 2,
+            done: false,
+            text: "Eggs"
+        },
+        {
+            taskListId: 2,
+            id: 3,
+            done: false,
+            text: "Wash dishes"
+        },
+        {
+            taskListId: 2,
+            id: 4,
+            done: false,
+            text: "Sweep the house"
+        },
+        {
+            taskListId: 2,
+            id: 5,
+            done: false,
+            text: "Water all plants"
+        },
+        {
+            taskListId: 3,
+            id: 6,
+            done: false,
+            text: "John Wick (featuring Keanu Reeves)"
+        },
+        {
+            taskListId: 3,
+            id: 7,
+            done: false,
+            text: "Her (which doesn't feature Keanu)"
+        }
+    ]);
 
     // States for taskLists
     interface TaskList {
@@ -109,19 +158,9 @@ export default function Page() {
     };
 
     /**
-     * Save todolist as is into localStorage
+     * Create a task from state and update localStorage
      */
-    function handleSave() {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("taskLists", JSON.stringify(taskLists));
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-        }
-    };
-
-    /**
-     * New todolist as is into localStorage
-     */
-    function handleNewTask() {
+    function handleCreateTask() {
         const updatedTasks: Task[] = [
             ...tasks,
             {
@@ -136,6 +175,19 @@ export default function Page() {
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
         }
     };
+
+    /**
+     * Delete a specific task from state and update localStorage
+     */
+    function handleDeleteThisTask(taskToDelete: Task) {
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.filter((t) => t !== taskToDelete);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+            }
+            return updatedTasks;
+        });
+    }
 
     /**
      * Clear the active task list of all tasks
@@ -153,7 +205,7 @@ export default function Page() {
     /**
      * Top bar of the webapp, for creating, deleting, and selecting lists
      */
-    const TasklistTopBar = ({}: {}) => {
+    const TasklistTopBar = () => {
         return (
             <div style={{
                 height: "35px",
@@ -227,6 +279,121 @@ export default function Page() {
         );
     };
 
+    /**
+     * Middle part for all tasks for the active list, and sidebar for manipulating all tasks belonging to the active list
+     */
+    const TasklistMiddleSection = () => {
+        return (
+            <div style={{
+                display: "flex",
+                borderLeft: "1px solid grey",
+                borderRight: "1px solid grey",
+                borderBottom: "1px solid grey"
+            }}>
+                {/* All tasks for active list */}
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignSelf: "stretch",
+                    flexGrow: "1",
+                }}>
+                    {/* Iterate and display all tasks for the active list */}
+                    {
+                        tasks.reduce((accumulator: React.ReactNode[], eachTask) => {
+                            // 1. The Filter Step
+                            if (eachTask.taskListId === activeTaskListId) {
+                                // 2. The Map Step: Push the JSX element into our array
+                                accumulator.push(
+                                    <Task key={`${eachTask.taskListId}.${eachTask.id}.${tasks.length}`} todo={eachTask} />
+                                );
+                            }
+                            // Always return the array for the next loop iteration
+                            return accumulator;
+                        }, []) // <-- Start with an empty array []
+                    }
+                    {/* Button to create new task for the active list */}
+                    <button style={{
+                        border: "1px solid #6666665e",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "35px",
+                    }}
+                        onClick={handleCreateTask}>
+                        ➕
+                    </button>
+                </div>
+                {/* Sidebar for manipulating a tasklist's tasks*/}
+                <div style={{
+                    height: "100%",
+                    minHeight: "300px",
+                    width: "35px",
+                    borderLeft: "1px solid black",
+                    display: "flex",
+                    flexDirection: "column-reverse"
+                }}>
+                    <button style={{
+                        borderTop: "black 1px solid",
+                        borderBottom: "none",
+                        borderLeft: "none",
+                        borderRight: "none",
+                        width: "100%",
+                        height: "35px",
+                        ...TopbarButtonStyle
+                    }} onClick={handleDeleteAllTasksFromActiveList}>
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    /**
+     * Footer with statistics and Help button
+     */
+    const TasklistFooter = () => {
+        return (
+            <div style={{
+                height: "35px",
+                width: "100%",
+                borderLeft: "1px solid grey",
+                borderRight: "1px solid grey",
+                borderBottom: "1px solid grey",
+                display: "flex",
+                justifyContent: "space-between",
+            }}>
+                {/* Help button */}
+                <button style={{
+                    borderTop: "none",
+                    borderBottom: "none",
+                    borderLeft: "none",
+                    borderRight: "1px solid black",
+                    flexBasis: "35px",
+                    cursor: "pointer",
+                    ...TopbarButtonStyle
+                }}
+                    onClick={() => {
+                        // Show help dialog window
+                        if (dialogHelpRef.current) {
+                            dialogHelpRef.current.showModal();
+                        }
+                    }}>
+                    ❔
+                </button>
+                {/* Count tasks */}
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingRight: "10px"
+                }}>
+                    <span>Total Tasks: {tasks.length}</span>
+                </div>
+            </div>
+        );
+    }
+
+
+
 
 
 
@@ -285,24 +452,10 @@ export default function Page() {
 
 
     /**
-     * Delete a specific task from state and update localStorage
+     * Each task in the webapp's middle section
+     * @param param0 task typeof Task (done, id, taskListId, text)
+     * @returns 
      */
-    function handleDeleteThisTask(taskToDelete: Task) {
-        setTasks((prevTasks) => {
-            const updatedTasks = prevTasks.filter((t) => t !== taskToDelete);
-            if (typeof window !== "undefined") {
-                localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-            }
-            return updatedTasks;
-        });
-    }
-
-
-
-
-
-
-
     const Task = ({
         todo: task
     }: {
@@ -323,32 +476,79 @@ export default function Page() {
                 // paddingLeft: "10px"
             }}>
                 <div style={{ display: "flex", }}>
-                    <button style={{
-                        borderTop: "1px solid #6666665e",
-                        borderBottom: "1px solid #6666665e",
-                        borderLeft: "none",
-                        borderRight: "black 1px solid",
-                        height: "35px",
-                        width: "35px",
-                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
-                        ...TopbarButtonStyle
-                    }}
+                    <button className="hideOnMobile"
+                        style={{
+                            borderTop: "1px solid #6666665e",
+                            borderBottom: "1px solid #6666665e",
+                            borderLeft: "none",
+                            borderRight: "black 1px solid",
+                            height: "35px",
+                            width: "35px",
+                            cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                            ...TopbarButtonStyle
+                        }}
                         onClick={() => {
+                            // Copy tasks to mutate it with later
+                            const copyOfTasks = [...tasks];
+                            // Filter tasks to get a list of tasks that are only for the active tasklist
+                            const tasksForActiveList = copyOfTasks.filter(eachTask => eachTask.taskListId === activeTaskListId);
+                            // Get this task
+                            const thisTaskInActiveList = tasksForActiveList.find(eachTask => eachTask.id === task.id);
+                            // Check if task exists
+                            if (thisTaskInActiveList) {
+                                // Check and Ignore click if the task is the topmost task for the active list
+                                const indexOfThisTaskInActiveList = tasksForActiveList.indexOf(thisTaskInActiveList);
+                                if (indexOfThisTaskInActiveList === 0) {
+                                    alert("This task cannot be reordered that way.");
+                                    return;
+                                } else {
+                                    // Get indexs of the two tasks in the full list
+                                    const otherTaskInActiveList = tasksForActiveList[indexOfThisTaskInActiveList - 1];
+                                    const indexOfThisTaskInFullList = copyOfTasks.indexOf(thisTaskInActiveList);
+                                    const indexOfOtherTaskInFullList = copyOfTasks.indexOf(otherTaskInActiveList);
 
+                                    // Swap in-place
+                                    [
+                                        copyOfTasks[indexOfThisTaskInFullList],
+                                        copyOfTasks[indexOfOtherTaskInFullList]
+                                    ] = [
+                                            copyOfTasks[indexOfOtherTaskInFullList],
+                                            copyOfTasks[indexOfThisTaskInFullList]
+                                        ];
+
+                                    // Save
+                                    setTasks(copyOfTasks);
+                                    if (typeof window !== "undefined") {
+                                        localStorage.setItem("tasks", JSON.stringify(copyOfTasks));
+                                    }
+                                }
+                            } else {
+                                // Task doesn't exist (for some reason), ignore click
+                                return;
+                            }
                         }}>
                         🡱
                     </button>
-                    <button style={{
-                        borderTop: "1px solid #6666665e",
-                        borderBottom: "1px solid #6666665e",
-                        borderLeft: "none",
-                        borderRight: "black 1px solid",
-                        height: "35px",
-                        width: "35px",
-                        cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
-                        ...TopbarButtonStyle
-                    }}
+                    <button className="hideOnMobile"
+                        style={{
+                            borderTop: "1px solid #6666665e",
+                            borderBottom: "1px solid #6666665e",
+                            borderLeft: "none",
+                            borderRight: "black 1px solid",
+                            height: "35px",
+                            width: "35px",
+                            cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
+                            ...TopbarButtonStyle
+                        }}
                         onClick={() => {
+                            // TODO
+                            alert("DOWN! wip")
+
+
+
+
+
+
 
                         }}>
                         🡳
@@ -365,7 +565,34 @@ export default function Page() {
                     }}
                         onClick={() => {
                             if (editable) {
-                                handleSave();
+                                // Get task values (done, text)
+                                const taskText = document.getElementById(`${task.taskListId}.${task.id}.text`) as HTMLInputElement;
+                                const taskDone = document.getElementById(`${task.taskListId}.${task.id}.done`) as HTMLInputElement;
+                                if (taskText && taskDone) {
+                                    const newTaskTextValue = taskText.value;
+                                    const newTaskDoneValue = taskDone.checked;
+                                    // Create a replacement task
+                                    const updatedTask: Task = {
+                                        taskListId: task.taskListId,
+                                        id: task.id,
+                                        done: newTaskDoneValue,
+                                        text: newTaskTextValue
+                                    }
+                                    // Replace with updated task
+                                    const updatedTasks = [...tasks];
+                                    const foundIndex = updatedTasks.findIndex(eachTask => eachTask.id === task.id && eachTask.taskListId === task.taskListId)
+                                    updatedTasks[foundIndex] = updatedTask;
+
+                                    // Save 
+                                    setTasks(updatedTasks);
+                                    if (typeof window !== "undefined") {
+                                        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+                                    }
+
+                                    // Update the text label
+                                    const taskTextLabel = document.getElementById(`${task.taskListId}.${task.id}.textLabel`) as HTMLLabelElement;
+                                    taskTextLabel.innerText = newTaskTextValue;
+                                }
                             }
                             setEditable(!editable);
                         }}>
@@ -385,24 +612,34 @@ export default function Page() {
                         ➖
                     </button>
                 </div>
-
-
                 {/* Done/Not-Done */}
-                <input style={{ transform: "scale(1.2)" }} type="checkbox" checked={task.done} onChange={(e) => {
-                    task.done = e.target.checked
-                }} />
-
+                <input id={`${task.taskListId}.${task.id}.done`} type="checkbox"
+                    style={{ transform: "scale(1.2)" }}
+                    checked={task.done}
+                    onChange={(e) => {
+                        const updatedDone = e.target.checked;
+                        alert(updatedDone);
+                    }} />
                 {/* Text and text's edit/confirm */}
-                <div>
-                    <label style={{ display: editable ? "none" : "inline-block", minWidth: "95px" }}>
+                <div style={{ marginRight: "10px", width: "100%" }}>
+                    {/* Label for desktop AND tablet */}
+                    <label htmlFor={`${task.taskListId}.${task.id}.text`}
+                        id={`${task.taskListId}.${task.id}.textLabel`}
+                        className="hideOnMobile"
+                        style={{ display: editable ? "none" : "inline-block", width: "100%" }}>
                         {task.text}
                     </label>
-                    <input style={{ display: editable ? "inline" : "none", minWidth: "95px" }}
+                    {/* Label for mobile, hidden on tablet and desktop */}
+                    <label htmlFor={`${task.taskListId}.${task.id}.text`}
+                        className="hideOnNonMobile"
+                        style={{ display: editable ? "none" : "inline-block", width: "100%" }}>
+                        {task.text.substring(0, 20)}{task.text.length > 18 ? ".." : ""}
+                    </label>
+                    {/* Input for changing text, which is only shown when the labels are hidden */}
+                    <input id={`${task.taskListId}.${task.id}.text`} style={{ display: editable ? "inline" : "none", width: "100%" }}
                         type="text"
                         defaultValue={task.text} />
                 </div>
-
-                {`${task.taskListId}.${task.id}`}
             </div >
         );
     };
@@ -570,7 +807,6 @@ export default function Page() {
                                         } else {
                                             setShowDialogHelpPage(dialogHelpPage - 1);
                                         }
-
                                     }}
                                     style={{ minWidth: "80px", padding: "5px" }}>
                                     Prev.
@@ -596,155 +832,12 @@ export default function Page() {
                         </div>
                     </div>
                 </dialog >
-
-
-
-
                 {/* Menu bar at the top for manipulating all taskLists */}
                 <TasklistTopBar></TasklistTopBar>
-
-
-
-                <div style={{
-                    display: "flex",
-                    borderLeft: "1px solid grey",
-                    borderRight: "1px solid grey",
-                    borderBottom: "1px solid grey"
-                }}>
-
-
-
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignSelf: "stretch",
-                        flexGrow: "1",
-                    }}>
-                        {
-                            tasks.reduce((accumulator: React.ReactNode[], eachTask) => {
-                                // 1. The Filter Step
-                                if (eachTask.taskListId === activeTaskListId) {
-                                    // 2. The Map Step: Push the JSX element into our array
-                                    accumulator.push(
-                                        <Task key={`${eachTask.taskListId}.${eachTask.id}.${tasks.length}`} todo={eachTask} />
-                                    );
-                                }
-                                // Always return the array for the next loop iteration
-                                return accumulator;
-                            }, []) // <-- Start with an empty array []
-                        }
-
-
-
-
-
-
-
-
-                        <button style={{
-                            border: "1px solid #6666665e",
-                            // background: "none",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "35px",
-                        }}
-                            onClick={handleNewTask}>
-                            ➕
-                        </button>
-                    </div>
-
-
-                    {/* Sidebar for manipulating a todolist's todos*/}
-                    <div style={{
-                        height: "100%",
-                        minHeight: "300px",
-                        width: "35px",
-                        borderLeft: "1px solid black",
-                        // borderBottom: "1px solid grey",
-                        display: "flex",
-                        flexDirection: "column-reverse"
-                        // justifyContent: "space-between",
-                    }}>
-                        <button style={{
-                            borderTop: "black 1px solid",
-                            borderBottom: "none",
-                            borderLeft: "none",
-                            borderRight: "none",
-                            width: "100%",
-                            height: "35px",
-                            ...TopbarButtonStyle
-                        }} onClick={handleDeleteAllTasksFromActiveList}>
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {/* Footer with statistics */}
-                <div style={{
-                    height: "35px",
-                    width: "100%",
-                    borderLeft: "1px solid grey",
-                    borderRight: "1px solid grey",
-                    borderBottom: "1px solid grey",
-                    display: "flex",
-                    // display: "none",
-
-                    justifyContent: "space-between",
-                }}>
-                    {/* Help button */}
-                    <button style={{
-                        borderTop: "none",
-                        borderBottom: "none",
-                        borderLeft: "none",
-                        // boxSizing: "border-box",
-                        borderRight: "1px solid black",
-                        flexBasis: "35px",
-                        cursor: "pointer",
-                        ...TopbarButtonStyle
-                    }}
-                        onClick={() => {
-                            // Show help dialog window
-                            if (dialogHelpRef.current) {
-                                dialogHelpRef.current.showModal();
-                            }
-                        }}>
-                        ❔
-                    </button>
-                    {/* Count tasks */}
-                    <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        // border: "1px dashed red",
-                        padding: "5px"
-                    }}>
-                        <span>Tasks: {tasks.length}</span>
-                    </div>
-
-                </div>
+                {/* Middle part for all tasks for the active list, and sidebar for manipulating all tasks belonging to the active list */}
+                <TasklistMiddleSection></TasklistMiddleSection>
+                {/* Footer with statistics and Help button */}
+                <TasklistFooter></TasklistFooter>
             </section>
         </>
     );

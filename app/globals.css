@@ -151,6 +151,20 @@ h4 {
 /* Mobile */
 @media (max-width: 700px) {
     .hideOnMobile {
-        display: none
+        display: none !important
+    }
+}
+
+/* Non-Mobile */
+@media (min-width: 701px) {
+    .hideOnNonMobile {
+        display: none !important
+    }
+}
+
+/* Desktop */
+@media (min-width: 1120px) {
+    .hideOnDesktop {
+        display: none !important
     }
 }
