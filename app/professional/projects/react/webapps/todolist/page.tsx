@@ -237,7 +237,7 @@ export default function Page() {
                                     key={`${taskList.id}_${index}`}
                                     style={{}}
                                     selected={taskList.id === activeTaskListId}>
-                                    {taskList.name}
+                                    {taskList.name} ({tasks.filter(eachTask => eachTask.taskListId === taskList.id).length})
                                     {/* {`${todolist.name.substring(0, 15)}${todolist.name.length > 15 ? "..." : ""}`} */}
                                 </option>
                             )
@@ -454,7 +454,7 @@ export default function Page() {
     /**
      * Each task in the webapp's middle section
      * @param param0 task typeof Task (done, id, taskListId, text)
-     * @returns 
+     * @returns
      */
     const Task = ({
         todo: task
@@ -541,8 +541,44 @@ export default function Page() {
                             ...TopbarButtonStyle
                         }}
                         onClick={() => {
-                            // TODO
-                            alert("DOWN! wip")
+                            // Copy tasks to mutate it with later
+                            const copyOfTasks = [...tasks];
+                            // Filter tasks to get a list of tasks that are only for the active tasklist
+                            const tasksForActiveList = copyOfTasks.filter(eachTask => eachTask.taskListId === activeTaskListId);
+                            // Get this task
+                            const thisTaskInActiveList = tasksForActiveList.find(eachTask => eachTask.id === task.id);
+                            // Check if task exists
+                            if (thisTaskInActiveList) {
+                                // Check and Ignore click if the task is the topmost task for the active list
+                                const indexOfThisTaskInActiveList = tasksForActiveList.indexOf(thisTaskInActiveList);
+                                if (indexOfThisTaskInActiveList === (tasksForActiveList.length - 1)) {
+                                    alert("This task cannot be reordered that way.");
+                                    return;
+                                } else {
+                                    // Get indexs of the two tasks in the full list
+                                    const otherTaskInActiveList = tasksForActiveList[indexOfThisTaskInActiveList + 1];
+                                    const indexOfThisTaskInFullList = copyOfTasks.indexOf(thisTaskInActiveList);
+                                    const indexOfOtherTaskInFullList = copyOfTasks.indexOf(otherTaskInActiveList);
+
+                                    // Swap in-place
+                                    [
+                                        copyOfTasks[indexOfThisTaskInFullList],
+                                        copyOfTasks[indexOfOtherTaskInFullList]
+                                    ] = [
+                                            copyOfTasks[indexOfOtherTaskInFullList],
+                                            copyOfTasks[indexOfThisTaskInFullList]
+                                        ];
+
+                                    // Save
+                                    setTasks(copyOfTasks);
+                                    if (typeof window !== "undefined") {
+                                        localStorage.setItem("tasks", JSON.stringify(copyOfTasks));
+                                    }
+                                }
+                            } else {
+                                // Task doesn't exist (for some reason), ignore click
+                                return;
+                            }
 
 
 
@@ -583,7 +619,7 @@ export default function Page() {
                                     const foundIndex = updatedTasks.findIndex(eachTask => eachTask.id === task.id && eachTask.taskListId === task.taskListId)
                                     updatedTasks[foundIndex] = updatedTask;
 
-                                    // Save 
+                                    // Save
                                     setTasks(updatedTasks);
                                     if (typeof window !== "undefined") {
                                         localStorage.setItem("tasks", JSON.stringify(updatedTasks));
