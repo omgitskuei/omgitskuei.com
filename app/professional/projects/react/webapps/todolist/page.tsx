@@ -3,6 +3,7 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ProjectBreakdown } from "@/components/ProjectBreakdown";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 import styles from "./page.module.css";
 
@@ -62,7 +63,8 @@ export default function Page() {
     const dialogNewListRef = useRef<HTMLDialogElement>(null);
     // Dialog for help
     const dialogHelpRef = useRef<HTMLDialogElement>(null);
-    const [dialogHelpPage, setShowDialogHelpPage] = useState<number>(0);
+    const [dialogHelpPage, setShowDialogHelpPage] = useState<number>(1);
+    const maxDialogHelpPages = 4;
 
     const TopbarButtonStyle: React.CSSProperties = {
         padding: "0px",
@@ -95,7 +97,7 @@ export default function Page() {
 
         // Clean up tasks belonging to the deleted list
         const updatedTasks = tasks.filter((task) => task.taskListId !== removedList.id);
-        
+
         setTasks(updatedTasks);
         setTaskLists(updatedLists);
 
@@ -528,56 +530,68 @@ export default function Page() {
                         }}>
                             <h3>Help</h3>
                             {/* Instructions #1 - top bar, new/activate/delete list*/}
-                            <ol type="a" style={{ display: (dialogHelpPage === 0) ? "block" : "none" }}>
-                                <li>Click on the dropdown menu to switch lists</li>
-                                <li>Click the + button to create a new list</li>
-                                <li>Click the - button to delete the current list</li>
-                            </ol>
+                            <div style={{ display: (dialogHelpPage === 1) ? "block" : "none" }}>
+                                <ol type="a">
+                                    <li>a) Click on the dropdown to switch lists</li>
+                                    <li>b) Click the + button to create a new list</li>
+                                    <li>c) Click the - button to delete the current list</li>
+                                </ol>
+                                {/* <Image src={""} alt={""} width={250} height={300}></Image> */}
+                            </div>
                             {/* Instructions #2 - side bar, save/new/delete/delete-all tasks*/}
-                            <ol type="a" style={{ display: (dialogHelpPage === 1) ? "block" : "none" }}>
-                                <li>Click the save button to save all displayed tasks</li>
-                                <li>Click the - button to delete checked tasks</li>
-                                <li>Click the - button to delete all tasks</li>
-                            </ol>
+                            <div style={{ display: (dialogHelpPage === 2) ? "block" : "none" }}>
+                                <ol type="a">
+                                    <li>a) Click the - button to delete all tasks</li>
+                                </ol>
+                            </div>
+                            {/* Instructions #3 - bottom bar, stats */}
+                            <div style={{ display: (dialogHelpPage === 3) ? "block" : "none" }}>
+                                <ol type="a">
+                                    <li>a) Displays statistics like total number of tasks</li>
+                                    <li>b) Click the ? button to display this help message again</li>
+                                </ol>
+                            </div>
+                            {/* Instructions #4 - tasks */}
+                            <div style={{ display: (dialogHelpPage === 4) ? "block" : "none" }}>
+                                <ol type="a">
+                                    <li>a) Click the up/down arrows to reorder tasks</li>
+                                    <li>b) Click the pencil button to begin editting a task</li>
+                                    <li>c) Click the - button to delete the task</li>
+                                </ol>
+                            </div>
+                            <span>{dialogHelpPage}/{maxDialogHelpPages}</span>
 
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                                <button type="button"
+                                    onClick={() => {
+                                        if (dialogHelpPage === 1) {
+                                            setShowDialogHelpPage(maxDialogHelpPages);
+                                        } else {
+                                            setShowDialogHelpPage(dialogHelpPage - 1);
+                                        }
 
-                            <p style={{ textWrap: "nowrap" }}>A to-do list must have a name or title.</p>
-                            {/* Instructions #3 - task window, edit tasks */}
-                            <p style={{ textWrap: "nowrap" }}>A to-do list must have a name or title.</p>
-
-
-
-                            <form style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-                                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                                    e.preventDefault();
-                                    const inputNewListName = document.getElementById("inputNewListName") as HTMLInputElement;
-                                    setTaskLists([{
-                                        name: inputNewListName.value,
-                                        id: 0
-                                    },
-                                    ...taskLists,]);
-                                    inputNewListName.value = "";
-                                    dialogNewListRef.current?.close();
-                                }}>
-                                {/* Font sizes */}
-                                <div style={{ display: "flex", flexDirection: "row", gap: "5px", alignItems: "center" }}>
-                                    <label>New list name: </label>
-                                    <input type="text" id="inputNewListName" maxLength={18}></input>
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <button type="submit" style={{ minWidth: "80px", padding: "5px" }}>
-                                        Confirm
-                                    </button>
-                                    <button type="button" onClick={() => {
-                                        const inputNewListName = document.getElementById("inputNewListName") as HTMLInputElement;
-                                        inputNewListName.value = "";
-                                        dialogNewListRef.current?.close();
                                     }}
-                                        style={{ minWidth: "80px", padding: "5px" }}>
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
+                                    style={{ minWidth: "80px", padding: "5px" }}>
+                                    Prev.
+                                </button>
+                                <button onClick={() => {
+                                    dialogHelpRef.current?.close();
+                                }}
+                                    style={{ minWidth: "80px", padding: "5px" }}>
+                                    X
+                                </button>
+                                <button type="button"
+                                    onClick={() => {
+                                        if (dialogHelpPage === maxDialogHelpPages) {
+                                            setShowDialogHelpPage(1);
+                                        } else {
+                                            setShowDialogHelpPage(dialogHelpPage + 1);
+                                        }
+                                    }}
+                                    style={{ minWidth: "80px", padding: "5px" }}>
+                                    Next
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </dialog >
