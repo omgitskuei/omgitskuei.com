@@ -170,9 +170,9 @@ export default function Page() {
         const updatedTasks: Task[] = [
             ...tasks,
             {
+                done: false,
                 id: Date.now(),
                 taskListId: activeTaskListId,
-                done: false,
                 text: "New task",
             }
         ];
@@ -634,7 +634,7 @@ export default function Page() {
                                 :
                                 <>{task.text.substring(0, 20)}{task.text.length > 18 ? ".." : ""}</>
                         }
-                        {}
+                        { }
                     </label>
                     {/* Input for changing text, which is only shown when the labels are hidden */}
                     <input id={`${task.taskListId}.${task.id}.text`} style={{ display: editable ? "inline" : "none", width: "100%" }}
@@ -847,7 +847,7 @@ export default function Page() {
                 <TasklistFooter></TasklistFooter>
             </section>
             {/* Button with onClick to Reset project test data */}
-            <section>
+            <section style={{ width: "100%", display: "flex", justifyContent: "space-between", paddingLeft: "10%", paddingRight: "10%" }}>
                 <button style={{
                     borderRadius: "10px",
                     background: "lightgrey",
@@ -869,6 +869,21 @@ export default function Page() {
                         }
                     }}>
                     Repopulate test data for webapp
+                </button>
+                <button style={{
+                    borderRadius: "10px",
+                    background: "lightgrey",
+                    color: "black",
+                    padding: "10px 16px",
+                    marginBottom: "30px", marginTop: "30px",
+                    border: "1px solid #918f8f",
+                    boxShadow: "0px 5px 5px grey"
+                }}
+                    onClick={() => {
+                        console.log(taskLists);
+                        console.log(tasks);
+                    }}>
+                    console.log
                 </button>
             </section>
         </>
