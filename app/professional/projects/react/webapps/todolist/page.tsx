@@ -124,6 +124,8 @@ export default function Page() {
         alignItems: "center",
         fontFamily: "sans-serif",
         fontSize: "13px",
+        background: "#c0c0c0",
+        color: "black"
     };
 
     /**
@@ -219,10 +221,9 @@ export default function Page() {
                     style={{
                         flexGrow: "1",
                         borderRadius: "0px",
-                        border: "none",
+                        border: "1px solid grey",
                         boxSizing: "border-box",
                         paddingLeft: "5px",
-                        marginRight: "2px",
                         cursor: taskLists.length === 0 ? "not-allowed" : "pointer",
                     }}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -249,7 +250,7 @@ export default function Page() {
                     <button style={{
                         borderTop: "none",
                         borderBottom: "none",
-                        borderLeft: "black 1px solid",
+                        borderLeft: "none",
                         borderRight: "none",
                         flexBasis: "35px",
                         ...TopbarButtonStyle,
@@ -318,6 +319,8 @@ export default function Page() {
                         justifyContent: "center",
                         alignItems: "center",
                         height: "35px",
+                        background: "#c0c0c0",
+                        color: "black"
                     }}
                         onClick={handleCreateTask}>
                         ➕
@@ -328,7 +331,7 @@ export default function Page() {
                     height: "100%",
                     minHeight: "300px",
                     width: "35px",
-                    borderLeft: "1px solid black",
+                    borderLeft: "1px solid grey",
                     display: "flex",
                     flexDirection: "column-reverse"
                 }}>
@@ -579,13 +582,6 @@ export default function Page() {
                                 // Task doesn't exist (for some reason), ignore click
                                 return;
                             }
-
-
-
-
-
-
-
                         }}>
                         🡳
                     </button>
