@@ -594,7 +594,21 @@ export default function Page() {
                     checked={task.done}
                     onChange={(e) => {
                         const updatedDone = e.target.checked;
-                        alert(updatedDone);
+                        // Copy tasks to mutate it with later
+                        const copyOfTasks = [...tasks];
+                        // Find index of the task to be modified
+                        const indexOfTargetTask = copyOfTasks.indexOf(task);
+                        copyOfTasks[indexOfTargetTask] = {
+                            done: updatedDone,
+                            id: task.id,
+                            taskListId: task.taskListId,
+                            text: task.text
+                        };
+                        // Save
+                        setTasks(copyOfTasks);
+                        if (typeof window !== "undefined") {
+                            localStorage.setItem("tasks", JSON.stringify(copyOfTasks));
+                        }
                     }} />
                 {/* Text and text's edit/confirm */}
                 <div style={{ marginRight: "10px", width: "100%" }}>
@@ -603,13 +617,24 @@ export default function Page() {
                         id={`${task.taskListId}.${task.id}.textLabel`}
                         className="hideOnMobile"
                         style={{ display: editable ? "none" : "inline-block", width: "100%" }}>
-                        {task.text}
+                        {
+                            task.done ?
+                                <s>{task.text}</s>
+                                :
+                                <>{task.text}</>
+                        }
                     </label>
                     {/* Label for mobile, hidden on tablet and desktop */}
                     <label htmlFor={`${task.taskListId}.${task.id}.text`}
                         className="hideOnNonMobile"
                         style={{ display: editable ? "none" : "inline-block", width: "100%" }}>
-                        {task.text.substring(0, 20)}{task.text.length > 18 ? ".." : ""}
+                        {
+                            task.done ?
+                                <s>{task.text.substring(0, 20)}{task.text.length > 18 ? ".." : ""}</s>
+                                :
+                                <>{task.text.substring(0, 20)}{task.text.length > 18 ? ".." : ""}</>
+                        }
+                        {}
                     </label>
                     {/* Input for changing text, which is only shown when the labels are hidden */}
                     <input id={`${task.taskListId}.${task.id}.text`} style={{ display: editable ? "inline" : "none", width: "100%" }}
