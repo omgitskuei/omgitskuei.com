@@ -328,8 +328,7 @@ export default function Page() {
                 </div>
                 {/* Sidebar for manipulating a tasklist's tasks*/}
                 <div style={{
-                    height: "100%",
-                    minHeight: "300px",
+                    minHeight: "210px",
                     width: "35px",
                     borderLeft: "1px solid grey",
                     display: "flex",
@@ -394,65 +393,6 @@ export default function Page() {
             </div>
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Each task in the webapp's middle section
@@ -708,13 +648,13 @@ export default function Page() {
             </Breadcrumbs>
             {/* Header */}
             <h1>To-Do List</h1>
-            {/* Project breakdown -------------------------------------- WIP*/}
+            {/* Project breakdown */}
             <section style={{
                 marginLeft: "10%", marginRight: "10%", alignSelf: "stretch",
             }}>
                 <ProjectBreakdown projectName={"To-Do List"}
                     createDate="2026/07/16"
-                    updateDate="2026/07/16"
+                    updateDate="2026/07/23"
                     technologyUsed={[
                         "HTML",
                         "CSS",
@@ -723,15 +663,24 @@ export default function Page() {
                         "React",
                         "Next.js"
                     ]}
-                    goal={"..."}
+                    goal={"Familiar myself with storing and retrieving data from localStorage, practice UIUX design, and RWD webapp development."}
                     summary={[
-                        "...",
+                        "A to-do list webapp where users can CRUD lists and todos, sort todos, and the user data is persisted even after a page refresh.",
+                        "By using browser localStorage, this data persistance is possible without using cookies nor database tables nor requiring login.",
+                        "localStorage is not without drawbacks - see details under Limitations.",
+                        
+                        ""
                     ]}
                     scope={[
-                        "...",
+                        "Maybe add a upload/download the data as json stored in .txt files so that the user can transfer data between browsers across devices, to combat the drawbacks of localStorage.",
+                        "Initially I wanted to add a drag-drop feature to the todos in the list and this way forgo the up/down arrows, but this proved a bit difficult at the moment.",
+                        "I need a separate project to familiarize and implement draggable in React. Perhaps the Chess project is a good candidate for implementing dragging and dropping. I wasn't in a hurry to figure out drag and drop here because to be honest drag and drop is not as mobile and accessibility friendly as just simply clicking.",
+                        "I purposefully spaced out the UI hot-zones (eg. cluster of buttons) away frome each other to minimize user misclicking. Misclicking would be very frustrating because some buttons will delete data without confirmation.",
                     ]}
                     limitations={[
-                        "...",
+                        "Storing data with a particular browser means users will not find their data if they swap browsers on the same device; eg. using Firefox and Chrome on the same laptop",
+                        "Users also will not find their data if they use the same browser but on multiple devices; eg. using Chrome on a desktop and then on a laptop.",
+                        "Lastly, localStorage isn't available when the webpage is accessed without a browser; eg. a user using terminal command CURL technically bypasses a browser and shouldn't have a localStorage."
                     ]}>
                 </ProjectBreakdown>
             </section>
