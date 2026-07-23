@@ -694,8 +694,6 @@ export default function Page() {
                         "A to-do list webapp where users can CRUD lists and todos, sort todos, and the user data is persisted even after a page refresh.",
                         "By using browser localStorage, this data persistance is possible without using cookies nor database tables nor requiring login.",
                         "localStorage is not without drawbacks - see details under Limitations.",
-
-                        ""
                     ]}
                     scope={[
                         "Maybe add a upload/download the data as json stored in .txt files so that the user can transfer data between browsers across devices, to combat the drawbacks of localStorage.",
@@ -773,39 +771,54 @@ export default function Page() {
                             display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
                             margin: "10px",
                         }}>
-                            <h3>Help</h3>
+                            <h3>Help ({dialogHelpPage}/{maxDialogHelpPages})</h3>
                             {/* Instructions #1 - top bar, new/activate/delete list*/}
                             <div style={{ display: (dialogHelpPage === 1) ? "block" : "none" }}>
+                                <Image src={"/professional/projects/react/webapps/todolist/todolist_help_p1.jpg"}
+                                    alt={"Screenshot of the webapp with labels linking the ordered list to specific UI elements"}
+                                    width={330} height={140} layout="responsive">
+                                </Image>
                                 <ol type="a">
-                                    <li>a) Click on the dropdown to switch lists</li>
-                                    <li>b) Click the + button to create a new list</li>
-                                    <li>c) Click the - button to delete the current list</li>
+                                    <li>(a) Click on the dropdown to switch lists</li>
+                                    <li>(b) Click the [➕] plus button to create new list</li>
+                                    <li>(c) Click the [➖] minus button to delete list</li>
                                 </ol>
                                 {/* <Image src={""} alt={""} width={250} height={300}></Image> */}
                             </div>
                             {/* Instructions #2 - side bar, save/new/delete/delete-all tasks*/}
                             <div style={{ display: (dialogHelpPage === 2) ? "block" : "none" }}>
+                                <Image src={"/professional/projects/react/webapps/todolist/todolist_help_p2.jpg"}
+                                    alt={"Screenshot of the webapp with labels linking the ordered list to specific UI elements"}
+                                    width={330} height={140} layout="responsive">
+                                </Image>
                                 <ol type="a">
-                                    <li>a) Click the - button to delete all tasks</li>
+                                    <li>(a) Click the [🗑️] trash button to delete all tasks</li>
                                 </ol>
                             </div>
                             {/* Instructions #3 - bottom bar, stats */}
                             <div style={{ display: (dialogHelpPage === 3) ? "block" : "none" }}>
+                                <Image src={"/professional/projects/react/webapps/todolist/todolist_help_p3.jpg"}
+                                    alt={"Screenshot of the webapp with labels linking the ordered list to specific UI elements"}
+                                    width={330} height={140} layout="responsive">
+                                </Image>
                                 <ol type="a">
-                                    <li>a) Displays statistics like total number of tasks</li>
-                                    <li>b) Click the ? button to display this help message again</li>
+                                    <li>(a) Displays statistics like total number of tasks</li>
+                                    <li>(b) Click the [❔] question mark button to display this help message</li>
                                 </ol>
                             </div>
                             {/* Instructions #4 - tasks */}
                             <div style={{ display: (dialogHelpPage === 4) ? "block" : "none" }}>
-                                <ol type="a">
-                                    <li>a) Click the up/down arrows to reorder tasks</li>
-                                    <li>b) Click the pencil button to begin editting a task</li>
-                                    <li>c) Click the - button to delete the task</li>
+                                <Image src={"/professional/projects/react/webapps/todolist/todolist_help_p4.jpg"}
+                                    alt={"Screenshot of the webapp with labels linking the ordered list to specific UI elements"}
+                                    width={330} height={140} layout="responsive">
+                                </Image>
+                                <ol type="a" style={{}}>
+                                    <li>(a) Click the [🡱][🡳] arrows to reorder tasks</li>
+                                    <li>(b) Click the [💾] save or [✏️] pencil button to begin editting a task</li>
+                                    <li>(c) Click the [➖] minus button to delete the task</li>
+                                    <li>(d) Click the [➕] plus button to add a new task</li>
                                 </ol>
                             </div>
-                            <span>{dialogHelpPage}/{maxDialogHelpPages}</span>
-
                             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                 <button type="button"
                                     onClick={() => {
@@ -822,7 +835,7 @@ export default function Page() {
                                     dialogHelpRef.current?.close();
                                 }}
                                     style={{ minWidth: "80px", padding: "5px" }}>
-                                    X
+                                    Close
                                 </button>
                                 <button type="button"
                                     onClick={() => {
