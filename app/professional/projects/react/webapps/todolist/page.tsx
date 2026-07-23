@@ -668,7 +668,7 @@ export default function Page() {
                         "A to-do list webapp where users can CRUD lists and todos, sort todos, and the user data is persisted even after a page refresh.",
                         "By using browser localStorage, this data persistance is possible without using cookies nor database tables nor requiring login.",
                         "localStorage is not without drawbacks - see details under Limitations.",
-                        
+
                         ""
                     ]}
                     scope={[
@@ -819,6 +819,101 @@ export default function Page() {
                 <TasklistMiddleSection></TasklistMiddleSection>
                 {/* Footer with statistics and Help button */}
                 <TasklistFooter></TasklistFooter>
+            </section>
+            {/* Reset project test data */}
+            <section>
+                <button style={{
+                    borderRadius: "7px",
+                    background: "lightgrey",
+                    color: "black",
+                    padding: "5px 7px",
+                    marginBottom: "30px", marginTop: "30px",
+                    border: "1px solid lightgrey",
+                    boxShadow: "0px 5px 5px grey"
+                }}
+                    onClick={() => {
+                        // Define test data
+                        const testDataLists: TaskList[] = [
+                            {
+                                id: 0,
+                                name: "Default list"
+                            },
+                            {
+                                id: 1,
+                                name: "Shopping list"
+                            },
+                            {
+                                id: 2,
+                                name: "Chore list"
+                            },
+                            {
+                                id: 3,
+                                name: "Movies"
+                            },
+                        ];
+                        const testDataTasks: Task[] = [
+                            {
+                                taskListId: 0,
+                                id: 0,
+                                done: false,
+                                text: "Test this webapp"
+                            },
+                            {
+                                taskListId: 1,
+                                id: 1,
+                                done: false,
+                                text: "Milk"
+                            },
+                            {
+                                taskListId: 1,
+                                id: 2,
+                                done: false,
+                                text: "Eggs"
+                            },
+                            {
+                                taskListId: 2,
+                                id: 3,
+                                done: false,
+                                text: "Wash dishes"
+                            },
+                            {
+                                taskListId: 2,
+                                id: 4,
+                                done: false,
+                                text: "Sweep the house"
+                            },
+                            {
+                                taskListId: 2,
+                                id: 5,
+                                done: false,
+                                text: "Water all plants"
+                            },
+                            {
+                                taskListId: 3,
+                                id: 6,
+                                done: false,
+                                text: "John Wick (featuring Keanu Reeves)"
+                            },
+                            {
+                                taskListId: 3,
+                                id: 7,
+                                done: false,
+                                text: "Her (which doesn't feature Keanu)"
+                            }
+                        ];
+
+                        // Set test data
+                        setTaskLists(testDataLists);
+                        setTasks(testDataTasks);
+
+                        // Save test data
+                        if (localStorage) {
+                            localStorage.setItem("tasklists", JSON.stringify(testDataLists));
+                            localStorage.setItem("tasks", JSON.stringify(testDataTasks));
+                        }
+                    }}>
+                    Repopulate test data for webapp
+                </button>
             </section>
         </>
     );
