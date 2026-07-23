@@ -25,70 +25,8 @@ export default function Page() {
         }
     }, []);
 
-    // States for tasks
-    interface Task {
-        done: boolean,
-        id: number,        // timestamp
-        taskListId: number,
-        text: string,
-    };
-    const [tasks, setTasks] = useState<Task[]>([
-        {
-            taskListId: 0,
-            id: 0,
-            done: false,
-            text: "Test this webapp"
-        },
-        {
-            taskListId: 1,
-            id: 1,
-            done: false,
-            text: "Milk"
-        },
-        {
-            taskListId: 1,
-            id: 2,
-            done: false,
-            text: "Eggs"
-        },
-        {
-            taskListId: 2,
-            id: 3,
-            done: false,
-            text: "Wash dishes"
-        },
-        {
-            taskListId: 2,
-            id: 4,
-            done: false,
-            text: "Sweep the house"
-        },
-        {
-            taskListId: 2,
-            id: 5,
-            done: false,
-            text: "Water all plants"
-        },
-        {
-            taskListId: 3,
-            id: 6,
-            done: false,
-            text: "John Wick (featuring Keanu Reeves)"
-        },
-        {
-            taskListId: 3,
-            id: 7,
-            done: false,
-            text: "Her (which doesn't feature Keanu)"
-        }
-    ]);
-
-    // States for taskLists
-    interface TaskList {
-        id: number,
-        name: string,
-    };
-    const [taskLists, setTaskLists] = useState<TaskList[]>([
+    // Define test data
+    const testDataLists: TaskList[] = [
         {
             id: 0,
             name: "Default list"
@@ -105,7 +43,73 @@ export default function Page() {
             id: 3,
             name: "Movies"
         },
-    ]);
+    ];
+    const testDataTasks: Task[] = [
+        {
+            done: false,
+            id: 0,
+            taskListId: 0,
+            text: "Test this webapp"
+        },
+        {
+            done: false,
+            id: 1,
+            taskListId: 1,
+            text: "Milk"
+        },
+        {
+            done: false,
+            id: 2,
+            taskListId: 1,
+            text: "Eggs"
+        },
+        {
+            done: false,
+            id: 3,
+            taskListId: 2,
+            text: "Wash dishes"
+        },
+        {
+            done: false,
+            id: 4,
+            taskListId: 2,
+            text: "Sweep the house"
+        },
+        {
+            done: false,
+            id: 5,
+            taskListId: 2,
+            text: "Water all plants"
+        },
+        {
+            done: false,
+            id: 6,
+            taskListId: 3,
+            text: "John Wick (featuring Keanu Reeves)"
+        },
+        {
+            done: false,
+            id: 7,
+            taskListId: 3,
+            text: "Her (which doesn't feature Keanu)"
+        }
+    ];
+
+    // States for tasks
+    interface Task {
+        done: boolean,
+        id: number,        // timestamp
+        taskListId: number,
+        text: string,
+    };
+    const [tasks, setTasks] = useState<Task[]>(testDataTasks);
+
+    // States for taskLists
+    interface TaskList {
+        id: number,
+        name: string,
+    };
+    const [taskLists, setTaskLists] = useState<TaskList[]>(testDataLists);
     const [activeTaskListId, setActiveTasklistId] = useState<number>(0);
 
     // Dialog for adding new list
@@ -616,9 +620,6 @@ export default function Page() {
         );
     };
 
-
-
-
     return (
         <>
             {/* Breadcrumbs */}
@@ -820,88 +821,18 @@ export default function Page() {
                 {/* Footer with statistics and Help button */}
                 <TasklistFooter></TasklistFooter>
             </section>
-            {/* Reset project test data */}
+            {/* Button with onClick to Reset project test data */}
             <section>
                 <button style={{
-                    borderRadius: "7px",
+                    borderRadius: "10px",
                     background: "lightgrey",
                     color: "black",
-                    padding: "5px 7px",
+                    padding: "10px 16px",
                     marginBottom: "30px", marginTop: "30px",
-                    border: "1px solid lightgrey",
+                    border: "1px solid #918f8f",
                     boxShadow: "0px 5px 5px grey"
                 }}
                     onClick={() => {
-                        // Define test data
-                        const testDataLists: TaskList[] = [
-                            {
-                                id: 0,
-                                name: "Default list"
-                            },
-                            {
-                                id: 1,
-                                name: "Shopping list"
-                            },
-                            {
-                                id: 2,
-                                name: "Chore list"
-                            },
-                            {
-                                id: 3,
-                                name: "Movies"
-                            },
-                        ];
-                        const testDataTasks: Task[] = [
-                            {
-                                taskListId: 0,
-                                id: 0,
-                                done: false,
-                                text: "Test this webapp"
-                            },
-                            {
-                                taskListId: 1,
-                                id: 1,
-                                done: false,
-                                text: "Milk"
-                            },
-                            {
-                                taskListId: 1,
-                                id: 2,
-                                done: false,
-                                text: "Eggs"
-                            },
-                            {
-                                taskListId: 2,
-                                id: 3,
-                                done: false,
-                                text: "Wash dishes"
-                            },
-                            {
-                                taskListId: 2,
-                                id: 4,
-                                done: false,
-                                text: "Sweep the house"
-                            },
-                            {
-                                taskListId: 2,
-                                id: 5,
-                                done: false,
-                                text: "Water all plants"
-                            },
-                            {
-                                taskListId: 3,
-                                id: 6,
-                                done: false,
-                                text: "John Wick (featuring Keanu Reeves)"
-                            },
-                            {
-                                taskListId: 3,
-                                id: 7,
-                                done: false,
-                                text: "Her (which doesn't feature Keanu)"
-                            }
-                        ];
-
                         // Set test data
                         setTaskLists(testDataLists);
                         setTasks(testDataTasks);
