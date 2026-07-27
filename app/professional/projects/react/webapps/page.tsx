@@ -36,6 +36,48 @@ export default function Page() {
                 }
             </fieldset>
         );
+    };
+
+    const SearchResult = ({
+        header,
+        imgLink,
+        link,
+        tags
+    }: {
+        header: string,
+        imgLink: string,
+        link: string,
+        tags: string[]
+    }) => {
+        return (
+            <div style={{ display: "flex", }}>
+                {/* Clickable image preview that opens a dialog with a fullsize image */}
+                <Image src={imgLink} alt={""} width={250} height={100}
+                // layout="responsive"
+                ></Image>
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    {/* Name */}
+                    <Link href={link}>
+                        {header}
+                    </Link>
+                    {/* Summary */}
+                    <div>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur repudiandae nesciunt consectetur?
+                        Modi a unde ex quibusdam voluptates, illum porro.
+                        Quaerat explicabo porro, harum optio ipsum delectus magnam sapiente non commodi animi aperiam neque, hic vitae eaque.
+                        Quos itaque, voluptate vero porro est dolor consectetur dicta quia debitis dolorem alias perferendis sed dolores.
+                    </div>
+                    {/* Tags */}
+                    <div>
+                        {
+                            tags.map(tag => {
+                                return <>{tag}</>
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -61,7 +103,6 @@ export default function Page() {
                 ]}>
             </Breadcrumbs>
             <h1>Web Apps</h1>
-
             {/* Filter */}
             <section style={{
                 // width: "80%",
@@ -132,9 +173,22 @@ export default function Page() {
                         }
                     ]}>
                     </FilterSet>
+                    <br />
+                    <div style={{
+                        marginTop: "5px",
+                        display: "flex", gap: "26px", justifyContent: "space-between"
+                    }}>
+                        <button style={{
+                            flexGrow: "1",
+                            height: "32px"
+                        }}>Search</button>
+                        <button style={{
+                            flexGrow: "1",
+                            height: "26px"
+                        }}>Clear</button>
+                    </div>
                 </ExpandableBox>
             </section>
-
             {/* Results */}
             <section style={{
                 marginTop: "10px",
@@ -145,26 +199,52 @@ export default function Page() {
                 <h2>Results</h2>
 
                 <Link href={"/professional/projects/react/webapps/bubblewrap"}>
-                    {"Bubble Wrap"}
+                    👷🚧<s>
+                        {"Bubble Wrap"}
+                    </s>
                 </Link>
                 <Link href={"/professional/projects/react/webapps/calculator"}>
-                    {"Calculator"}
+                    👷🚧<s>
+                        {"Calculator"}
+                    </s>
                 </Link>
                 <Link href={"/professional/projects/react/webapps/chess"}>
-                    {"Chess"}
+                    👷🚧<s>
+                        {"Chess"}
+                    </s>
                 </Link>
                 <Link href={"/professional/projects/react/webapps/diceroll"}>
-                    {"Dice Roll"}
+                    👷🚧<s>
+                        {"Dice Roll"}
+                    </s>
                 </Link>
                 <Link href={"/professional/projects/react/webapps/terminal"}>
                     {"Terminal"}
                 </Link>
                 <Link href={"/professional/projects/react/webapps/tictactoe"}>
-                    {"Tic Tac Toe"}
+                    👷🚧<s>
+                        {"Tic Tac Toe"}
+                    </s>
                 </Link>
-                <Link href={"/professional/projects/react/webapps/todolist"}>
-                    {"To-Do List"}
-                </Link>
+
+
+                <SearchResult header={"To-Do List"}
+                    imgLink={"/professional/projects/react/webapps/image.png"}
+                    link={"/professional/projects/react/webapps/todolist"}
+                    tags={[
+                        "art",
+                        "education",
+                        "entertainment",
+                        "fitness",
+                        "finance",
+                        "health",
+                        "music",
+                        "productivity",
+                        "shopping",
+                        "social",
+                        "utilities",
+                    ]}>
+                </SearchResult>
             </section>
         </>
     );
