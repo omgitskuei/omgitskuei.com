@@ -29,7 +29,7 @@ export const ExpandableBox = ({
                 // border: "1px solid #e0e0e0",
                 boxSizing: "border-box",
                 // borderRadius: "8px",
-                padding: "20px",
+                // padding: "20px",
                 cursor: "pointer",
                 // backgroundColor: isOpen ?  "#ffffff" : bgColor,
                 transition: "all 0.3s ease",
