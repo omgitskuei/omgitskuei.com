@@ -1,7 +1,11 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ExpandableBox } from "@/components/ExpandableBox";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import webappDicerollPreview from "@/public/professional/projects/react/webapps/diceroll/preview.png";
+import webappTerminalPreview from "@/public/professional/projects/react/webapps/terminal/preview.png";
+import webappTictactoePreview from "@/public/professional/projects/react/webapps/tictactoe/preview.png";
+import webappTodolistPreview from "@/public/professional/projects/react/webapps/todolist/preview.png";
 
 export default function Page() {
     // Constants
@@ -40,32 +44,74 @@ export default function Page() {
 
     const SearchResult = ({
         header,
-        imgLink,
+        imgSrc,
         link,
-        tags
+        summary,
+        tags,
+        wip = false
     }: {
         header: string,
-        imgLink: string,
+        imgSrc: string | StaticImageData,
         link: string,
-        tags: string[]
+        summary: string,
+        tags: string[],
+        wip?: boolean
     }) => {
         return (
-            <div style={{ display: "flex", }}>
+            <div style={{
+                display: "flex",
+                // flexDirection: "column",
+                border: "1px solid black",
+            }}
+                className="responsive-container">
                 {/* Clickable image preview that opens a dialog with a fullsize image */}
-                <Image src={imgLink} alt={""} width={250} height={100}
-                // layout="responsive"
-                ></Image>
+                <div style={{
+                    height: "100px",
+                    width: "50%",
+                    border: "1px solid red",
+                }}>
+                    {/* {
+                        typeof imgSrc === "string" ?
+                            <Image src={imgSrc} width={300} height={188}
+                                // placeholder="blur"
+                                // blurDataURL=... image src, see https://blurred.dev/?
+                                // layout="responsive"
+                                alt={`${header} preview`}>
+                            </Image>
+                            :
+                            <Image src={imgSrc}
+                                // style={{
+                                //     width: "300px",
+                                //     height: "auto"
+                                // }}
+                                // width={250} height={100}
+                                // placeholder="blur"
+                                // blurDataURL=... image src, see https://blurred.dev/?
+                                // layout="responsive"
+                                alt={`${header} preview`}>
+                            </Image>
+                    } */}
+                </div>
+                {/* Text */}
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     {/* Name */}
                     <Link href={link}>
-                        {header}
+                        {
+                            !wip ?
+                                <>{header}</>
+                                :
+                                <>
+                                    👷🚧<s>
+                                        {header}
+                                    </s>
+                                </>
+                        }
                     </Link>
                     {/* Summary */}
                     <div>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur repudiandae nesciunt consectetur?
-                        Modi a unde ex quibusdam voluptates, illum porro.
-                        Quaerat explicabo porro, harum optio ipsum delectus magnam sapiente non commodi animi aperiam neque, hic vitae eaque.
-                        Quos itaque, voluptate vero porro est dolor consectetur dicta quia debitis dolorem alias perferendis sed dolores.
+                        <p>
+                            {summary}
+                        </p>
                     </div>
                     {/* Tags */}
                     <div>
@@ -189,12 +235,31 @@ export default function Page() {
                     </div>
                 </ExpandableBox>
             </section>
+
+
+
+
+            {/* TESTING */}
+            <div className="responsive-container" style={{
+                border: "1px solid red",
+                alignSelf: "stretch", marginLeft: "10%", marginRight: "10%",
+            }}>
+                <div className="card" style={{ border: "1px solid blue" }}>Item 1</div>
+                <div className="card" style={{ border: "1px solid green" }}>Item 2</div>
+                <div className="card" style={{ border: "1px solid black" }}>Item 3</div>
+            </div>
+
+
+
+
+
+
             {/* Results */}
             <section style={{
                 marginTop: "10px",
                 alignSelf: "stretch", marginLeft: "10%", marginRight: "10%",
                 background: "white",
-                display: "flex", flexDirection: "column"
+                display: "flex", flexDirection: "column", gap: "20px"
             }}>
                 <h2>Results</h2>
 
@@ -218,18 +283,60 @@ export default function Page() {
                         {"Dice Roll"}
                     </s>
                 </Link>
-                <Link href={"/professional/projects/react/webapps/terminal"}>
-                    {"Terminal"}
-                </Link>
-                <Link href={"/professional/projects/react/webapps/tictactoe"}>
-                    👷🚧<s>
-                        {"Tic Tac Toe"}
-                    </s>
-                </Link>
+                <SearchResult header={"Dice Roll"} wip={true}
+                    summary={"Under construction..."}
+                    // imgSrc={"/professional/projects/react/webapps/diceroll/preview.png"}
+                    imgSrc={webappDicerollPreview}
+                    link={"/professional/projects/react/webapps/diceroll"}
+                    tags={[
+                        "art",
+                        "entertainment",
+                        "social",
+                    ]}>
+                </SearchResult>
 
+                <SearchResult header={"Split the bill"} wip={true}
+                    summary={"Under construction..."}
+                    imgSrc={"/professional/projects/react/webapps/splitthebill/preview.png"}
+                    link={"/professional/projects/react/webapps/splitthebill"}
+                    tags={[
+                        "finance",
+                        "productivity",
+                        "shopping",
+                        "social",
+                    ]}>
+                </SearchResult>
 
+                <SearchResult header={"Terminal"}
+                    summary={"An emulation of a Linux command-line interface (CLI) window inside a web browser"}
+                    imgSrc={webappTerminalPreview}
+                    link={"/professional/projects/react/webapps/terminal"}
+                    tags={[
+                        "utilities",
+                    ]}>
+                </SearchResult>
+
+                <SearchResult header={"Tic Tac Toe"} wip={true}
+                    summary={"Under construction..."}
+                    imgSrc={webappTictactoePreview}
+                    link={"/professional/projects/react/webapps/tictactoe"}
+                    tags={[
+                        "entertainment",
+                    ]}>
+                </SearchResult>
                 <SearchResult header={"To-Do List"}
-                    imgLink={"/professional/projects/react/webapps/image.png"}
+                    summary={"Under construction..."}
+                    imgSrc={webappTodolistPreview}
+                    link={"/professional/projects/react/webapps/todolist"}
+                    tags={[
+                        "productivity",
+                    ]}>
+                </SearchResult>
+
+
+                {/* <SearchResult header={"To-Do List"} wip={true}
+                    summary={"Under construction..."}
+                    imgSrc={"/professional/projects/react/webapps/todolist/preview.png"}
                     link={"/professional/projects/react/webapps/todolist"}
                     tags={[
                         "art",
@@ -244,7 +351,7 @@ export default function Page() {
                         "social",
                         "utilities",
                     ]}>
-                </SearchResult>
+                </SearchResult> */}
             </section>
         </>
     );
