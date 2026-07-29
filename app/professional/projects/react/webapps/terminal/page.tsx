@@ -6,7 +6,6 @@ import { ProjectBreakdown } from "@/components/ProjectBreakdown";
 const style: CSSProperties | undefined = {
     boxSizing: "border-box",
     flex: "0 0 calc(50% - 8px)",
-    // textAlign: "center",
     border: "1px black solid"
 };
 
@@ -41,7 +40,6 @@ export default function Page() {
 
             <section style={{
                 marginLeft: "10%", marginRight: "10%", alignSelf: "stretch",
-                // border: "1px solid blue" 
             }}>
                 <ProjectBreakdown projectName={"Redacted Terminal"}
                     createDate="2026/06/25"
