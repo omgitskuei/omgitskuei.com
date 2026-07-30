@@ -208,7 +208,8 @@ export default function Page() {
                 {/* Current sum */}
                 <div style={{
                     width: "100%",
-                    minHeight: "311px",
+                    // minHeight: "311px",
+                    aspectRatio: `${vector.width} / ${vector.height}`,
                     display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
                     background: `center / contain no-repeat url(${vector.src})`,
                 }}>
