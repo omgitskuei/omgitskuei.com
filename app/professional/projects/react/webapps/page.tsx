@@ -51,7 +51,7 @@ export default function Page() {
         wip = false
     }: {
         header: string,
-        imgSrc: string | StaticImageData,
+        imgSrc: StaticImageData,
         link: string,
         summary: string,
         tags: string[],
@@ -69,15 +69,20 @@ export default function Page() {
                     height: "100px",
                     width: "50%",
                     border: "1px solid red",
+
+                    // minHeight: "311px",
+                    aspectRatio: `${imgSrc.width} / ${100}px`,
+                    display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+                    background: `center / contain no-repeat url(${imgSrc})`,
                 }}>
-                    {/* {
-                        typeof imgSrc === "string" ?
-                            <Image src={imgSrc} width={300} height={188}
-                                // placeholder="blur"
-                                // blurDataURL=... image src, see https://blurred.dev/?
-                                // layout="responsive"
-                                alt={`${header} preview`}>
-                            </Image>
+                    {
+                            // <Image src={imgSrc} width={3000} height={160}
+                            //     // placeholder="blur"
+                            //     // blurDataURL=... image src, see https://blurred.dev/?
+                            //     // layout="responsive"
+                            //     alt={`${header} preview`}>
+                            // </Image>
+                            /* {
                             :
                             <Image src={imgSrc}
                                 // style={{
@@ -295,9 +300,19 @@ export default function Page() {
                     ]}>
                 </SearchResult>
 
+                <SearchResult header={"Piggybank"}
+                    summary={"An extremely easy to use and straightforward piggy bank for tracking your savings without over-engineered features like stats, predictions, telemetry, and user management"}
+                    imgSrc={webappTerminalPreview}
+                    link={"/professional/projects/react/webapps/piggybank"}
+                    tags={[
+                        "finance",
+                        "utilities",
+                    ]}>
+                </SearchResult>
+
                 <SearchResult header={"Split the bill"} wip={true}
                     summary={"Under construction..."}
-                    imgSrc={"/professional/projects/react/webapps/splitthebill/preview.png"}
+                    imgSrc={webappDicerollPreview}
                     link={"/professional/projects/react/webapps/splitthebill"}
                     tags={[
                         "finance",
