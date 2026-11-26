@@ -687,7 +687,8 @@ export default function Page() {
                         "JavaScript",
                         "TypeScript",
                         "React",
-                        "Next.js"
+                        "Next.js",
+                        "Web APIs: Window.localStorage"
                     ]}
                     goal={"Familiar myself with storing and retrieving data from localStorage, practice UIUX design, and RWD webapp development."}
                     summary={[

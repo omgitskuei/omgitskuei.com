@@ -53,9 +53,11 @@ export const ProjectBreakdown = ({
                     })
                 }
             </div>
+            <br />
             <ExpandableBox header={"Goal"}>
                 <p>{goal}</p>
             </ExpandableBox>
+            <br />
             <ExpandableBox header={"Toolkit"}>
                 <ul style={{ columnCount: 2, columnGap: "1em", listStylePosition: "inside" }}>
                     {
@@ -67,6 +69,7 @@ export const ProjectBreakdown = ({
                     }
                 </ul>
             </ExpandableBox>
+            <br />
             <ExpandableBox header={"Scope"}>
                 {
                     scope.map((string, index) => {
@@ -76,6 +79,7 @@ export const ProjectBreakdown = ({
                     })
                 }
             </ExpandableBox>
+            <br />
             <ExpandableBox header={"Limitations"}>
                 {
                     limitations.map((string, index) => {
