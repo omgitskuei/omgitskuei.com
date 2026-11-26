@@ -6,7 +6,7 @@ import { Roboto, Nabla, Inter } from 'next/font/google'
 import { ExpandableBox } from "@/components/ExpandableBox";
 import { Overlay } from "@/components/Overlay/Overlay";
 import { PreferencesDialog } from "@/components/Overlay/PreferencesDialog";
-import { TaipeiClock } from "@/components/TaipeiClock";
+import { Clock } from "@/components/Clock";
 
 const inter = Inter({
     weight: "400",
@@ -70,7 +70,7 @@ export default function Page() {
                     <div>
                         {
                             sections.map((item, index) => (
-                                <Link key={`${item.label}-${index}`}  href={item.url} style={{ color: textColor }}><h3>{item.label}</h3></Link>
+                                <Link key={`${item.label}-${index}`} href={item.url} style={{ color: textColor }}><h3>{item.label}</h3></Link>
                             ))
                         }
                     </div>
@@ -171,7 +171,18 @@ export default function Page() {
                             },
                         ]}>
                     </Door>
-                    <TaipeiClock></TaipeiClock>
+                    <div style={{
+                        // width: "min-content",
+                        height: "min-content",
+                        padding: "10px 7px",
+                        backgroundColor: "#0B0F0C",
+                        borderRadius: "5px",
+                        border: "2px solid color-mix(in oklab, #0B0F0C, white 20%)",
+                        color: "#7DF08A",
+                        fontSize: "12px",
+                    }}>
+                        <Clock></Clock>
+                    </div>
                 </section>
             </article>
         </>
