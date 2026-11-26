@@ -6,6 +6,7 @@ import { Roboto, Nabla, Inter } from 'next/font/google'
 import { ExpandableBox } from "@/components/ExpandableBox";
 import { Overlay } from "@/components/Overlay/Overlay";
 import { PreferencesDialog } from "@/components/Overlay/PreferencesDialog";
+import { TaipeiClock } from "@/components/TaipeiClock";
 
 const inter = Inter({
     weight: "400",
@@ -103,8 +104,8 @@ export default function Page() {
                         description={"For employers and clients interested in secure, robust, and fast tailored digital solutions, explore my portfolio, resume, pricing, and contact-me"}
                         sections={[
                             {
-                                label: 'Portfolio',
-                                url: '/professional/portfolio',
+                                label: 'Projects',
+                                url: '/professional/projects',
                                 description: 'The official documentation for React, covering hooks, components, and state management.'
                             },
                             {
@@ -170,6 +171,7 @@ export default function Page() {
                             },
                         ]}>
                     </Door>
+                    <TaipeiClock></TaipeiClock>
                 </section>
             </article>
         </>
