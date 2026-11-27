@@ -45,9 +45,22 @@ export const Clock = ({
     // null until mounted, so the server and first client render match
     const [now, setNow] = useState<number | null>(null);
 
+    // Datetime attribute of the <time> element
+    const isoDateTime = now === null ? undefined : new Date(now).toISOString();
+
+    // Try to get a formatter for the given timezone, and fallback to undefined. Undefined will display "Invalid timezone".
+    let formatter: Intl.DateTimeFormat;
+    try {
+        formatter = getFormatter(timezone);
+    } catch {
+        formatter = undefined as unknown as Intl.DateTimeFormat; // Fallback to undefined if the timezone is invalid
+    }
+
     // Returns a string "[Month(3)] [Day(2)], [Hour(2)]:[Mins(2)] [AM/PM]"
     const timeString = useMemo(
-        () => (now === null ? 'Loading...' : getFormatter(timezone).format(new Date(now))),
+        () => (now === null ?
+            'Loading...' : formatter == undefined?
+                'Invalid timezone' : formatter.format(new Date(now))),
         [now, timezone],
     );
 
@@ -74,11 +87,13 @@ export const Clock = ({
 
     return (
         // Return only the time string, leaving formatting and layout to the parent component
-        <span style={{
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-            fontVariantNumeric: "tabular-nums"
-        }}>
+        <time aria-label={`${label} clock`}
+            style={{
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                fontVariantNumeric: "tabular-nums"
+            }}
+            dateTime={isoDateTime}>
             {label}: {timeString}
-        </span>
+        </time>
     )
 }
